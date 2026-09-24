@@ -17,6 +17,19 @@ class UserFactory extends Factory
      */
     protected static ?string $password;
 
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->modelProfile()->create([
+                'name' => $user->name,
+                'whatsapp' => $user->whatsapp,
+                'location' => $user->location,
+                'is_published' => $user->is_published,
+                'review_status' => $user->is_published ? 'approved' : 'pending',
+            ]);
+        });
+    }
+
     /**
      * Define the model's default state.
      *
@@ -29,6 +42,9 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'whatsapp' => fake()->numerify('+54 9 261 ### ####'),
+            'location' => fake()->city(),
+            'is_published' => false,
             'remember_token' => Str::random(10),
         ];
     }
