@@ -47,6 +47,20 @@ return [
             'report' => false,
         ],
 
+        'identity_private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/identity'),
+            'throw' => true,
+            'report' => false,
+        ],
+
+        'model_photos' => [
+            'driver' => env('MODEL_PHOTOS_DRIVER', 'local'),
+            'root' => env('MODEL_PHOTOS_ROOT', storage_path('app/private/model-photos')),
+            'throw' => true,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -1,8 +1,9 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 -> 1.1.0
-- Modified principles: all five principles materially expanded with the requested technical rules
-- Added sections: explicit Laravel/MySQL stack constraints; privacy and moderation requirements
+- Version change: 1.1.0 -> 1.2.0
+- Modified principles: none of the existing technical principles were redefined
+- Added sections: Principle VI, visual completeness requirements for user-facing Blade views,
+  and visual validation as a delivery gate
 - Removed sections: none
 - Follow-up TODOs: confirm the original ratification date
 -->
@@ -58,6 +59,23 @@ merging, the relevant test suite MUST pass, and important failures or business e
 diagnosable through Laravel exceptions and appropriate logs. This provides regression
 protection and supports safe maintenance.
 
+### VI. Complete User-Facing Blade Interfaces
+
+Every Blade view intended for an end user MUST be delivered with a complete visual design, not
+as unstyled functional HTML. Before implementing or materially changing such a view, the
+contributor MUST review `docs/design.md`, `resources/css/styles.css`, and visually approved
+existing Blade views. The interface MUST have an appropriate layout, responsive behavior,
+visual hierarchy, accessible states, and consistent use of the project palette, typography,
+spacing, buttons, inputs, cards, and status patterns.
+
+New interfaces MUST first reuse existing classes and components from `resources/css/styles.css`.
+When existing styles are insufficient, the required styles MUST be added to that file following
+its documented conventions. New CSS frameworks MUST NOT be added without explicit project-owner
+approval. A user story with UI is incomplete until its visual behavior has been reviewed at
+desktop and mobile breakpoints; functional tests MUST NOT be treated as a substitute for visual
+validation. Spec Kit task lists for UI features MUST include both visual implementation and
+responsive validation tasks.
+
 ## Project Constraints
 
 The application MUST remain compatible with the versions declared by `composer.json`,
@@ -66,6 +84,8 @@ routing, Eloquent, Form Requests, Policies or Gates, migrations, and the configu
 pipeline are the default implementation paths. A new package, persistence technology, or
 frontend architecture requires a documented reason, an impact assessment, and tests covering
 the integration boundary.
+User-facing Blade views MUST follow Principle VI and the visual system documented in
+`docs/design.md`; this requirement does not authorize introducing a new frontend framework.
 
 ## Development Workflow
 
@@ -75,7 +95,10 @@ tests and MUST review PSR-12 conformance, validation, authorization, migrations,
 privacy, moderation, logging, and configuration impact. Schema changes MUST be reversible
 where practical and MUST include migration-safe rollout notes when they affect existing data.
 Reviewers MUST reject changes that violate a principle unless the exception and its trade-offs
-are documented and approved.
+are documented and approved. UI feature reviews MUST verify layout completeness, responsive
+behavior, accessibility basics, visual consistency, and reuse of the existing CSS system.
+Reviewers MUST reject user-facing Blade interfaces that are only functional HTML or that omit
+responsive and visual validation evidence.
 
 ## Governance
 
@@ -93,4 +116,4 @@ time-bounded where possible, and recorded with their rationale. The constitution
 reviewed whenever the framework baseline, deployment model, security posture, or development
 workflow materially changes.
 
-**Version**: 1.1.0 | **Ratified**: TODO(RATIFICATION_DATE): confirm original adoption date | **Last Amended**: 2026-09-14
+**Version**: 1.2.0 | **Ratified**: TODO(RATIFICATION_DATE): confirm original adoption date | **Last Amended**: 2026-09-16

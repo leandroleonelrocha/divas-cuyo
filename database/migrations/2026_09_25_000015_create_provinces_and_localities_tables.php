@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('provinces', function (Blueprint $table): void {
+            $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->boolean('is_active')->default(true)->index();
+            $table->timestamps();
+        });
+
+        Schema::create('localities', function (Blueprint $table): void {
+            $table->id();
+            $table->foreignId('province_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->string('slug');
+            $table->boolean('is_active')->default(true)->index();
+            $table->timestamps();
+
+            $table->unique(['province_id', 'slug']);
+            $table->index(['province_id', 'is_active']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('localities');
+        Schema::dropIfExists('provinces');
+    }
+};
