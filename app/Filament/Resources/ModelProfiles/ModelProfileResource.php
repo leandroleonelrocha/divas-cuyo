@@ -21,6 +21,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
@@ -64,159 +66,137 @@ class ModelProfileResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema
-            ->columns(2)
             ->components([
-                TextEntry::make('name')
-                    ->label('Nombre público'),
-                TextEntry::make('user.email')
-                    ->label('Email'),
-                TextEntry::make('whatsapp')
-                    ->label('WhatsApp'),
-                TextEntry::make('location')
-                    ->label('Ubicación'),
-                TextEntry::make('created_at')
-                    ->label('Fecha de registro')
-                    ->dateTime('d/m/Y H:i'),
-                TextEntry::make('user.email_verified_at')
-                    ->label('Email verificado')
-                    ->state(fn (ModelProfile $record): string => $record->user->email_verified_at ? 'Verificado' : 'No verificado')
-                    ->badge()
-                    ->color(fn (ModelProfile $record): string => $record->user->email_verified_at ? 'success' : 'warning'),
-                TextEntry::make('review_status')
-                    ->label('Estado de revisión')
-                    ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'approved' => 'Aprobado',
-                        'rejected' => 'Rechazado',
-                        default => 'Pendiente',
-                    })
-                    ->color(fn (string $state): string => match ($state) {
-                        'approved' => 'success',
-                        'rejected' => 'danger',
-                        default => 'warning',
-                    }),
-                TextEntry::make('is_published')
-                    ->label('Publicación')
-                    ->badge()
-                    ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
-                    ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
-                Section::make('Verificación de identidad')
-                    ->schema([
-                        TextEntry::make('identity_status')
-                            ->label('Estado de identidad')
-                            ->badge()
-                            ->formatStateUsing(fn (string $state): string => static::identityStatusLabel($state))
-                            ->color(fn (string $state): string => static::identityStatusColor($state)),
-                        TextEntry::make('identity_rejection_reason')
-                            ->label('Motivo de rechazo de identidad')
-                            ->placeholder('Sin motivo'),
-                        ...static::identityDocumentEntries(),
-                    ])
-                    ->columnSpanFull(),
-                TextEntry::make('reviewed_at')
-                    ->label('Revisado el')
-                    ->dateTime('d/m/Y H:i')
-                    ->placeholder('Pendiente de revisión'),
-                TextEntry::make('reviewer.email')
-                    ->label('Revisado por')
-                    ->placeholder('Sin revisor'),
-                Section::make('Datos privados administrativos')
-                    ->schema([
-                        TextEntry::make('privateDetails.real_first_name')
-                            ->label('Nombre real')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('privateDetails.real_last_name')
-                            ->label('Apellido real')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('privateDetails.birth_date')
-                            ->label('Fecha de nacimiento')
-                            ->date('d/m/Y')
-                            ->placeholder('No cargada'),
-                        TextEntry::make('privateDetailsAge')
-                            ->label('Edad real')
-                            ->state(fn (ModelProfile $record): string => $record->privateDetails
-                                ? (string) $record->privateDetails->realAge().' años'
-                                : 'No calculada'),
-                        TextEntry::make('privateDetails.private_phone')
-                            ->label('Teléfono privado')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('privateDetails.real_height_cm')
-                            ->label('Altura real')
-                            ->suffix(' cm')
-                            ->placeholder('No cargada'),
-                        TextEntry::make('privateDetails.real_weight_kg')
-                            ->label('Peso real')
-                            ->suffix(' kg')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('privateDetails.real_measurements')
-                            ->label('Medidas reales')
-                            ->placeholder('No cargadas'),
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Información pública')
-                    ->schema([
-                        TextEntry::make('stage_name')
-                            ->label('Nombre artístico')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('nationality')
-                            ->label('Nacionalidad/origen')
-                            ->placeholder('No cargada'),
-                        TextEntry::make('availability_status')
-                            ->label('Disponibilidad')
-                            ->badge()
-                            ->formatStateUsing(fn (string $state): string => $state === 'unavailable' ? 'No disponible' : 'Disponible')
-                            ->color(fn (string $state): string => $state === 'unavailable' ? 'warning' : 'success'),
-                        TextEntry::make('province.name')
-                            ->label('Provincia')
-                            ->placeholder('No seleccionada'),
-                        TextEntry::make('locality.name')
-                            ->label('Localidad')
-                            ->placeholder('No seleccionada'),
-                        TextEntry::make('approximate_location_text')
-                            ->label('Zona aproximada')
-                            ->placeholder('No cargada'),
-                        TextEntry::make('height_cm')
-                            ->label('Altura pública')
-                            ->suffix(' cm')
-                            ->placeholder('No cargada'),
-                        TextEntry::make('weight_kg')
-                            ->label('Peso público')
-                            ->suffix(' kg')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('measurements')
-                            ->label('Medidas públicas')
-                            ->placeholder('No cargadas'),
-                        TextEntry::make('eye_color')
-                            ->label('Color de ojos')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('hair_color')
-                            ->label('Color de cabello')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('skin_color')
-                            ->label('Color de piel')
-                            ->placeholder('No cargado'),
-                        TextEntry::make('body_type')
-                            ->label('Tipo de cuerpo')
-                            ->placeholder('No cargado'),
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Tipo y servicios')
-                    ->schema([
-                        TextEntry::make('publicationType.name')
-                            ->label('Tipo de publicación')
-                            ->placeholder('No definido'),
-                        TextEntry::make('services_summary')
-                            ->label('Servicios seleccionados')
-                            ->state(fn (ModelProfile $record): string => $record->services->pluck('name')->join(', ') ?: 'Ninguno'),
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Biografía pública')
-                    ->schema([
-                        TextEntry::make('currentBio.content')
-                            ->label('Biografía pública actual')
-                            ->placeholder('No hay biografía aprobada'),
-                    ])
-                    ->columnSpanFull(),
+                Tabs::make('Información del perfil')
+                    ->vertical()
+                    ->persistTabInQueryString('perfil-tab')
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('Resumen')
+                            ->icon(Heroicon::OutlinedUserCircle)
+                            ->schema([
+                                Section::make('Datos de la cuenta')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextEntry::make('name')->label('Nombre público'),
+                                        TextEntry::make('user.email')->label('Email'),
+                                        TextEntry::make('whatsapp')->label('WhatsApp'),
+                                        TextEntry::make('location')->label('Ubicación'),
+                                        TextEntry::make('created_at')->label('Fecha de registro')->dateTime('d/m/Y H:i'),
+                                        TextEntry::make('user.email_verified_at')
+                                            ->label('Email verificado')
+                                            ->state(fn (ModelProfile $record): string => $record->user->email_verified_at ? 'Verificado' : 'No verificado')
+                                            ->badge()
+                                            ->color(fn (ModelProfile $record): string => $record->user->email_verified_at ? 'success' : 'warning'),
+                                    ]),
+                                Section::make('Estado del perfil')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextEntry::make('review_status')
+                                            ->label('Estado de revisión')
+                                            ->badge()
+                                            ->formatStateUsing(fn (string $state): string => match ($state) {
+                                                'approved' => 'Aprobado',
+                                                'rejected' => 'Rechazado',
+                                                default => 'Pendiente',
+                                            })
+                                            ->color(fn (string $state): string => match ($state) {
+                                                'approved' => 'success',
+                                                'rejected' => 'danger',
+                                                default => 'warning',
+                                            }),
+                                        TextEntry::make('is_published')
+                                            ->label('Publicación')
+                                            ->badge()
+                                            ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
+                                            ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
+                                        TextEntry::make('reviewed_at')->label('Revisado el')->dateTime('d/m/Y H:i')->placeholder('Pendiente de revisión'),
+                                        TextEntry::make('reviewer.email')->label('Revisado por')->placeholder('Sin revisor'),
+                                    ]),
+                            ]),
+                        Tab::make('Identidad')
+                            ->icon(Heroicon::OutlinedIdentification)
+                            ->schema([
+                                Section::make('Verificación de identidad')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextEntry::make('identity_status')
+                                            ->label('Estado de identidad')
+                                            ->badge()
+                                            ->formatStateUsing(fn (string $state): string => static::identityStatusLabel($state))
+                                            ->color(fn (string $state): string => static::identityStatusColor($state)),
+                                        TextEntry::make('identity_rejection_reason')
+                                            ->label('Motivo de rechazo de identidad')
+                                            ->placeholder('Sin motivo'),
+                                        ...static::identityDocumentEntries(),
+                                    ]),
+                            ]),
+                        Tab::make('Datos privados')
+                            ->icon(Heroicon::OutlinedLockClosed)
+                            ->schema([
+                                Section::make('Datos privados administrativos')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextEntry::make('privateDetails.real_first_name')->label('Nombre real')->placeholder('No cargado'),
+                                        TextEntry::make('privateDetails.real_last_name')->label('Apellido real')->placeholder('No cargado'),
+                                        TextEntry::make('privateDetails.birth_date')->label('Fecha de nacimiento')->date('d/m/Y')->placeholder('No cargada'),
+                                        TextEntry::make('privateDetailsAge')
+                                            ->label('Edad real')
+                                            ->state(fn (ModelProfile $record): string => $record->privateDetails ? (string) $record->privateDetails->realAge().' años' : 'No calculada'),
+                                        TextEntry::make('privateDetails.private_phone')->label('Teléfono privado')->placeholder('No cargado'),
+                                        TextEntry::make('privateDetails.real_height_cm')->label('Altura real')->suffix(' cm')->placeholder('No cargada'),
+                                        TextEntry::make('privateDetails.real_weight_kg')->label('Peso real')->suffix(' kg')->placeholder('No cargado'),
+                                        TextEntry::make('privateDetails.real_measurements')->label('Medidas reales')->placeholder('No cargadas'),
+                                    ]),
+                            ]),
+                        Tab::make('Información pública')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
+                            ->schema([
+                                Section::make('Datos visibles en la publicación')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextEntry::make('stage_name')->label('Nombre artístico')->placeholder('No cargado'),
+                                        TextEntry::make('nationality')->label('Nacionalidad/origen')->placeholder('No cargada'),
+                                        TextEntry::make('availability_status')
+                                            ->label('Disponibilidad')
+                                            ->badge()
+                                            ->formatStateUsing(fn (string $state): string => $state === 'unavailable' ? 'No disponible' : 'Disponible')
+                                            ->color(fn (string $state): string => $state === 'unavailable' ? 'warning' : 'success'),
+                                        TextEntry::make('province.name')->label('Provincia')->placeholder('No seleccionada'),
+                                        TextEntry::make('locality.name')->label('Localidad')->placeholder('No seleccionada'),
+                                        TextEntry::make('approximate_location_text')->label('Zona aproximada')->placeholder('No cargada'),
+                                        TextEntry::make('height_cm')->label('Altura pública')->suffix(' cm')->placeholder('No cargada'),
+                                        TextEntry::make('weight_kg')->label('Peso público')->suffix(' kg')->placeholder('No cargado'),
+                                        TextEntry::make('measurements')->label('Medidas públicas')->placeholder('No cargadas'),
+                                        TextEntry::make('eye_color')->label('Color de ojos')->placeholder('No cargado'),
+                                        TextEntry::make('hair_color')->label('Color de cabello')->placeholder('No cargado'),
+                                        TextEntry::make('skin_color')->label('Color de piel')->placeholder('No cargado'),
+                                        TextEntry::make('body_type')->label('Tipo de cuerpo')->placeholder('No cargado'),
+                                    ]),
+                            ]),
+                        Tab::make('Publicación')
+                            ->icon(Heroicon::OutlinedCog)
+                            ->schema([
+                                Section::make('Tipo y servicios')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextEntry::make('publicationType.name')->label('Tipo de publicación')->placeholder('No definido'),
+                                        TextEntry::make('services_summary')
+                                            ->label('Servicios seleccionados')
+                                            ->state(fn (ModelProfile $record): string => $record->services->pluck('name')->join(', ') ?: 'Ninguno'),
+                                    ]),
+                            ]),
+                        Tab::make('Biografía')
+                            ->icon(Heroicon::OutlinedDocumentText)
+                            ->schema([
+                                Section::make('Biografía pública')
+                                    ->schema([
+                                        TextEntry::make('currentBio.content')
+                                            ->label('Biografía pública actual')
+                                            ->placeholder('No hay biografía aprobada'),
+                                    ]),
+                            ]),
+                    ]),
             ]);
     }
 

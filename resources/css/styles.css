@@ -141,16 +141,28 @@ body {
 .profile-feedback-error { color: #991b1b; background: var(--color-red-soft); border-color: rgba(215, 25, 32, .25); }
 .profile-feedback ul { margin: 8px 0 0 18px; padding: 0; }
 .profile-form { display: grid; gap: 20px; }
-.profile-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 22px; }
-.profile-fields label { display: grid; gap: 7px; color: var(--color-ink); font-size: 13px; font-weight: 700; }
-.profile-fields input { width: 100%; min-height: 44px; padding: 10px 12px; color: var(--color-ink); background: var(--color-white); border: 1px solid var(--color-border); border-radius: 8px; font: inherit; font-weight: 400; }
-.profile-fields input:focus { outline: 3px solid rgba(240, 74, 80, .2); border-color: var(--color-focus); }
+.profile-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 22px; }
+.profile-fields label { display: grid; gap: 8px; color: var(--color-ink); font-size: 13px; font-weight: 700; }
+.profile-fields label:not(.profile-checkbox) { align-content: start; }
+.profile-fields input:not([type="checkbox"]),
 .profile-fields select,
-.profile-fields textarea { width: 100%; min-height: 44px; padding: 10px 12px; color: var(--color-ink); background: var(--color-white); border: 1px solid var(--color-border); border-radius: 8px; font: inherit; font-weight: 400; }
+.profile-fields textarea { width: 100%; min-height: 48px; padding: 11px 14px; color: var(--color-ink); background: var(--color-white); border: 1px solid var(--color-border); border-radius: 10px; box-shadow: 0 2px 5px rgba(31, 31, 36, .03); font: inherit; font-weight: 400; transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.profile-fields input:not([type="checkbox"]):hover,
+.profile-fields select:hover,
+.profile-fields textarea:hover { border-color: #b9bec7; }
+.profile-fields input:not([type="checkbox"]):focus,
 .profile-fields select:focus,
-.profile-fields textarea:focus { outline: 3px solid rgba(240, 74, 80, .2); border-color: var(--color-focus); }
-.profile-checkbox { display: flex !important; align-items: center; grid-template-columns: auto 1fr; gap: 9px !important; min-height: 44px; }
-.profile-checkbox input { width: 18px; min-height: 18px; accent-color: var(--color-red); }
+.profile-fields textarea:focus { outline: 0; border-color: var(--color-focus); box-shadow: 0 0 0 4px rgba(240, 74, 80, .14), 0 3px 8px rgba(31, 31, 36, .05); }
+.profile-fields input:not([type="checkbox"]):user-invalid,
+.profile-fields select:user-invalid,
+.profile-fields textarea:user-invalid { border-color: #dc2626; }
+.profile-fields input::placeholder,
+.profile-fields textarea::placeholder { color: var(--color-light); }
+.profile-fields select { appearance: none; padding-right: 42px; background-image: linear-gradient(45deg, transparent 50%, var(--color-muted) 50%), linear-gradient(135deg, var(--color-muted) 50%, transparent 50%); background-position: calc(100% - 18px) 21px, calc(100% - 13px) 21px; background-repeat: no-repeat; background-size: 5px 5px, 5px 5px; cursor: pointer; }
+.profile-fields textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
+.profile-checkbox { display: flex !important; align-items: center; gap: 10px !important; min-height: 48px; padding: 10px 12px; color: var(--color-muted) !important; background: var(--color-sand); border: 1px solid transparent; border-radius: 10px; cursor: pointer; }
+.profile-checkbox:hover { border-color: var(--color-border); color: var(--color-ink) !important; }
+.profile-checkbox input[type="checkbox"] { flex: 0 0 auto; width: 18px; height: 18px; margin: 0; accent-color: var(--color-red); cursor: pointer; }
 .profile-service-group { min-width: 0; margin: 0; padding: 14px; border: 1px solid var(--color-border); border-radius: 10px; }
 .profile-service-group legend { padding: 0 6px; color: var(--color-ink); font-weight: 700; }
 .profile-bio-preview { min-width: 0; padding: 14px; background: var(--color-sand); border-radius: 10px; overflow-wrap: anywhere; }
