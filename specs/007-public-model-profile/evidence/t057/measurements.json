@@ -1,0 +1,4120 @@
+{
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/154.0.8037.59",
+    "revision": "@b5a24985a2f5ed35909845221b7203c5d8995c8f",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "jsVersion": "15.4.80.11"
+  },
+  "cases": [
+    {
+      "variant": "completa",
+      "width": 360,
+      "measured": {
+        "width": 360,
+        "scrollWidth": 360,
+        "height": 3745,
+        "title": "Mía · Revisión visual | Divas Cuyo",
+        "headings": [
+          "Mía · Revisión visual",
+          "Fotografías",
+          "Ubicación",
+          "Características",
+          "Modalidad",
+          "Servicios",
+          "Sobre mí"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "lazy"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Mía · Revisión visual",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "32px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "Disponible",
+            "color": "rgb(22, 101, 52)",
+            "background": "rgb(220, 252, 231)",
+            "ratio": 6.49,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Ubicación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Mendoza · Ciudad de Mendoza · Zona centro",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Características",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Edad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "27 años",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Altura",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "1,68 m",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Peso",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "58 kg",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Medidas",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "90–64–92",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Ojos",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Marrones",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Cabello",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Castaño",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Piel",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Trigueña",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Tipo de cuerpo",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Atlética",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Nacionalidad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Argentina",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "H2",
+            "text": "Modalidad",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Encuentros",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Servicios",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios virtuales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Charla y compañía\n                                                                        ",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Charla y compañía",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "LI",
+            "text": "Videollamadas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios presenciales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Encuentros y salidas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Encuentros y salidas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "H2",
+            "text": "Sobre mí",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Me gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bioText": "Me gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil sintético para revisar la lectura de la biografía, sus párrafos y el diseño en diferentes pantallas.",
+        "bodyText": "Modelo verificada por Divas Cuyo\nMía · Revisión visual\n\nDisponible\n\nFotografías\nUbicación\n\nMendoza · Ciudad de Mendoza · Zona centro\n\nCaracterísticas\nEdad\n27 años\nAltura\n1,68 m\nPeso\n58 kg\nMedidas\n90–64–92\nOjos\nMarrones\nCabello\nCastaño\nPiel\nTrigueña\nTipo de cuerpo\nAtlética\nNacionalidad\nArgentina\nModalidad\n\nEncuentros\n\nServicios\nServicios virtuales\nCharla y compañía\nVideollamadas\nServicios presenciales\nEncuentros y salidas\nSobre mí\n\nMe gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil sintético para revisar la lectura de la biografía, sus párrafos y el diseño en diferentes pantallas."
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 16,
+            "y": 18,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                Mía · Revisión visual\n            \n      ",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 18,
+            "width": 328,
+            "height": 3575.953125
+          },
+          "scrollY": 95
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-completa",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/73d5ad0d-83cf-45d7-96fe-da0ea242a77d",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/5b80552a-e013-4175-8857-1522fd43d715",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/aef30eb0-12b1-40de-933d-f3d5abc4b725",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/9800ba2f-f0e3-44bd-8d12-6ac8b3af941c",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/ed8e1a45-bdf2-4692-9649-488975e52af1",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/favicon.ico",
+          "status": 404,
+          "type": "Other"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Mía · Revisión visual"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "heading",
+          "name": "Ubicación"
+        },
+        {
+          "role": "heading",
+          "name": "Características"
+        },
+        {
+          "role": "heading",
+          "name": "Modalidad"
+        },
+        {
+          "role": "heading",
+          "name": "Servicios"
+        },
+        {
+          "role": "heading",
+          "name": "Sobre mí"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        }
+      ]
+    },
+    {
+      "variant": "completa",
+      "width": 768,
+      "measured": {
+        "width": 768,
+        "scrollWidth": 768,
+        "height": 1848,
+        "title": "Mía · Revisión visual | Divas Cuyo",
+        "headings": [
+          "Mía · Revisión visual",
+          "Fotografías",
+          "Ubicación",
+          "Características",
+          "Modalidad",
+          "Servicios",
+          "Sobre mí"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 310,
+            "height": 413,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "lazy"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Mía · Revisión visual",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "40px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "Disponible",
+            "color": "rgb(22, 101, 52)",
+            "background": "rgb(220, 252, 231)",
+            "ratio": 6.49,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Ubicación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Mendoza · Ciudad de Mendoza · Zona centro",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Características",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Edad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "27 años",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Altura",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "1,68 m",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Peso",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "58 kg",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Medidas",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "90–64–92",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Ojos",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Marrones",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Cabello",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Castaño",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Piel",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Trigueña",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Tipo de cuerpo",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Atlética",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Nacionalidad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Argentina",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "H2",
+            "text": "Modalidad",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Encuentros",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Servicios",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios virtuales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Charla y compañía\n                                                                        ",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Charla y compañía",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "LI",
+            "text": "Videollamadas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios presenciales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Encuentros y salidas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Encuentros y salidas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "H2",
+            "text": "Sobre mí",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Me gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bioText": "Me gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil sintético para revisar la lectura de la biografía, sus párrafos y el diseño en diferentes pantallas.",
+        "bodyText": "Modelo verificada por Divas Cuyo\nMía · Revisión visual\n\nDisponible\n\nFotografías\nUbicación\n\nMendoza · Ciudad de Mendoza · Zona centro\n\nCaracterísticas\nEdad\n27 años\nAltura\n1,68 m\nPeso\n58 kg\nMedidas\n90–64–92\nOjos\nMarrones\nCabello\nCastaño\nPiel\nTrigueña\nTipo de cuerpo\nAtlética\nNacionalidad\nArgentina\nModalidad\n\nEncuentros\n\nServicios\nServicios virtuales\nCharla y compañía\nVideollamadas\nServicios presenciales\nEncuentros y salidas\nSobre mí\n\nMe gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil sintético para revisar la lectura de la biografía, sus párrafos y el diseño en diferentes pantallas."
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 20,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                Mía · Revisión visual\n            \n      ",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 9,
+            "width": 736,
+            "height": 1685.59375
+          },
+          "scrollY": 97
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-completa",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/73d5ad0d-83cf-45d7-96fe-da0ea242a77d",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/5b80552a-e013-4175-8857-1522fd43d715",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/aef30eb0-12b1-40de-933d-f3d5abc4b725",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/9800ba2f-f0e3-44bd-8d12-6ac8b3af941c",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/ed8e1a45-bdf2-4692-9649-488975e52af1",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Mía · Revisión visual"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "heading",
+          "name": "Ubicación"
+        },
+        {
+          "role": "heading",
+          "name": "Características"
+        },
+        {
+          "role": "heading",
+          "name": "Modalidad"
+        },
+        {
+          "role": "heading",
+          "name": "Servicios"
+        },
+        {
+          "role": "heading",
+          "name": "Sobre mí"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        }
+      ]
+    },
+    {
+      "variant": "completa",
+      "width": 1440,
+      "measured": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "height": 1745,
+        "title": "Mía · Revisión visual | Divas Cuyo",
+        "headings": [
+          "Mía · Revisión visual",
+          "Fotografías",
+          "Ubicación",
+          "Características",
+          "Modalidad",
+          "Servicios",
+          "Sobre mí"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 409,
+            "height": 545,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "lazy"
+          },
+          {
+            "alt": "Foto de Mía · Revisión visual",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "lazy"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Mía · Revisión visual",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "40px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "Disponible",
+            "color": "rgb(22, 101, 52)",
+            "background": "rgb(220, 252, 231)",
+            "ratio": 6.49,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Ubicación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Mendoza · Ciudad de Mendoza · Zona centro",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Características",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Edad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "27 años",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Altura",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "1,68 m",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Peso",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "58 kg",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Medidas",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "90–64–92",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Ojos",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Marrones",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Cabello",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Castaño",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Piel",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Trigueña",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Tipo de cuerpo",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Atlética",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Nacionalidad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Argentina",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "H2",
+            "text": "Modalidad",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Encuentros",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Servicios",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios virtuales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Charla y compañía\n                                                                        ",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Charla y compañía",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "LI",
+            "text": "Videollamadas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios presenciales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Encuentros y salidas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Encuentros y salidas",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "H2",
+            "text": "Sobre mí",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Me gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bioText": "Me gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil sintético para revisar la lectura de la biografía, sus párrafos y el diseño en diferentes pantallas.",
+        "bodyText": "Modelo verificada por Divas Cuyo\nMía · Revisión visual\n\nDisponible\n\nFotografías\nUbicación\n\nMendoza · Ciudad de Mendoza · Zona centro\n\nCaracterísticas\nEdad\n27 años\nAltura\n1,68 m\nPeso\n58 kg\nMedidas\n90–64–92\nOjos\nMarrones\nCabello\nCastaño\nPiel\nTrigueña\nTipo de cuerpo\nAtlética\nNacionalidad\nArgentina\nModalidad\n\nEncuentros\n\nServicios\nServicios virtuales\nCharla y compañía\nVideollamadas\nServicios presenciales\nEncuentros y salidas\nSobre mí\n\nMe gusta conversar, disfrutar de la música y compartir buenos momentos.\n\nEste es un perfil sintético para revisar la lectura de la biografía, sus párrafos y el diseño en diferentes pantallas."
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 134,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                Mía · Revisión visual\n            \n      ",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 130,
+            "y": 5,
+            "width": 1180,
+            "height": 1583.21875
+          },
+          "scrollY": 101
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-completa",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/73d5ad0d-83cf-45d7-96fe-da0ea242a77d",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/5b80552a-e013-4175-8857-1522fd43d715",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/aef30eb0-12b1-40de-933d-f3d5abc4b725",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/9800ba2f-f0e3-44bd-8d12-6ac8b3af941c",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/ed8e1a45-bdf2-4692-9649-488975e52af1",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Mía · Revisión visual"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "heading",
+          "name": "Ubicación"
+        },
+        {
+          "role": "heading",
+          "name": "Características"
+        },
+        {
+          "role": "heading",
+          "name": "Modalidad"
+        },
+        {
+          "role": "heading",
+          "name": "Servicios"
+        },
+        {
+          "role": "heading",
+          "name": "Sobre mí"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Mía · Revisión visual"
+        }
+      ]
+    },
+    {
+      "variant": "minimo",
+      "width": 360,
+      "measured": {
+        "width": 360,
+        "scrollWidth": 360,
+        "height": 1044,
+        "title": "Sol | Divas Cuyo",
+        "headings": [
+          "Sol",
+          "Fotografías"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de Sol",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Sol",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "eager"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Sol",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "32px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "No disponible",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bodyText": "Modelo verificada por Divas Cuyo\nSol\n\nNo disponible\n\nFotografías"
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 16,
+            "y": 18,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                Sol\n            \n            No disponibl",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 11,
+            "width": 328,
+            "height": 875.359375
+          },
+          "scrollY": 102
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-minimo",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/934962d7-7c30-43ec-8043-ea6a322814da",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Sol"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Sol"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Sol"
+        }
+      ]
+    },
+    {
+      "variant": "minimo",
+      "width": 768,
+      "measured": {
+        "width": 768,
+        "scrollWidth": 768,
+        "height": 900,
+        "title": "Sol | Divas Cuyo",
+        "headings": [
+          "Sol",
+          "Fotografías"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de Sol",
+            "loaded": true,
+            "width": 310,
+            "height": 413,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Sol",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "eager"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Sol",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "40px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "No disponible",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bodyText": "Modelo verificada por Divas Cuyo\nSol\n\nNo disponible\n\nFotografías"
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 20,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                Sol\n            \n            No disponibl",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 106,
+            "width": 736,
+            "height": 738.40625
+          },
+          "scrollY": 0
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-minimo",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/934962d7-7c30-43ec-8043-ea6a322814da",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Sol"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Sol"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Sol"
+        }
+      ]
+    },
+    {
+      "variant": "minimo",
+      "width": 1440,
+      "measured": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "height": 900,
+        "title": "Sol | Divas Cuyo",
+        "headings": [
+          "Sol",
+          "Fotografías"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de Sol",
+            "loaded": true,
+            "width": 409,
+            "height": 545,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de Sol",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "eager"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Sol",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "40px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "No disponible",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bodyText": "Modelo verificada por Divas Cuyo\nSol\n\nNo disponible\n\nFotografías"
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 134,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                Sol\n            \n            No disponibl",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 130,
+            "y": 106,
+            "width": 1180,
+            "height": 675.25
+          },
+          "scrollY": 0
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-minimo",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/934962d7-7c30-43ec-8043-ea6a322814da",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Sol"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Sol"
+        },
+        {
+          "role": "image",
+          "name": "Foto de Sol"
+        }
+      ]
+    },
+    {
+      "variant": "textos-largos",
+      "width": 360,
+      "measured": {
+        "width": 360,
+        "scrollWidth": 360,
+        "height": 3401,
+        "title": "María del Sol María del Sol María del Sol María del Sol María del Sol | Divas Cuyo",
+        "headings": [
+          "María del Sol María del Sol María del Sol María del Sol María del Sol ",
+          "Fotografías",
+          "Ubicación",
+          "Características",
+          "Modalidad",
+          "Servicios",
+          "Sobre mí"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 284,
+            "height": 379,
+            "loading": "lazy"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "María del Sol María del Sol María del Sol María del Sol María del Sol",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "32px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "No disponible",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Ubicación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Mendoza · Ciudad de Mendoza · Zona céntrica, cerca de espacios culturales y lugares de enc",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Características",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Medidas",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "90–64–92",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Cabello",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Castaño oscuro con reflejos",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Nacionalidad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Argentina",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "H2",
+            "text": "Modalidad",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Encuentros",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Servicios",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios virtuales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Conversación Conversación Conversación Conversación Conversación Conversación Conversación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Conversación Conversación Conversación Conversación Conversación Conversación Conversación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "H2",
+            "text": "Sobre mí",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Lectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de ",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bioText": "Lectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. \n\nTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspacios",
+        "bodyText": "Modelo verificada por Divas Cuyo\nMaría del Sol María del Sol María del Sol María del Sol María del Sol\n\nNo disponible\n\nFotografías\nUbicación\n\nMendoza · Ciudad de Mendoza · Zona céntrica, cerca de espacios culturales y lugares de encuentro\n\nCaracterísticas\nMedidas\n90–64–92\nCabello\nCastaño oscuro con reflejos\nNacionalidad\nArgentina\nModalidad\n\nEncuentros\n\nServicios\nServicios virtuales\nConversación Conversación Conversación Conversación Conversación Conversación Conversación\nSobre mí\n\nLectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña.\n\nTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspacios"
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 16,
+            "y": 18,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                María del Sol María del Sol María del Sol",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 11,
+            "width": 328,
+            "height": 3232.359375
+          },
+          "scrollY": 102
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-textos-largos",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/25783303-0fc5-4c1a-9ce0-8bcfd394a354",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/36a65ad3-240e-470b-b362-4ab491e745f5",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "María del Sol María del Sol María del Sol María del Sol María del Sol"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "heading",
+          "name": "Ubicación"
+        },
+        {
+          "role": "heading",
+          "name": "Características"
+        },
+        {
+          "role": "heading",
+          "name": "Modalidad"
+        },
+        {
+          "role": "heading",
+          "name": "Servicios"
+        },
+        {
+          "role": "heading",
+          "name": "Sobre mí"
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        }
+      ]
+    },
+    {
+      "variant": "textos-largos",
+      "width": 768,
+      "measured": {
+        "width": 768,
+        "scrollWidth": 768,
+        "height": 2416,
+        "title": "María del Sol María del Sol María del Sol María del Sol María del Sol | Divas Cuyo",
+        "headings": [
+          "María del Sol María del Sol María del Sol María del Sol María del Sol ",
+          "Fotografías",
+          "Ubicación",
+          "Características",
+          "Modalidad",
+          "Servicios",
+          "Sobre mí"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 310,
+            "height": 413,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 148,
+            "height": 197,
+            "loading": "lazy"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "María del Sol María del Sol María del Sol María del Sol María del Sol",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "40px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "No disponible",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Ubicación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Mendoza · Ciudad de Mendoza · Zona céntrica, cerca de espacios culturales y lugares de enc",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Características",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Medidas",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "90–64–92",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Cabello",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Castaño oscuro con reflejos",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Nacionalidad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Argentina",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "H2",
+            "text": "Modalidad",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Encuentros",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Servicios",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios virtuales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Conversación Conversación Conversación Conversación Conversación Conversación Conversación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Conversación Conversación Conversación Conversación Conversación Conversación Conversación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "H2",
+            "text": "Sobre mí",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Lectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de ",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bioText": "Lectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. \n\nTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspacios",
+        "bodyText": "Modelo verificada por Divas Cuyo\nMaría del Sol María del Sol María del Sol María del Sol María del Sol\n\nNo disponible\n\nFotografías\nUbicación\n\nMendoza · Ciudad de Mendoza · Zona céntrica, cerca de espacios culturales y lugares de encuentro\n\nCaracterísticas\nMedidas\n90–64–92\nCabello\nCastaño oscuro con reflejos\nNacionalidad\nArgentina\nModalidad\n\nEncuentros\n\nServicios\nServicios virtuales\nConversación Conversación Conversación Conversación Conversación Conversación Conversación\nSobre mí\n\nLectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña.\n\nTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspacios"
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 20,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                María del Sol María del Sol María del Sol",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 9,
+            "width": 736,
+            "height": 2253.625
+          },
+          "scrollY": 97
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-textos-largos",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/25783303-0fc5-4c1a-9ce0-8bcfd394a354",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/36a65ad3-240e-470b-b362-4ab491e745f5",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "María del Sol María del Sol María del Sol María del Sol María del Sol"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "heading",
+          "name": "Ubicación"
+        },
+        {
+          "role": "heading",
+          "name": "Características"
+        },
+        {
+          "role": "heading",
+          "name": "Modalidad"
+        },
+        {
+          "role": "heading",
+          "name": "Servicios"
+        },
+        {
+          "role": "heading",
+          "name": "Sobre mí"
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        }
+      ]
+    },
+    {
+      "variant": "textos-largos",
+      "width": 1440,
+      "measured": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "height": 1911,
+        "title": "María del Sol María del Sol María del Sol María del Sol María del Sol | Divas Cuyo",
+        "headings": [
+          "María del Sol María del Sol María del Sol María del Sol María del Sol ",
+          "Fotografías",
+          "Ubicación",
+          "Características",
+          "Modalidad",
+          "Servicios",
+          "Sobre mí"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 409,
+            "height": 545,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "eager"
+          },
+          {
+            "alt": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol ",
+            "loaded": true,
+            "width": 80,
+            "height": 107,
+            "loading": "lazy"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "SPAN",
+            "text": "Modelo verificada por Divas Cuyo",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(253, 235, 236)",
+            "ratio": 4.51,
+            "font": "13px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "María del Sol María del Sol María del Sol María del Sol María del Sol",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "40px",
+            "weight": "800"
+          },
+          {
+            "tag": "P",
+            "text": "No disponible",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "14px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Fotografías",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "22px",
+            "weight": "700"
+          },
+          {
+            "tag": "H2",
+            "text": "Ubicación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Mendoza · Ciudad de Mendoza · Zona céntrica, cerca de espacios culturales y lugares de enc",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Características",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Medidas",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "90–64–92",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Cabello",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Castaño oscuro con reflejos",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "DT",
+            "text": "Nacionalidad",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Argentina",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "H2",
+            "text": "Modalidad",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Encuentros",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "400"
+          },
+          {
+            "tag": "H2",
+            "text": "Servicios",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "DT",
+            "text": "Servicios virtuales",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "13px",
+            "weight": "400"
+          },
+          {
+            "tag": "DD",
+            "text": "Conversación Conversación Conversación Conversación Conversación Conversación Conversación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "16px",
+            "weight": "600"
+          },
+          {
+            "tag": "LI",
+            "text": "Conversación Conversación Conversación Conversación Conversación Conversación Conversación",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "15px",
+            "weight": "500"
+          },
+          {
+            "tag": "H2",
+            "text": "Sobre mí",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "20px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "Lectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de ",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(241, 242, 244)",
+            "ratio": 14.65,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bioText": "Lectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. \n\nTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspacios",
+        "bodyText": "Modelo verificada por Divas Cuyo\nMaría del Sol María del Sol María del Sol María del Sol María del Sol\n\nNo disponible\n\nFotografías\nUbicación\n\nMendoza · Ciudad de Mendoza · Zona céntrica, cerca de espacios culturales y lugares de encuentro\n\nCaracterísticas\nMedidas\n90–64–92\nCabello\nCastaño oscuro con reflejos\nNacionalidad\nArgentina\nModalidad\n\nEncuentros\n\nServicios\nServicios virtuales\nConversación Conversación Conversación Conversación Conversación Conversación Conversación\nSobre mí\n\nLectura extensa: música, conversación y paseos.\n\nEste párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña. Este párrafo permite revisar el ritmo de lectura, los saltos de línea y la continuidad de la biografía en una pantalla pequeña.\n\nTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspaciosTextoSinEspacios"
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 134,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Modelo verificada por Divas Cuyo\n                María del Sol María del Sol María del Sol",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 130,
+            "y": 5,
+            "width": 1180,
+            "height": 1749.125
+          },
+          "scrollY": 101
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-textos-largos",
+          "status": 200,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/25783303-0fc5-4c1a-9ce0-8bcfd394a354",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        },
+        {
+          "url": "http://127.0.0.1:8077/modelos/fotos/36a65ad3-240e-470b-b362-4ab491e745f5",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "María del Sol María del Sol María del Sol María del Sol María del Sol"
+        },
+        {
+          "role": "heading",
+          "name": "Fotografías"
+        },
+        {
+          "role": "list",
+          "name": "Galería de fotografías"
+        },
+        {
+          "role": "heading",
+          "name": "Ubicación"
+        },
+        {
+          "role": "heading",
+          "name": "Características"
+        },
+        {
+          "role": "heading",
+          "name": "Modalidad"
+        },
+        {
+          "role": "heading",
+          "name": "Servicios"
+        },
+        {
+          "role": "heading",
+          "name": "Sobre mí"
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        },
+        {
+          "role": "list",
+          "name": ""
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        },
+        {
+          "role": "image",
+          "name": "Foto de María del Sol María del Sol María del Sol María del Sol María del Sol "
+        }
+      ]
+    },
+    {
+      "variant": "inexistente",
+      "width": 360,
+      "measured": {
+        "width": 360,
+        "scrollWidth": 360,
+        "height": 900,
+        "title": "Página no encontrada · Divas Cuyo",
+        "headings": [
+          "Página no encontrada"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Página no encontrada",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "30px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "No encontramos la página que buscás.",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bodyText": "Página no encontrada\n\nNo encontramos la página que buscás."
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 16,
+            "y": 18,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Página no encontrada\n            No encontramos la página que buscás.",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 113,
+            "width": 328,
+            "height": 450
+          },
+          "scrollY": 0
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-inexistente",
+          "status": 404,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Página no encontrada"
+        }
+      ]
+    },
+    {
+      "variant": "inexistente",
+      "width": 768,
+      "measured": {
+        "width": 768,
+        "scrollWidth": 768,
+        "height": 900,
+        "title": "Página no encontrada · Divas Cuyo",
+        "headings": [
+          "Página no encontrada"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Página no encontrada",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "36px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "No encontramos la página que buscás.",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bodyText": "Página no encontrada\n\nNo encontramos la página que buscás."
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 20,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Página no encontrada\n            No encontramos la página que buscás.",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 16,
+            "y": 106,
+            "width": 736,
+            "height": 450
+          },
+          "scrollY": 0
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-inexistente",
+          "status": 404,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Página no encontrada"
+        }
+      ]
+    },
+    {
+      "variant": "inexistente",
+      "width": 1440,
+      "measured": {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "height": 900,
+        "title": "Página no encontrada · Divas Cuyo",
+        "headings": [
+          "Página no encontrada"
+        ],
+        "images": [
+          {
+            "alt": "",
+            "loaded": true,
+            "width": 48,
+            "height": 48,
+            "loading": "auto"
+          }
+        ],
+        "overflow": [],
+        "textContrast": [
+          {
+            "tag": "SPAN",
+            "text": "DIVAS CUYO",
+            "color": "rgb(215, 25, 32)",
+            "background": "rgb(247, 247, 248)",
+            "ratio": 4.84,
+            "font": "18px",
+            "weight": "800"
+          },
+          {
+            "tag": "H1",
+            "text": "Página no encontrada",
+            "color": "rgb(31, 31, 36)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 16.41,
+            "font": "36px",
+            "weight": "700"
+          },
+          {
+            "tag": "P",
+            "text": "No encontramos la página que buscás.",
+            "color": "rgb(107, 114, 128)",
+            "background": "rgb(255, 255, 255)",
+            "ratio": 4.83,
+            "font": "16px",
+            "weight": "400"
+          }
+        ],
+        "focusContrastOnPaper": 3.38,
+        "focusContrastOnWhite": 3.62,
+        "bodyText": "Página no encontrada\n\nNo encontramos la página que buscás."
+      },
+      "keyboard": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "second": {
+          "tag": "A",
+          "id": "",
+          "label": "DIVAS CUYO",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 134,
+            "y": 14.5,
+            "width": 181.671875,
+            "height": 48
+          },
+          "scrollY": 0
+        },
+        "backwards": {
+          "tag": "A",
+          "id": "",
+          "label": "Saltar al contenido principal",
+          "visible": true,
+          "outline": "rgb(240, 74, 80) solid 3px",
+          "offset": "4px",
+          "rect": {
+            "x": 12,
+            "y": 12,
+            "width": 227.4375,
+            "height": 42.390625
+          },
+          "scrollY": 0
+        },
+        "skipTarget": {
+          "tag": "MAIN",
+          "id": "contenido-principal",
+          "label": "Página no encontrada\n            No encontramos la página que buscás.",
+          "visible": true,
+          "outline": "rgb(0, 95, 204) auto 1px",
+          "offset": "0px",
+          "rect": {
+            "x": 130,
+            "y": 106,
+            "width": 1180,
+            "height": 450
+          },
+          "scrollY": 0
+        }
+      },
+      "requests": [
+        {
+          "url": "http://127.0.0.1:8077/modelos/revision-inexistente",
+          "status": 404,
+          "type": "Document"
+        },
+        {
+          "url": "http://127.0.0.1:8077/build/assets/styles-TZYj2j1_.css",
+          "status": 200,
+          "type": "Stylesheet"
+        },
+        {
+          "url": "http://127.0.0.1:8077/images/logo-divas-cuyo.webp",
+          "status": 200,
+          "type": "Image"
+        }
+      ],
+      "errors": [],
+      "accessibility": [
+        {
+          "role": "link",
+          "name": "Saltar al contenido principal"
+        },
+        {
+          "role": "main",
+          "name": ""
+        },
+        {
+          "role": "link",
+          "name": "Ir al inicio de Divas Cuyo"
+        },
+        {
+          "role": "heading",
+          "name": "Página no encontrada"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-01",
+  "matchesT057": {
+    "resources/css/styles.css": true,
+    "public/build/assets/styles-TZYj2j1_.css": true,
+    "resources/views/public/models/show.blade.php": true,
+    "resources/views/errors/404.blade.php": true,
+    "resources/views/components/public-model/gallery.blade.php": true
+  },
+  "newVisualSession": false
+}

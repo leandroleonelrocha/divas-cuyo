@@ -64,6 +64,11 @@ class ModelProfile extends Model
         ];
     }
 
+    public function slugs(): HasMany
+    {
+        return $this->hasMany(ModelProfileSlug::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

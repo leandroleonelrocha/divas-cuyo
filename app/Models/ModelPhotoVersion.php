@@ -6,9 +6,17 @@ use App\Enums\ModelPhotoVersionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class ModelPhotoVersion extends Model
 {
+    protected static function booted(): void
+    {
+        static::creating(function (self $version): void {
+            $version->public_token ??= (string) Str::uuid();
+        });
+    }
+
     protected $fillable = [
         'model_photo_id',
         'version',
@@ -48,6 +56,7 @@ class ModelPhotoVersion extends Model
             'processed_width' => 'integer',
             'processed_height' => 'integer',
             'reviewed_at' => 'datetime',
+            'public_watermarked_at' => 'datetime',
         ];
     }
 

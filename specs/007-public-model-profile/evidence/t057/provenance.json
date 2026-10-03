@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-01",
+  "origin": "http://127.0.0.1:8077",
+  "database": "divas_cuyo_test",
+  "viewportHeights": 900,
+  "deviceScaleFactor": 1,
+  "sourceSha256": {
+    "resources/css/styles.css": "2272dada9c69c559c957b534c1b5259acf38abd9f2f173a5fbc307ea6eb98531",
+    "public/build/assets/styles-TZYj2j1_.css": "1a1681543823da0ca5c59612c262155263fa0309964fb4b2d202374f71ef48eb",
+    "resources/views/public/models/show.blade.php": "b683299d83ec8e719eca5afa003a3b0f9034c4c0de40d6f3b3f66185ebcae21c",
+    "resources/views/errors/404.blade.php": "114ce3490be7a22fe4fa80284ff76ba4a8b29d501098ee820d8d6d9cabc96198",
+    "resources/views/components/public-model/gallery.blade.php": "21a96578f2046b5d3243c6786f5d23dae80179f716f82c2ae326b375e4d175ec"
+  }
+}

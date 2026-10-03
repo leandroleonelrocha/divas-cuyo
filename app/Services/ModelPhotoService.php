@@ -48,7 +48,7 @@ class ModelPhotoService
                     'position' => ((int) ModelPhoto::query()->where('model_profile_id', $lockedProfile->getKey())->max('position')) + 1,
                     'is_primary' => false,
                 ]);
-                $photo->versions()->create([
+                $version = $photo->versions()->create([
                     ...$paths,
                     'version' => 1,
                     'original_name' => mb_substr($processed['original_name'], 0, 255),
@@ -60,6 +60,8 @@ class ModelPhotoService
                     'processed_height' => $processed['processed_height'],
                     'status' => 'pending',
                 ]);
+
+                $version->forceFill(['public_watermarked_at' => $processed['public_watermarked'] ? now() : null])->save();
 
                 return $photo->load('latestVersion');
             });
@@ -161,7 +163,7 @@ class ModelPhotoService
                 $nextVersion = ((int) $lockedPhoto->versions()->max('version')) + 1;
                 $currentVersion = $lockedPhoto->currentVersion()->first();
 
-                $lockedPhoto->versions()->create([
+                $version = $lockedPhoto->versions()->create([
                     ...$paths,
                     'version' => $nextVersion,
                     'supersedes_version_id' => $currentVersion?->getKey(),
@@ -177,6 +179,8 @@ class ModelPhotoService
                     'reviewed_at' => null,
                     'reviewed_by' => null,
                 ]);
+
+                $version->forceFill(['public_watermarked_at' => $processed['public_watermarked'] ? now() : null])->save();
 
                 return $lockedPhoto->load(['currentVersion', 'latestVersion']);
             });

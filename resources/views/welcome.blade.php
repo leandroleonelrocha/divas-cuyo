@@ -12,27 +12,12 @@
     a { color:inherit; text-decoration:none; }
     a:hover { color:var(--red-dark); }
     .topbar { height:7px; background:var(--header); }
-    .shell, .header-inner { width:min(1320px, calc(100% - 64px)); margin:auto; }
-    header { position:relative; z-index:20; width:100%; height:108px; background:var(--header); }
-    .header-inner { position:relative; z-index:21; display:flex; align-items:center; height:100%; }
-    .site-logo { display:flex; flex:0 0 auto; align-items:center; gap:10px; max-width:40%; height:56px; margin-right:auto; overflow:hidden; line-height:1; }
-    .site-logo img { display:block; width:76px; height:56px; object-fit:contain; }
-    .site-logo span { color:#fff; font-size:20px; font-weight:800; letter-spacing:.04em; white-space:nowrap; }
-    .main-nav { display:flex; align-items:center; gap:42px; color:#fff; font-size:17px; font-weight:600; }
-    .nav-item { display:flex; align-items:center; gap:11px; }
-    .nav-icon { color:var(--red); font-size:25px; }
-    .create { padding:13px 22px; color:#fff; background:var(--red); border-radius:13px; }
-    .create:hover { color:#fff; background:var(--red-dark); }
-    .user-menu { position:relative; }
-    .user-menu summary { display:flex; align-items:center; gap:9px; color:#fff; cursor:pointer; list-style:none; }
-    .user-menu summary::-webkit-details-marker { display:none; }
-    .user-avatar { display:grid; place-items:center; width:38px; height:38px; overflow:hidden; color:#fff; background:var(--red); border:2px solid rgba(255,255,255,.75); border-radius:50%; font-size:14px; font-weight:800; }
-    .user-avatar img { width:100%; height:100%; object-fit:cover; }
-    .user-menu-panel { position:absolute; top:calc(100% + 12px); right:0; z-index:10; display:grid; min-width:180px; gap:4px; padding:8px; color:var(--text); background:var(--panel); border:1px solid var(--line); border-radius:10px; box-shadow:0 12px 28px rgba(17,24,39,.18); }
-    .user-menu-panel a, .user-menu-panel button { width:100%; padding:10px 12px; color:var(--text); background:transparent; border:0; border-radius:7px; cursor:pointer; font-size:14px; text-align:left; }
-    .user-menu-panel a:hover, .user-menu-panel button:hover { color:var(--red-dark); background:var(--red-soft); }
-    .star { font-size:26px; }
-    .hamburger { font-size:27px; }
+    .shell { width:min(1320px, calc(100% - 64px)); margin:auto; }
+    .fuego-banner { position:relative; height:220px; overflow:hidden; background:#160b07; }
+    #fuego { display:block; width:100%; height:100%; }
+    .fuego-title { position:absolute; inset:0; display:grid; place-items:center; margin:0; padding:16px; color:#fff; font-size:clamp(24px, 4vw, 48px); font-weight:800; text-align:center; text-shadow:0 2px 16px #000, 0 0 28px rgba(255,92,0,.8); animation:fuego-title-enter 2s cubic-bezier(.2,.75,.25,1) both; }
+    @keyframes fuego-title-enter { from { opacity:0; transform:scale(.9); } to { opacity:1; transform:scale(1.05); } }
+    @media (prefers-reduced-motion:reduce) { .fuego-title { animation:none; } }
     .intro { display:flex; align-items:end; justify-content:space-between; padding:22px 0 16px; }
     h1 { margin:0; font-size:28px; letter-spacing:-.5px; }
     .live { padding:10px 18px; color:var(--red); border:1px solid var(--line); border-radius:12px; font-weight:700; }
@@ -64,14 +49,8 @@
     .profile-card strong { position:absolute; right:13px; bottom:12px; left:13px; color:#fff; font-size:18px; text-shadow:0 1px 4px #000; }
     footer { padding:25px 0; border-top:1px solid var(--line); color:var(--muted); background:var(--panel-2); text-align:center; font-size:13px; }
     @media (max-width:900px) {
-      .shell, .header-inner { width:min(100% - 28px, 620px); }
-      header { height:82px; }
-      .site-logo { max-width:45%; height:44px; }
-      .site-logo img { width:58px; height:44px; }
-      .site-logo span { font-size:14px; }
-      .main-nav { gap:14px; font-size:0; }
-      .nav-item .nav-icon, .star, .hamburger { font-size:23px; }
-      .create { padding:10px 13px; font-size:13px; }
+      .shell { width:min(100% - 28px, 620px); }
+      .fuego-banner { height:160px; }
       .intro { align-items:start; flex-direction:column; gap:16px; }
       .seo-links { padding-left:0; }
       .card-grid { grid-template-columns:repeat(2, 1fr); }
@@ -89,49 +68,13 @@
   </style>
 </head>
 <body>
-  <div class="topbar"></div>
-  <header>
-    <div class="header-inner">
-      <a href="{{ url('/') }}" class="site-logo" aria-label="Divas Cuyo">
-          <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="Divas Cuyo">
-          <span>DIVAS CUYO</span>
-      </a>
-      <nav class="main-nav" aria-label="Navegación principal">
-        <a class="nav-item" href="#novedades"><span class="nav-icon">ϟ</span><span>Novedades</span></a>
-        <a class="nav-item" href="#videos"><span class="nav-icon">▶</span><span>Videos</span></a>
-        <a class="nav-item" href="#llamadas"><span class="nav-icon">▣</span><span>VideoLlamadas</span></a>
-        @guest
-          <a class="create" href="{{ route('register.show') }}">Crear perfil</a>
-        @else
-          @php
-            $frontUser = auth()->user();
-            $frontProfile = $frontUser->modelProfile;
-            $frontAvatar = $frontProfile?->currentApprovedPhotos()->first();
-          @endphp
-          <details class="user-menu">
-            <summary aria-label="Abrir menú de usuario">
-              <span class="user-avatar">
-                @if ($frontAvatar)
-                  <img src="{{ route('account.photos.file', [$frontAvatar, 'thumbnail']) }}" alt="">
-                @else
-                  {{ strtoupper(substr($frontUser->name, 0, 1)) }}
-                @endif
-              </span>
-              <span>{{ $frontUser->name }}</span>
-            </summary>
-            <div class="user-menu-panel">
-              <a href="{{ route('account.dashboard') }}">Mi cuenta</a>
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit">Cerrar sesión</button>
-              </form>
-            </div>
-          </details>
-        @endguest
-        <a class="star" href="#favoritos" aria-label="Favoritos">★</a><a class="hamburger" href="#menu" aria-label="Menú">☰</a>
-      </nav>
-    </div>
-  </header>
+  @include('components.front-header-styles')
+  <x-front-header :on-home="true" />
+
+  <div class="fuego-banner">
+    <canvas id="fuego"></canvas>
+    <h2 class="fuego-title">LAS MÁS CALIENTES DE LA REGIÓN</h2>
+  </div>
 
   <div class="shell">
     <main id="inicio">
@@ -151,16 +94,146 @@
         <a class="avatar-card" href="#lorraine"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=300&q=80" alt="Lorraine"><span>Lorraine</span></a>
       </div>
 
-      <section id="videos"><h2 class="section-title">ESCORTS ARGENTINA <em>🌹</em> BLACK ROSE</h2><div class="card-grid">
-        <a class="profile-card" href="#perfil-1"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80" alt="Perfil destacado"><span class="virtual">VIRTUAL</span><strong>Perfil destacado</strong></a>
-        <a class="profile-card" href="#perfil-2"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=700&q=80" alt="Perfil destacado"><span class="virtual">VIRTUAL</span><strong>Novedad</strong></a>
-        <a class="profile-card" href="#perfil-3"><img src="https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?auto=format&fit=crop&w=700&q=80" alt="Perfil destacado"><span class="virtual">VIRTUAL</span><strong>Conocé el perfil</strong></a>
-        <a class="profile-card" href="#perfil-4"><img src="https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=700&q=80" alt="Perfil destacado"><span class="virtual">VIRTUAL</span><strong>Disponible online</strong></a>
-        <a class="profile-card" href="#perfil-5"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=700&q=80" alt="Perfil destacado"><span class="virtual">VIRTUAL</span><strong>Perfil destacado</strong></a>
-        <a class="profile-card" href="#perfil-6"><img src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=crop&w=700&q=80" alt="Perfil destacado"><span class="virtual">VIRTUAL</span><strong>Ver perfil</strong></a>
-      </div></section>
+      <section id="videos">
+        <h2 class="section-title">ESCORTS ARGENTINA <em>🌹</em> BLACK ROSE</h2>
+        <div class="card-grid">
+          @forelse ($publicProfiles as $profile)
+            <a class="profile-card" href="{{ $profile['url'] }}">
+              <img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy">
+              <strong>{{ $profile['name'] }}</strong>
+            </a>
+          @empty
+            <p class="profiles-empty">No hay perfiles publicados.</p>
+          @endforelse
+        </div>
+      </section>
     </main>
   </div>
   <footer>© 2026 Divas Cuyo · Comunidad online de la región</footer>
+  <script>
+    function initFuego(canvas, opts) {
+      opts = Object.assign({ height: 1, speed: 1, sparks: 0.6 }, opts || {});
+      var gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+      if (!gl) return null;
+
+      var vs = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+      var fs = [
+        'precision highp float;',
+        'uniform vec2 R;uniform float T,H,S;',
+        'float h1(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+        'vec2 h2(vec2 p){float n=h1(p);return vec2(n,h1(p+vec2(n)));}',
+        'float ns(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+        ' return mix(mix(h1(i),h1(i+vec2(1,0)),f.x),mix(h1(i+vec2(0,1)),h1(i+vec2(1.)),f.x),f.y);}',
+        'float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);',
+        ' for(int i=0;i<5;i++){v+=a*ns(p);p=m*p;a*=.5;}return v;}',
+        'vec3 ramp(float h){vec3 c=vec3(0.);',
+        ' c=mix(c,vec3(.45,.03,.0),smoothstep(.02,.3,h));',
+        ' c=mix(c,vec3(1.,.32,.02),smoothstep(.25,.55,h));',
+        ' c=mix(c,vec3(1.,.72,.22),smoothstep(.5,.8,h));',
+        ' c=mix(c,vec3(1.,.95,.8),smoothstep(.82,1.,h));return c;}',
+        'void main(){',
+        ' vec2 uv=gl_FragCoord.xy/R;float ar=R.x/R.y;',
+        ' vec2 p=vec2(uv.x*ar,uv.y);float t=T;',
+        ' vec2 q=vec2(p.x*2.2,p.y*1.6-t*1.1);',
+        ' float d=fbm(q+vec2(0.,-t*.4));',
+        ' float w=fbm(q*1.8+vec2(d*1.8,d*1.2)-vec2(0.,t*1.6));',
+        ' float y=uv.y/H;',
+        ' float heat=w*1.4-y*1.15+.02;',
+        ' heat+=.1*(1.-smoothstep(0.,.2,y));',
+        ' heat=clamp(heat,0.,1.);heat=pow(heat,1.6);',
+        ' vec3 col=ramp(heat);',
+        ' col+=vec3(.35,.06,0.)*(1.-smoothstep(0.,.55,y))*.35;',
+        ' vec3 sp=vec3(0.);',
+        ' for(int i=0;i<3;i++){float fi=float(i);',
+        '  float sc=14.+fi*9.;vec2 g=p*sc;',
+        '  g.y-=t*(1.6+fi*.7)*.09;',
+        '  g.x+=sin(g.y*.35+fi*2.1+t*.8)*.9;',
+        '  vec2 id=floor(g),f=fract(g)-.5;',
+        '  float r=h1(id+vec2(fi*17.));',
+        '  if(r<S){vec2 o=(h2(id+vec2(fi*3.1))-.5)*.7;',
+        '   float dd=length(f-o);',
+        '   float sz=.035+.05*h1(id+vec2(9.));',
+        '   float fl=.6+.4*sin(t*(8.+r*20.)+r*60.);',
+        '   float fade=1.-smoothstep(.15,1.,uv.y+.25*h1(id+vec2(2.)));',
+        '   sp+=vec3(1.,.55,.18)*(1.-smoothstep(0.,sz,dd))*fl*fade*(1.4-fi*.3);}}',
+        ' col+=sp;',
+        ' gl_FragColor=vec4(col,1.);}'
+      ].join('\n');
+
+      function sh(type, source) {
+        var shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error(gl.getShaderInfoLog(shader));
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      }
+
+      var vertexShader = sh(gl.VERTEX_SHADER, vs);
+      var fragmentShader = sh(gl.FRAGMENT_SHADER, fs);
+      if (!vertexShader || !fragmentShader) return null;
+      var pr = gl.createProgram();
+      gl.attachShader(pr, vertexShader);
+      gl.attachShader(pr, fragmentShader);
+      gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+        console.error(gl.getProgramInfoLog(pr));
+        return null;
+      }
+      gl.useProgram(pr);
+
+      var b = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, b);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      var la = gl.getAttribLocation(pr, 'a');
+      gl.enableVertexAttribArray(la);
+      gl.vertexAttribPointer(la, 2, gl.FLOAT, false, 0, 0);
+      var uR = gl.getUniformLocation(pr, 'R');
+      var uT = gl.getUniformLocation(pr, 'T');
+      var uH = gl.getUniformLocation(pr, 'H');
+      var uS = gl.getUniformLocation(pr, 'S');
+      var t = 0;
+      var last = performance.now();
+      var running = true;
+
+      function size() {
+        var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        var w = Math.round(canvas.clientWidth * dpr);
+        var h = Math.round(canvas.clientHeight * dpr);
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+          gl.viewport(0, 0, w, h);
+        }
+      }
+
+      function frame(now) {
+        var dt = Math.min((now - last) / 1000, 0.1);
+        last = now;
+        if (running) t += dt * opts.speed;
+        size();
+        gl.uniform2f(uR, canvas.width, canvas.height);
+        gl.uniform1f(uT, t);
+        gl.uniform1f(uH, opts.height);
+        gl.uniform1f(uS, opts.sparks * 0.35);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        requestAnimationFrame(frame);
+      }
+
+      requestAnimationFrame(frame);
+      document.addEventListener('visibilitychange', function () { last = performance.now(); });
+      return {
+        opts: opts,
+        pause: function () { running = false; },
+        play: function () { running = true; },
+        get running() { return running; }
+      };
+    }
+
+    initFuego(document.getElementById('fuego'), { height: 1.55, speed: 0.2, sparks: 1 });
+  </script>
 </body>
 </html>

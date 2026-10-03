@@ -1,0 +1,320 @@
+[
+  {
+    "variant": "completa",
+    "width": 360,
+    "end": {
+      "scrollY": 2845,
+      "atBottom": true
+    },
+    "reverse": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 16,
+        "y": 18,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    },
+    "outside": {
+      "tag": "A",
+      "id": "",
+      "label": "Saltar al contenido principal",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 227.4375,
+        "height": 42.390625
+      },
+      "scrollY": 0
+    },
+    "reentry": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 16,
+        "y": 18,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    }
+  },
+  {
+    "variant": "completa",
+    "width": 768,
+    "end": {
+      "scrollY": 948,
+      "atBottom": true
+    },
+    "reverse": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 20,
+        "y": 14.5,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    },
+    "outside": {
+      "tag": "BODY",
+      "id": "",
+      "label": "Saltar al contenido principal\n\n    \n        \n            \n            DIVAS CUYO\n        \n",
+      "visible": false,
+      "outline": "rgb(31, 31, 36) none 3px",
+      "offset": "0px",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 1847.59375
+      },
+      "scrollY": 0
+    },
+    "reentry": {
+      "tag": "A",
+      "id": "",
+      "label": "Saltar al contenido principal",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 227.4375,
+        "height": 42.390625
+      },
+      "scrollY": 0
+    }
+  },
+  {
+    "variant": "completa",
+    "width": 1440,
+    "end": {
+      "scrollY": 845,
+      "atBottom": true
+    },
+    "reverse": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 134,
+        "y": 14.5,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    },
+    "outside": {
+      "tag": "A",
+      "id": "",
+      "label": "Saltar al contenido principal",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 227.4375,
+        "height": 42.390625
+      },
+      "scrollY": 0
+    },
+    "reentry": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 134,
+        "y": 14.5,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    }
+  },
+  {
+    "variant": "textos-largos",
+    "width": 360,
+    "end": {
+      "scrollY": 2501,
+      "atBottom": true
+    },
+    "reverse": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 16,
+        "y": 18,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    },
+    "outside": {
+      "tag": "BODY",
+      "id": "",
+      "label": "Saltar al contenido principal\n\n    \n        \n            \n            DIVAS CUYO\n        \n",
+      "visible": false,
+      "outline": "rgb(31, 31, 36) none 3px",
+      "offset": "0px",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 360,
+        "height": 3401.359375
+      },
+      "scrollY": 0
+    },
+    "reentry": {
+      "tag": "A",
+      "id": "",
+      "label": "Saltar al contenido principal",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 227.4375,
+        "height": 42.390625
+      },
+      "scrollY": 0
+    }
+  },
+  {
+    "variant": "textos-largos",
+    "width": 768,
+    "end": {
+      "scrollY": 1516,
+      "atBottom": true
+    },
+    "reverse": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 20,
+        "y": 14.5,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    },
+    "outside": {
+      "tag": "A",
+      "id": "",
+      "label": "Saltar al contenido principal",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 227.4375,
+        "height": 42.390625
+      },
+      "scrollY": 0
+    },
+    "reentry": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 20,
+        "y": 14.5,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    }
+  },
+  {
+    "variant": "textos-largos",
+    "width": 1440,
+    "end": {
+      "scrollY": 1011,
+      "atBottom": true
+    },
+    "reverse": {
+      "tag": "A",
+      "id": "",
+      "label": "DIVAS CUYO",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 134,
+        "y": 14.5,
+        "width": 181.671875,
+        "height": 48
+      },
+      "scrollY": 0
+    },
+    "outside": {
+      "tag": "BODY",
+      "id": "",
+      "label": "Saltar al contenido principal\n\n    \n        \n            \n            DIVAS CUYO\n        \n",
+      "visible": false,
+      "outline": "rgb(31, 31, 36) none 3px",
+      "offset": "0px",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1911.125
+      },
+      "scrollY": 0
+    },
+    "reentry": {
+      "tag": "A",
+      "id": "",
+      "label": "Saltar al contenido principal",
+      "visible": true,
+      "outline": "rgb(240, 74, 80) solid 3px",
+      "offset": "4px",
+      "rect": {
+        "x": 12,
+        "y": 12,
+        "width": 227.4375,
+        "height": 42.390625
+      },
+      "scrollY": 0
+    }
+  }
+]

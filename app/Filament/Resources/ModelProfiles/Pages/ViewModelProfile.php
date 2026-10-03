@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Tabs;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ViewModelProfile extends ViewRecord
 {
@@ -24,7 +25,7 @@ class ViewModelProfile extends ViewRecord
         return 'Perfil';
     }
 
-    public function getContentTabIcon(): string|\BackedEnum|\Illuminate\Contracts\Support\Htmlable|null
+    public function getContentTabIcon(): string|\BackedEnum|Htmlable|null
     {
         return Heroicon::OutlinedUserCircle;
     }

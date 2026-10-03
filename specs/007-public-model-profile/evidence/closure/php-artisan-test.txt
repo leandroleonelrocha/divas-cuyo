@@ -1,0 +1,449 @@
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true
+
+   PASS  Tests\Unit\Policies\UserPolicyTest
+  ✓ model can view its own account                                       0.15s  
+  ✓ model cannot view another models account                             0.01s  
+
+   PASS  Tests\Unit\Services\ModelPhotoImageProcessorTest
+  ✓ processor generates normalized thumbnail and watermarked variants    0.25s  
+  ✓ disabled watermark does not accredit public image or change private… 0.12s  
+  ✓ processor rejects a file with false mime or invalid content          0.01s  
+  ✓ invisible watermark is not accredited                                0.07s  
+  ✓ upload only persists watermark evidence after generation and storag… 0.18s  
+
+   PASS  Tests\Unit\Services\ModelProfileSlugServiceTest
+  ✓ normalizes only public name with data set #0
+  ✓ normalizes only public name with data set #1
+  ✓ normalizes only public name with data set #2
+  ✓ normalizes only public name with data set #3
+  ✓ normalizes only public name with data set #4
+  ✓ normalizes only public name with data set #5
+
+   PASS  Tests\Feature\Account\AccountAccessTest
+  ✓ model can view only its own private account                          0.03s  
+  ✓ guest cannot view private account                                    0.01s  
+  ✓ accounts are not published by registration state                     0.01s  
+
+   PASS  Tests\Feature\Account\ModelAccountPanelTest
+  ✓ verified model can view its dashboard                                0.01s  
+  ✓ guest is redirected to login                                         0.01s  
+  ✓ unverified user cannot view dashboard                                0.01s  
+  ✓ account does not accept external ids or cross account access         0.01s  
+  ✓ verified user without profile sees controlled screen                 0.01s  
+  ✓ dashboard shows independent profile states and identity link         0.01s  
+
+   PASS  Tests\Feature\Account\ModelPhotoDeletionTest
+  ✓ deleting a photo removes database variants and compacts positions    0.20s  
+  ✓ deleting the only pending photo leaves the profile without a primar… 0.10s  
+  ✓ deletion protects ownership and path traversal                       0.10s  
+
+   PASS  Tests\Feature\Account\ModelPhotoPrimaryTest
+  ✓ only an approved photo can become primary and changing it unsets th… 0.01s  
+  ✓ pending and rejected photos cannot become primary                    0.01s  
+  ✓ model cannot mark another models photo as primary                    0.01s  
+
+   PASS  Tests\Feature\Account\ModelPhotoReorderTest
+  ✓ model can reorder its own photos with dense positions                0.01s  
+  ✓ reorder rejects foreign duplicate and incomplete photo sets          0.01s  
+
+   PASS  Tests\Feature\Account\ModelPhotoReplacementTest
+  ✓ pending and rejected photos receive a new pending version            0.37s  
+  ✓ approved replacement keeps the previous current version until promo… 0.21s  
+  ✓ rejected new version does not break the previous approved version    0.19s  
+  ✓ failed replacement keeps the previous version and does not create a… 0.10s  
+
+   PASS  Tests\Feature\Account\ModelPhotoUploadTest
+  ✓ verified model can upload jpeg png and webp as pending               0.30s  
+  ✓ invalid mime and unsupported files are rejected                      0.01s  
+  ✓ size and dimension limits are rejected                               0.20s  
+  ✓ maximum of five photos is enforced                                   0.32s  
+  ✓ upload resolves ownership from authenticated user                    0.10s  
+  ✓ variants are private and original is never served                    0.11s  
+  ✓ owner can see gallery and pending thumbnail only through authorized… 0.10s  
+
+   PASS  Tests\Feature\Account\ModelProfileAccountPanelTest
+  ✓ model profile panel renders sections empty states and responsive co… 0.01s  
+  ✓ profile panel reports success and validation errors                  0.01s  
+  ✓ profile panel always resolves the authenticated owner                0.01s  
+  ✓ rejected bio can be corrected through the contract route without cr… 0.01s  
+
+   PASS  Tests\Feature\Admin\AdminPanelAccessTest
+  ✓ verified admin can access the admin panel                            0.10s  
+  ✓ guest is redirected to the panel login                               0.01s  
+  ✓ unverified admin cannot access the admin panel                       0.01s  
+  ✓ regular user cannot access the admin panel                           0.01s  
+
+   PASS  Tests\Feature\Admin\IdentityDocumentReviewTest
+  ✓ verified admin can see and download private documents from the prof… 0.04s  
+  ✓ unverified admin and regular user cannot access identity review      0.01s  
+  ✓ admin can approve pending identity and audit is recorded without ch… 0.04s  
+  ✓ admin must provide a reason to reject and rejection is audited       0.07s  
+  ✓ missing documents and non pending states block identity resolution   0.01s  
+  ✓ approved and rejected identities do not show review actions          0.03s  
+
+   PASS  Tests\Feature\Admin\ModelPhotoModerationTest
+  ✓ only a verified admin can open private photo variants                0.11s  
+  ✓ admin can approve pending photo and audit the version                0.10s  
+  ✓ reject requires reason and records audit                             0.10s  
+  ✓ rejection records reason without changing profile states             0.10s  
+  ✓ approved replacement shows both versions and promotes only after ap… 0.19s  
+  ✓ rejecting approved replacement keeps the current version             0.19s  
+  ✓ moderation action is not available for a stale non pending photo     0.10s  
+  ✓ model profile detail registers the photo relation manager            0.01s  
+
+   PASS  Tests\Feature\Admin\ModelProfileBioModerationTest
+  ✓ admin approves pending bio and promotes it as current                0.01s  
+  ✓ rejection requires reason and preserves previous current bio         0.01s  
+  ✓ model cannot approve or reject its own bio                           0.01s  
+  ✓ admin view keeps reviewer and rejection data available only to admi… 0.01s  
+
+   PASS  Tests\Feature\Admin\ModelProfileMigrationTest
+  ✓ user has one model profile with the expected data                    0.01s  
+  ✓ registration creates a profile without changing public fields        0.06s  
+
+   PASS  Tests\Feature\Admin\ModelProfileModerationTest
+  ✓ pending profile can be approved and records reviewer                 0.01s  
+  ✓ pending profile can be rejected and cannot remain published          0.01s  
+  ✓ approved profile can be published and then unpublished               0.01s  
+  ✓ invalid publication transitions are rejected                         0.01s  
+  ✓ moderation actions are visible only for valid transitions            0.02s  
+  ✓ admin can execute a confirmed approval action from the list          0.04s  
+  ✓ detail exposes state actions to an authorized admin                  0.02s  
+  ✓ non admin cannot invoke moderation actions                           0.01s  
+  ✓ profile approval requires validated identity and preserves profile…  0.01s  
+  ✓ profile publication requires approved identity and profile           0.01s  
+  ✓ profile moderation keeps identity independent                        0.01s  
+
+   PASS  Tests\Feature\Admin\ModelProfileResourceTest
+  ✓ resource separates profile sections and registers all administrativ… 0.03s  
+  ✓ admin can see the model profiles list and use its columns            0.02s  
+  ✓ admin root redirects to the model profiles list                      0.01s  
+  ✓ admin can open a model profile detail                                0.03s  
+  ✓ detail distinguishes verification review and publication states      0.03s  
+  ✓ regular user cannot open a model profile detail                      0.01s  
+  ✓ admin can search by profile and account fields                       0.08s  
+  ✓ admin can filter by verification review and publication              0.08s  
+  ✓ regular users cannot access the model profiles list                  0.01s  
+  ✓ admin can edit the allowed profile fields                            0.03s  
+  ✓ invalid edit keeps previous values and preserves states              0.03s  
+  ✓ edit form cannot change account or moderation fields                 0.03s  
+  ✓ regular user cannot access model profile edit                        0.01s  
+
+   PASS  Tests\Feature\Admin\PublicationTypeHistoryTest
+  ✓ verified admin can view history but model cannot                     0.02s  
+
+   PASS  Tests\Feature\Auth\EmailVerificationTest
+  ✓ valid latest token verifies email                                    0.01s  
+  ✓ resending verification invalidates previous token                    0.01s  
+  ✓ expired verification token is rejected                               0.01s  
+
+   PASS  Tests\Feature\Auth\LoginTest
+  ✓ verified model can log in                                            0.01s  
+  ✓ verified admin is sent to filament                                   0.01s  
+  ✓ admin with model profile prioritizes filament                        0.01s  
+  ✓ verified model ignores admin intended destination                    0.01s  
+  ✓ verified model ignores other internal intended destination           0.01s  
+  ✓ verified user without profile is sent to incomplete profile          0.01s  
+  ✓ unverified model cannot log in                                       0.01s  
+  ✓ invalid credentials do not reveal account details                    0.01s  
+  ✓ login validates required fields                                      0.01s  
+
+   PASS  Tests\Feature\Auth\LogoutTest
+  ✓ authenticated model can log out                                      0.01s  
+  ✓ guest cannot log out as an authenticated user                        0.01s  
+
+   PASS  Tests\Feature\Auth\PasswordResetTest
+  ✓ password reset request has generic response for existing and unknow… 0.42s  
+  ✓ password can be reset once with a valid token                        0.23s  
+  ✓ expired password reset token is rejected                             0.44s  
+  ✓ password reset requires valid input                                  0.02s  
+
+   PASS  Tests\Feature\Auth\RegistrationTest
+  ✓ model can register with both policy acceptances                      0.02s  
+  ✓ registration requires both policy acceptances                        0.01s  
+  ✓ registration rejects duplicate email                                 0.01s  
+  ✓ registration requires eight character password                       0.01s  
+  ✓ registration requires all model fields                               0.01s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                        0.02s  
+
+   PASS  Tests\Feature\Identity\IdentityAuthorizationTest
+  ✓ guest cannot view submit upload or download identity documents       0.01s  
+  ✓ model cannot access another models documents or change the target p… 0.01s  
+  ✓ admin must be verified to review or download private documents       0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityDocumentMigrationTest
+  ✓ identity schema has expected columns and constraints                 0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityDocumentReplacementTest
+  ✓ model can replace a document in incomplete and only the new file re… 0.01s  
+  ✓ model can replace a document after rejection                         0.01s  
+  ✓ replacement is blocked in pending and approved                       0.01s  
+  ✓ failed replacement keeps the previous file and record                0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityDocumentResubmissionTest
+  ✓ rejected model sees reason and can resubmit a complete set           0.02s  
+  ✓ rejected model cannot resubmit without all required documents        0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityDocumentSubmissionTest
+  ✓ missing documents block submission and keep incomplete               0.01s  
+  ✓ submission preserves email review and publication states             0.01s  
+  ✓ identity screen is private and does not expose public file urls      0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityDocumentUploadTest
+  ✓ verified model can upload all required documents and submit          0.02s  
+  ✓ upload rejects invalid mime and files over five megabytes            0.01s  
+  ✓ upload accepts configured jpeg png webp and pdf formats              0.01s  
+  ✓ guest and another model cannot upload for the profile                0.01s  
+  ✓ pending identity blocks new uploads                                  0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityPrivacyTest
+  ✓ private document is not available from public storage and path trav… 0.01s  
+  ✓ identity page and download response do not expose physical paths     0.01s  
+  ✓ model document serialization hides storage path                      0.01s  
+
+   PASS  Tests\Feature\Identity\IdentityStateTransitionTest
+  ✓ only the documented identity transitions are allowed                 0.02s  
+  ✓ invalid identity transitions are rejected server side                0.01s  
+  ✓ resolution rechecks a stale profile state inside the transaction     0.01s  
+
+   PASS  Tests\Feature\Identity\PrivateDocumentAccessTest
+  ✓ private document cannot be read from public storage url              0.01s  
+  ✓ another model cannot download a private document                     0.01s  
+
+   PASS  Tests\Feature\Identity\PrivateDocumentStorageTest
+  ✓ uploaded document uses a random private path                         0.01s  
+
+   PASS  Tests\Feature\ModelPhotos\ModelPhotoSchemaTest
+  ✓ model photo schema and relations are available                       0.01s  
+
+   PASS  Tests\Feature\Profile\AvailabilityStatusTest
+  ✓ model can save available status                                      0.01s  
+  ✓ model can change availability without changing publication or revie… 0.01s  
+  ✓ invalid availability status is rejected                              0.01s  
+
+   PASS  Tests\Feature\Profile\IdentityRevalidationTest
+  ✓ real identity change resets resolution and preserves documents       0.01s  
+  ✓ birth date change also requires a new identity submission            0.01s  
+
+   PASS  Tests\Feature\Profile\ModelProfileBioTest
+  ✓ initial submission is pending and not public                         0.01s  
+  ✓ new version does not replace current approved bio                    0.01s  
+  ✓ rejected bio can be resent without overwriting history               0.01s  
+  ✓ model cannot submit for another profile and bio does not change pro… 0.01s  
+  ✓ invalid bio length is rejected                                       0.01s  
+
+   PASS  Tests\Feature\Profile\ModelProfileDetailsTest
+  ✓ model can update its private and public profile details              0.01s  
+  ✓ profile update ignores manipulated ownership fields                  0.01s  
+  ✓ invalid profile details are rejected without partial changes         0.01s  
+
+   PASS  Tests\Feature\Profile\ModelProfilePhysicalRevisionTest
+  ✓ model submits a pending physical revision without changing approved… 0.01s  
+  ✓ admin can approve a physical revision and promote its snapshot       0.01s  
+  ✓ admin rejection requires reason and keeps approved values            0.01s  
+  ✓ physical revision service rejects a second pending revision          0.01s  
+
+   PASS  Tests\Feature\Profile\ModelProfilePrivacyTest
+  ✓ model can only edit the profile resolved from its session            0.01s  
+  ✓ private details are not in the default model profile serialization   0.01s  
+
+   PASS  Tests\Feature\Profile\ProfileLocationRegressionTest
+  ✓ changing location preserves existing profile states and photos       0.02s  
+
+   PASS  Tests\Feature\Profile\ProfileLocationTest
+  ✓ catalogs have ids and initial provinces can be seeded                0.01s  
+  ✓ model can save a valid province locality pair                        0.01s  
+  ✓ locality from another province is rejected                           0.01s  
+  ✓ inactive or unknown province is rejected                             0.01s  
+
+   PASS  Tests\Feature\Profile\ProfileSchemaTest
+  ✓ us1 profile schema exists without removing legacy columns            0.01s  
+
+   PASS  Tests\Feature\Profile\PublicAgeTest
+  ✓ real age is calculated dynamically from birth date                   0.01s  
+  ✓ public age can be up to five years younger but not older             0.01s  
+  ✓ future birth date is rejected and public age does not change birth…  0.01s  
+  ✓ hiding public age does not delete the configured age                 0.01s  
+
+   PASS  Tests\Feature\Profile\PublicationTypeAndServiceSchemaTest
+  ✓ initial catalogs and many to many relationship are available         0.01s  
+  ✓ service catalog scope excludes inactive entries                      0.01s  
+
+   PASS  Tests\Feature\Profile\PublicationTypeChangeTest
+  ✓ model changes type and records history without touching profile sta… 0.01s  
+  ✓ noop does not create redundant history                               0.01s  
+  ✓ virtual to encounters preserves virtual services without auto assig… 0.01s  
+  ✓ inactive type is rejected and current type is preserved              0.01s  
+  ✓ generic profile update cannot change publication type                0.01s  
+
+   PASS  Tests\Feature\Profile\PublicationTypeHistoryTest
+  ✓ real transitions keep actor source reason and timestamp              0.01s  
+  ✓ noop does not create history                                         0.01s  
+  ✓ invalid source does not change type or create history                0.01s  
+
+   PASS  Tests\Feature\Profile\ServiceCompatibilityTest
+  ✓ virtual profile accepts virtual service                              0.02s  
+  ✓ virtual profile rejects manipulated in person service                0.01s  
+  ✓ encounters profile accepts virtual and in person services            0.01s  
+  ✓ inactive service is rejected                                         0.01s  
+  ✓ model can only update services for its own profile                   0.01s  
+
+   PASS  Tests\Feature\PublicModels\PreparePublicModelPhotosTest
+  ✓ dry run does not write and preparation is idempotent preserving pri… 0.11s  
+  ✓ missing source or disabled watermark does not certify                0.10s  
+  ✓ storage failure preserves existing files and evidence                0.11s  
+  ✓ changed current version discards only new resource                   0.11s  
+  ✓ noncurrent pending and rejected versions are not prepared            0.11s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelAgeLocationTest
+  ✓ age uses only public value when allowed with data set #0             0.02s  
+  ✓ age uses only public value when allowed with data set #1             0.01s  
+  ✓ age uses only public value when allowed with data set #2             0.01s  
+  ✓ age uses only public value when allowed with data set #3             0.01s  
+  ✓ location is optional compatible escaped text without coordinates or… 0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelApprovedContentTest
+  ✓ only current bio is visible until replacement is approved            0.02s  
+  ✓ missing or ineligible bio omits section without hiding profile with… 0.01s  
+  ✓ missing or ineligible bio omits section without hiding profile with… 0.01s  
+  ✓ missing or ineligible bio omits section without hiding profile with… 0.01s  
+  ✓ missing or ineligible bio omits section without hiding profile with… 0.01s  
+  ✓ missing or ineligible bio omits section without hiding profile with… 0.01s  
+  ✓ missing or ineligible bio omits section without hiding profile with… 0.01s  
+  ✓ physical revisions only change public characteristics after approva… 0.02s  
+  ✓ optional values are omitted and approved text is escaped with line…  0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelGalleryTest
+  ✓ gallery includes primary in position and exposes only safe projecti… 0.02s  
+  ✓ pending and rejected replacements keep current until approval        0.15s  
+  ✓ deleting primary uses existing reassignment then denies when none r… 0.02s  
+  ✓ gallery uses central limit without loading version history           0.02s  
+  ✓ gallery omits invalid secondaries and approved history               0.03s  
+  ✓ equal positions use id order and photo count does not add queries    0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelPhotoDeliveryTest
+  ✓ only public bytes are delivered with private headers                 0.02s  
+  ✓ invalid or unknown tokens and hidden profiles have generic errors    0.02s  
+  ✓ pending rejected historical and foreign current versions are denied  0.02s  
+  ✓ missing watermark files and private or unsafe paths fail closed      0.03s  
+  ✓ stream is opened before response and closed after delivery           0.01s  
+  ✓ secondary urls revalidate each publication condition and deletion    0.02s  
+  ✓ read failure and empty secondary return generic error without fallb… 0.01s  
+  ✓ stream is closed and only safe event is logged when delivery fails   0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelPresentationTest
+  ✓ minimal profile uses landmarks public image alternatives and no una… 0.02s  
+  ✓ not found page keeps generic semantic structure                      0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelPrivacyTest
+  ✓ public content has no private or administrative data and uses selec… 0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelProfileVisibilityTest
+  ✓ guest can read basic public profile without mutating it              0.01s  
+  ✓ non public profile is not found with data set #0                     0.01s  
+  ✓ non public profile is not found with data set #1                     0.01s  
+  ✓ non public profile is not found with data set #2                     0.01s  
+  ✓ non public profile is not found with data set #3                     0.01s  
+  ✓ non public profile is not found with data set #4                     0.01s  
+  ✓ non public profile is not found with data set #5                     0.01s  
+  ✓ non public profile is not found with data set #6                     0.01s  
+  ✓ non public profile is not found with data set #7                     0.01s  
+  ✓ non public profile is not found with data set #8                     0.01s  
+  ✓ non public profile is not found with data set #9                     0.01s  
+  ✓ email must be verified                                               0.01s  
+  ✓ unavailable profile remains public and published                     0.01s  
+  ✓ session never bypasses public rules                                  0.01s  
+  ✓ missing user never resolves                                          0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelQueryBudgetTest
+  ✓ public query count stays constant for one or five photos and one or… 0.03s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelResponseBoundaryTest
+  ✓ only allowlisted data reaches view and private relations are not qu… 0.01s  
+  ✓ non public and unknown and numeric routes have identical generic er… 0.02s  
+  ✓ visible response is not cacheable and name is escaped                0.01s  
+  ✓ location omits incompatible locality and missing values              0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelRevocationTest
+  ✓ alias and photo requests are revoked without cache or existence hin… 0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelSchemaTest
+  ✓ existing accounts can remain without a public slug                   0.01s  
+  ✓ slug is unique                                                       0.01s  
+  ✓ photo token unique and backfill does not certify legacy              0.01s  
+  ✓ public metadata cannot be mass assigned and is not inferred          0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelSeoTest
+  ✓ profile has exact public title description and one h1                0.01s  
+  ✓ metadata escapes the public name and excludes hidden age             0.01s  
+  ✓ hidden profile 404 keeps generic metadata without profile name       0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelServicesTest
+  ✓ virtual type only displays associated active virtual services        0.02s  
+  ✓ encounters groups active services in sort order even if type is ina… 0.01s  
+  ✓ missing or unknown type does not enable service groups               0.02s  
+  ✓ empty service groups and section are omitted                         0.01s  
+  ✓ deactivated service disappears on the next request                   0.02s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelSlugBackfillTest
+  ✓ backfill reserves existing before assigning missing and is idempote… 0.01s  
+  ✓ backfill respects tombstones and preserves existing assignment on r… 0.01s  
+  ✓ backfill rechecks assignment after selecting a batch                 0.01s  
+  ✓ backfill processes more than one batch in id order                   0.20s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelSlugPersistenceTest
+  ✓ initial generation collisions and historical reservations            0.01s  
+  ✓ deleted profile and explicit reservations are not reassigned         0.01s  
+  ✓ suffix fits length and number never becomes numeric slug             0.01s  
+  ✓ outer rollback restores name slug and reservations                   0.01s  
+  ✓ private profile update generates slug and rejects manual assignment  0.01s  
+  ✓ details transaction rolls back private changes when slug assignment… 0.01s  
+  ✓ reservation unique constraint cannot be bypassed                     0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelSlugRoutingTest
+  ✓ aliases redirect directly to current canonical and returning to old… 0.02s  
+  ✓ aliases for hidden profiles and tombstones are generic 404 without…  0.02s  
+  ✓ missing reservation never resolves and private binding stays numeri… 0.01s  
+  ✓ alias never redirects to an invalid current slug                     0.01s  
+
+   PASS  Tests\Feature\PublicModels\PublicModelVisibilityRuleTest
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ principal must be current owned approved marked and readable with d… 0.01s  
+  ✓ gate allows guests and uses current database state                   0.01s  
+  ✓ storage read error is not exposed                                    0.01s  
+
+   PASS  Tests\Feature\Security\ModelPhotoAuthorizationTest
+  ✓ guest cannot access photo management or private variants             0.10s  
+  ✓ owner endpoints reject cross model photo ids                         0.11s  
+  ✓ model profile id is ignored and cannot redirect upload to another p… 0.20s  
+  ✓ admin version id must belong to the requested photo                  0.19s  
+  ✓ pending and non approved photos cannot become primary                0.10s  
+  ✓ stale approved version cannot be promoted after a new version exist… 0.19s  
+  ✓ path traversal is rejected by the photo storage                      0.01s  
+
+   PASS  Tests\Feature\Security\ModelPhotoPrivacyTest
+  ✓ private variants have no public storage url and use private headers  0.10s  
+  ✓ original variant is never served even to the owner                   0.10s  
+  ✓ invalid upload is rejected before processing                         0.01s  
+
+   PASS  Tests\Feature\Security\ProfileDetailsAuditTest
+  ✓ domain enums keep the persisted values explicit                      0.01s  
+  ✓ relationship foreign keys are not mass assignable from model payloa… 0.01s  
+
+   PASS  Tests\Feature\Storage\ModelPhotoStorageTest
+  ✓ storage uses relative random paths and rejects unsafe paths          0.01s  
+
+  Tests:    299 passed (1876 assertions)
+  Duration: 10.94s
+

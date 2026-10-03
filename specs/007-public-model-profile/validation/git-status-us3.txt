@@ -1,0 +1,35 @@
+ M .gitignore
+ M app/Http/Requests/AccountProfileUpdateRequest.php
+ M app/Models/ModelPhotoVersion.php
+ M app/Models/ModelProfile.php
+ M app/Providers/AppServiceProvider.php
+ M app/Services/ModelPhotoImageProcessor.php
+ M app/Services/ModelPhotoService.php
+ M app/Services/ModelPhotoStorage.php
+ M app/Services/ModelProfileDetailsService.php
+ M resources/css/styles.css
+ M resources/views/welcome.blade.php
+ M routes/web.php
+ M tests/Unit/Services/ModelPhotoImageProcessorTest.php
+?? app/Console/Commands/PreparePublicModelPhotos.php
+?? app/Http/Controllers/PublicModelPhotoController.php
+?? app/Http/Controllers/PublicModelProfileController.php
+?? app/Models/ModelProfileSlug.php
+?? app/Services/ModelProfileSlugService.php
+?? app/Services/PublicModelPhotoService.php
+?? app/Services/PublicModelProfileQuery.php
+?? app/Services/PublicModelProfileVisibility.php
+?? app/ViewModels/
+?? database/migrations/2026_09_29_000001_add_public_slug_to_model_profiles.php
+?? database/migrations/2026_09_29_000002_add_public_watermark_evidence_to_model_photo_versions.php
+?? database/migrations/2026_09_29_000003_create_model_profile_slugs_table.php
+?? database/migrations/2026_09_29_000004_backfill_public_profile_slugs.php
+?? database/migrations/2026_09_29_000005_add_public_token_to_model_photo_versions.php
+?? database/migrations/2026_09_29_000006_backfill_public_photo_tokens.php
+?? resources/views/components/
+?? resources/views/errors/
+?? resources/views/public/
+?? specs/007-public-model-profile/
+?? tests/Feature/PublicModels/
+?? tests/Support/
+?? tests/Unit/Services/ModelProfileSlugServiceTest.php

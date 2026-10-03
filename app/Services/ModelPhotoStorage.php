@@ -2,12 +2,61 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use RuntimeException;
 
 class ModelPhotoStorage
 {
+    public function isPublicPath(string $path): bool
+    {
+        return $this->isSafePath($path) && basename($path) === 'public.webp';
+    }
+
+    /** Open and check before sending headers; the caller owns a successful stream. */
+    public function openPublicStream(string $path)
+    {
+        if (! $this->isPublicPath($path)) {
+            return null;
+        }
+
+        $stream = null;
+        try {
+            $stream = $this->readStream($path);
+            if (is_resource($stream) && ($byte = fread($stream, 1)) !== false && $byte !== '' && rewind($stream)) {
+                return $stream;
+            }
+        } catch (\Throwable) {
+            Log::warning('public_photo_unreadable');
+        }
+
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return null;
+    }
+
+    public function storePublicVariant(string $sourcePath, string $contents): string
+    {
+        if (! $this->isSafePath($sourcePath) || basename($sourcePath) !== 'processed.webp') {
+            throw new RuntimeException('Invalid public preparation source.');
+        }
+
+        $path = dirname($sourcePath).'/'.Str::uuid().'/public.webp';
+        try {
+            if (! $this->disk()->put($path, $contents)) {
+                throw new RuntimeException('Public variant write failed.');
+            }
+        } catch (\Throwable $exception) {
+            $this->deletePaths([$path]);
+            throw $exception;
+        }
+
+        return $path;
+    }
+
     public function disk()
     {
         return Storage::disk(config('model-photos.disk'));

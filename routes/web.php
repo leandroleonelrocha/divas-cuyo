@@ -9,12 +9,19 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\ModelPhotoController;
 use App\Http\Controllers\PrivateIdentityDocumentController;
+use App\Http\Controllers\PublicModelPhotoController;
+use App\Http\Controllers\PublicModelProfileController;
+use App\Services\PublicModelHomepageProfiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (PublicModelHomepageProfiles $profiles) {
+    return view('welcome', ['publicProfiles' => $profiles->cards()]);
 })->name('home');
+
+Route::get('/modelos/fotos/{publicToken}', PublicModelPhotoController::class)
+    ->where('publicToken', '.*')->name('public.models.photos.show');
+Route::get('/modelos/{slug}', PublicModelProfileController::class)->name('public.models.show');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/registro', [RegistrationController::class, 'show'])->name('register.show');

@@ -1,0 +1,4 @@
+Independent read-only verification after T059
+Connected guard PASS: divas_cuyo_test
+MySQL 5.7.39
+SHOW TABLES: []

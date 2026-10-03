@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class ModelProfileDetailsService
 {
-    public function __construct(private readonly IdentityDocumentService $identityDocuments) {}
+    public function __construct(
+        private readonly IdentityDocumentService $identityDocuments,
+        private readonly ModelProfileSlugService $slugs,
+    ) {}
 
     /**
      * @param  array<string, mixed>  $data
@@ -39,7 +42,6 @@ class ModelProfileDetailsService
             ]);
 
             $lockedProfile->forceFill([
-                'stage_name' => $data['stage_name'],
                 'public_age' => $data['public_age'] ?? null,
                 'show_age' => (bool) $data['show_age'],
                 'nationality' => $data['nationality'],
@@ -63,11 +65,13 @@ class ModelProfileDetailsService
                     : $lockedProfile->approximate_longitude,
             ])->save();
 
+            $lockedProfile = $this->slugs->rename($lockedProfile, $data['stage_name']);
+
             if ($identityDetailsChanged) {
                 $this->identityDocuments->resetForProfileDataChange($lockedProfile);
             }
 
             return $lockedProfile->refresh();
-        });
+        }, 3);
     }
 }

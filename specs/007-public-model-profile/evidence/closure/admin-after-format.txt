@@ -1,0 +1,69 @@
+
+   PASS  Tests\Feature\Admin\AdminPanelAccessTest
+  ✓ verified admin can access the admin panel                            0.24s  
+  ✓ guest is redirected to the panel login                               0.01s  
+  ✓ unverified admin cannot access the admin panel                       0.01s  
+  ✓ regular user cannot access the admin panel                           0.01s  
+
+   PASS  Tests\Feature\Admin\IdentityDocumentReviewTest
+  ✓ verified admin can see and download private documents from the prof… 0.06s  
+  ✓ unverified admin and regular user cannot access identity review      0.01s  
+  ✓ admin can approve pending identity and audit is recorded without ch… 0.05s  
+  ✓ admin must provide a reason to reject and rejection is audited       0.07s  
+  ✓ missing documents and non pending states block identity resolution   0.01s  
+  ✓ approved and rejected identities do not show review actions          0.03s  
+
+   PASS  Tests\Feature\Admin\ModelPhotoModerationTest
+  ✓ only a verified admin can open private photo variants                0.14s  
+  ✓ admin can approve pending photo and audit the version                0.10s  
+  ✓ reject requires reason and records audit                             0.10s  
+  ✓ rejection records reason without changing profile states             0.11s  
+  ✓ approved replacement shows both versions and promotes only after ap… 0.20s  
+  ✓ rejecting approved replacement keeps the current version             0.19s  
+  ✓ moderation action is not available for a stale non pending photo     0.10s  
+  ✓ model profile detail registers the photo relation manager            0.01s  
+
+   PASS  Tests\Feature\Admin\ModelProfileBioModerationTest
+  ✓ admin approves pending bio and promotes it as current                0.01s  
+  ✓ rejection requires reason and preserves previous current bio         0.01s  
+  ✓ model cannot approve or reject its own bio                           0.01s  
+  ✓ admin view keeps reviewer and rejection data available only to admi… 0.01s  
+
+   PASS  Tests\Feature\Admin\ModelProfileMigrationTest
+  ✓ user has one model profile with the expected data                    0.01s  
+  ✓ registration creates a profile without changing public fields        0.06s  
+
+   PASS  Tests\Feature\Admin\ModelProfileModerationTest
+  ✓ pending profile can be approved and records reviewer                 0.01s  
+  ✓ pending profile can be rejected and cannot remain published          0.01s  
+  ✓ approved profile can be published and then unpublished               0.01s  
+  ✓ invalid publication transitions are rejected                         0.01s  
+  ✓ moderation actions are visible only for valid transitions            0.02s  
+  ✓ admin can execute a confirmed approval action from the list          0.04s  
+  ✓ detail exposes state actions to an authorized admin                  0.03s  
+  ✓ non admin cannot invoke moderation actions                           0.01s  
+  ✓ profile approval requires validated identity and preserves profile…  0.02s  
+  ✓ profile publication requires approved identity and profile           0.01s  
+  ✓ profile moderation keeps identity independent                        0.01s  
+
+   PASS  Tests\Feature\Admin\ModelProfileResourceTest
+  ✓ resource separates profile sections and registers all administrativ… 0.03s  
+  ✓ admin can see the model profiles list and use its columns            0.02s  
+  ✓ admin root redirects to the model profiles list                      0.01s  
+  ✓ admin can open a model profile detail                                0.03s  
+  ✓ detail distinguishes verification review and publication states      0.03s  
+  ✓ regular user cannot open a model profile detail                      0.01s  
+  ✓ admin can search by profile and account fields                       0.07s  
+  ✓ admin can filter by verification review and publication              0.07s  
+  ✓ regular users cannot access the model profiles list                  0.01s  
+  ✓ admin can edit the allowed profile fields                            0.03s  
+  ✓ invalid edit keeps previous values and preserves states              0.03s  
+  ✓ edit form cannot change account or moderation fields                 0.03s  
+  ✓ regular user cannot access model profile edit                        0.01s  
+
+   PASS  Tests\Feature\Admin\PublicationTypeHistoryTest
+  ✓ verified admin can view history but model cannot                     0.01s  
+
+  Tests:    49 passed (264 assertions)
+  Duration: 2.17s
+

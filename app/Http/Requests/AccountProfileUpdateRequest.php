@@ -28,6 +28,7 @@ class AccountProfileUpdateRequest extends FormRequest
             'real_weight_kg' => ['nullable', 'numeric', 'between:20,400'],
             'real_measurements' => ['nullable', 'string', 'max:100'],
             'private_phone' => ['nullable', 'string', 'max:50'],
+            'slug' => ['prohibited'],
             'stage_name' => ['required', 'string', 'max:100'],
             'public_age' => ['nullable', 'integer', 'between:18,120', new ValidPublicAge($this->input('birth_date'))],
             'show_age' => ['required', 'boolean'],
