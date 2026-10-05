@@ -19,16 +19,14 @@ class DatabaseSeeder extends Seeder
         $this->call(PublicationTypeSeeder::class);
         $this->call(ServiceSeeder::class);
 
-        // User::factory(10)->create();
-
-        if (! User::query()->where('email', 'test@example.com')->exists()) {
-            User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-        }
-
         if (app()->environment('local')) {
+            if (! User::query()->where('email', 'test@example.com')->exists()) {
+                User::factory()->create([
+                    'name' => 'Test User',
+                    'email' => 'test@example.com',
+                ]);
+            }
+
             $this->call(DemoModelProfilesSeeder::class);
         }
     }
