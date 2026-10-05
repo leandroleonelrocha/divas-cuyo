@@ -51,6 +51,9 @@ class CreateAdminUser extends Command
             'name' => $name,
             'email' => $email,
             'password' => $password,
+            // La cuenta administrativa no tiene datos de contacto de modelo.
+            'whatsapp' => '',
+            'location' => '',
             'is_admin' => true,
             'email_verified_at' => now(),
         ])->save();

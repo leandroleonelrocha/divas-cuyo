@@ -59,6 +59,8 @@ class CreateAdminUserTest extends TestCase
             'name' => 'Existing',
             'email' => 'existing@example.com',
             'password' => 'Existing-password-123',
+            'whatsapp' => '',
+            'location' => '',
         ]);
 
         $this->artisan('admin:create')
