@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProvinceSeeder::class);
         $this->call(PublicationTypeSeeder::class);
         $this->call(ServiceSeeder::class);
+        $this->call(AdminUserSeeder::class);
 
         if (app()->environment('local')) {
             if (! User::query()->where('email', 'test@example.com')->exists()) {
