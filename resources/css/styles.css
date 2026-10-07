@@ -1176,6 +1176,10 @@ textarea {
   line-height: 1.6;
 }
 
+.registration-description + .registration-description {
+  margin-top: 18px;
+}
+
 .registration-brand span {
   color: var(--color-surface);
   font-size: 20px;
@@ -1281,6 +1285,65 @@ textarea {
   font-size: 15px;
 }
 
+.registration-modalities {
+  min-width: 0;
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+}
+
+.registration-modalities legend {
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.registration-modality {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.registration-modality:has(input:checked) {
+  border-color: #d71920;
+  background: #fff5f5;
+}
+
+.registration-modality:focus-within {
+  outline: 2px solid #d71920;
+  outline-offset: 3px;
+}
+
+.registration-modality input {
+  margin-top: 4px;
+  accent-color: #d71920;
+}
+
+.registration-modality > span {
+  display: grid;
+  gap: 5px;
+}
+
+.registration-modality-price {
+  color: #b9141a;
+}
+
+.registration-publication-note {
+  margin: 12px 0 18px;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.registration-submit:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
 .registration-field {
   display: block;
   margin-bottom: 16px;
@@ -1299,7 +1362,8 @@ textarea {
   display: none;
 }
 
-.registration-input-wrap input {
+.registration-input-wrap input,
+.registration-input-wrap select {
   display: block;
   width: 100%;
   height: 44px;
@@ -1313,7 +1377,8 @@ textarea {
   font-size: 15px;
 }
 
-.registration-input-wrap input:focus {
+.registration-input-wrap input:focus,
+.registration-input-wrap select:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
@@ -1673,4 +1738,144 @@ textarea {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Presentación y formulario de incorporación. */
+.registration-enrollment .registration-main {
+  padding-top: 24px;
+}
+
+.registration-enrollment .registration-layout {
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+  gap: 40px;
+  max-width: 1160px;
+  align-items: start;
+}
+
+.registration-enrollment .registration-branding {
+  padding: 8px 0 0;
+}
+
+.registration-enrollment .registration-card {
+  min-width: 0;
+  max-width: 510px;
+  margin-top: 0;
+  padding: 28px;
+}
+
+.registration-modality-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.registration-enrollment .registration-modality {
+  min-width: 0;
+  gap: 8px;
+  margin-bottom: 0;
+  padding: 12px 10px;
+  border-radius: 10px;
+}
+
+.registration-enrollment .registration-modality > span {
+  gap: 4px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.registration-enrollment .registration-modality > span > strong:first-child {
+  font-size: 14px;
+}
+
+.registration-enrollment .registration-modality-price {
+  color: #4b5563;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.registration-enrollment .registration-modalities {
+  margin-bottom: 18px;
+}
+
+@media (max-width: 1000px) {
+  .registration-enrollment .registration-layout {
+    gap: 24px;
+  }
+
+  .registration-enrollment .registration-card {
+    padding: 24px 20px;
+  }
+
+  .registration-modality-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .registration-enrollment .registration-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .registration-enrollment .registration-card {
+    max-width: none;
+  }
+
+  .registration-modality-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .registration-modality-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.legal-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.legal-document {
+  padding: clamp(20px, 4vw, 48px);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+  color: #374151;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.legal-document h1 {
+  margin: 20px 0;
+  color: var(--color-primary);
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.2;
+}
+
+.legal-document h2 {
+  margin: 30px 0 14px;
+  color: var(--color-text);
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.legal-document p {
+  margin: 12px 0;
+}
+
+.legal-important {
+  padding: 12px 16px;
+  border-left: 4px solid #d71920;
+  background: #fff5f5;
+}
+
+.legal-register-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #b9141a;
+  font-weight: 700;
+  text-decoration: underline;
 }

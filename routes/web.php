@@ -15,6 +15,8 @@ use App\Services\PublicModelHomepageProfiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/terminos-y-condiciones', 'legal.terms')->name('terms.show');
+
 Route::get('/', function (PublicModelHomepageProfiles $profiles) {
     return view('welcome', ['publicProfiles' => $profiles->cards()]);
 })->name('home');

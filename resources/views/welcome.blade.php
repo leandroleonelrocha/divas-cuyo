@@ -85,13 +85,6 @@
 
       <div class="avatar-scroller" aria-label="Perfiles destacados">
         <a class="avatar-card" href="#more"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80" alt="More"><span>More</span></a>
-        <a class="avatar-card" href="#karen"><img src="https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?auto=format&fit=crop&w=300&q=80" alt="Karen"><span>Karen</span></a>
-        <a class="avatar-card" href="#amaniki"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="Ama Niki"><span>Ama Niki</span></a>
-        <a class="avatar-card" href="#luna"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80" alt="Luna"><span>Luna</span></a>
-        <a class="avatar-card" href="#cami"><img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=300&q=80" alt="Cami"><span>Cami</span></a>
-        <a class="avatar-card" href="#perli"><img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=300&q=80" alt="Perli"><span>Perli</span></a>
-        <a class="avatar-card" href="#lilith"><img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=300&q=80" alt="Lilith"><span>Lilith</span></a>
-        <a class="avatar-card" href="#lorraine"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=300&q=80" alt="Lorraine"><span>Lorraine</span></a>
       </div>
 
       <section id="videos">

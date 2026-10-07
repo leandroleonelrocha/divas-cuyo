@@ -21,10 +21,15 @@ class VerifyModelEmail extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->view(['html' => 'emails.account', 'text' => 'emails.account-text'], [
+                'heading' => 'Confirmá tu correo',
+                'preheader' => 'Activá tu cuenta en Divas Cuyo. El enlace vence en 24 horas.',
+            ])
             ->subject('Verificá tu correo electrónico')
             ->greeting('Hola '.$notifiable->name)
             ->line('Para activar tu cuenta, verificá tu correo electrónico con el siguiente enlace:')
             ->action('Verificar correo', route('verification.verify', ['token' => $this->token]))
-            ->line('El enlace vence en 24 horas.');
+            ->line('El enlace vence en 24 horas.')
+            ->line('Si no creaste esta cuenta, podés ignorar este mensaje.');
     }
 }

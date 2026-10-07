@@ -18,6 +18,8 @@ use App\Policies\ModelProfilePublicationTypeHistoryPolicy;
 use App\Policies\UserPolicy;
 use App\Services\PublicModelProfileVisibility;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +38,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ResetPassword::toMailUsing(function (object $notifiable, string $token): MailMessage {
+            $minutes = config('auth.passwords.'.config('auth.defaults.passwords').'.expire');
+
+            return (new MailMessage)
+                ->view(['html' => 'emails.account', 'text' => 'emails.account-text'], [
+                    'heading' => 'Recuperá tu contraseña',
+                    'preheader' => 'Recibimos una solicitud para restablecer tu contraseña en Divas Cuyo.',
+                ])
+                ->subject('Restablecé tu contraseña · Divas Cuyo')
+                ->greeting('Hola '.$notifiable->name)
+                ->line('Recibimos una solicitud para restablecer la contraseña de tu cuenta. Elegí una nueva desde el siguiente enlace:')
+                ->action('Restablecer contraseña', route('password.reset', [
+                    'token' => $token,
+                    'email' => $notifiable->getEmailForPasswordReset(),
+                ]))
+                ->line("El enlace vence en {$minutes} minutos.")
+                ->line('Si no solicitaste este cambio, podés ignorar este mensaje. Tu contraseña seguirá siendo la misma.');
+        });
+
         Gate::define('viewPublicModelProfile', function (?User $user, ModelProfile $profile): Response {
             return app(PublicModelProfileVisibility::class)->publiclyVisible($profile)
                 ? Response::allow()

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Province;
+use App\Models\PublicationType;
 use App\Models\User;
 use App\Notifications\VerifyModelEmail;
 use Carbon\Carbon;
@@ -64,6 +66,8 @@ class EmailVerificationTest extends TestCase
             'name' => 'Modelo Mendoza',
             'whatsapp' => '+54 9 261 555 1234',
             'location' => 'Mendoza',
+            'province_id' => Province::factory()->create(['name' => 'Mendoza'])->id,
+            'publication_type_id' => PublicationType::factory()->create(['slug' => 'encounters', 'is_active' => true])->id,
             'terms_accepted' => true,
             'privacy_accepted' => true,
         ];
