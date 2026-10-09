@@ -8,11 +8,11 @@ class PublicModelHomepageProfiles
 {
     public function __construct(private readonly PublicModelProfileVisibility $visibility) {}
 
-    /** @return list<array{name:string, url:string, photoUrl:string, photoAlt:string}> */
+    /** @return list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, locality:string, location:string}> */
     public function cards(int $limit = 6): array
     {
         $profiles = $this->visibility->candidates()
-            ->with(['currentApprovedPhotos' => fn (HasMany $photos) => $photos
+            ->with(['province:id,name,slug', 'locality:id,name,slug', 'currentApprovedPhotos' => fn (HasMany $photos) => $photos
                 ->select(['id', 'model_profile_id', 'current_version_id', 'is_primary'])
                 ->where('is_primary', true)
                 ->with('currentVersion:'.PublicModelPhotoService::VERSION_COLUMNS),
@@ -38,6 +38,9 @@ class PublicModelHomepageProfiles
                 'url' => route('public.models.show', ['slug' => $profile->slug]),
                 'photoUrl' => route('public.models.photos.show', ['publicToken' => $version->public_token]),
                 'photoAlt' => 'Foto de '.$profile->stage_name,
+                'province' => $profile->province?->slug ?? '',
+                'locality' => $profile->locality?->slug ?? '',
+                'location' => $profile->locality?->name ?? $profile->province?->name ?? 'Argentina',
             ];
         }
 

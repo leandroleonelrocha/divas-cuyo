@@ -3,6 +3,8 @@
 namespace Tests\Feature\Admin;
 
 use App\Filament\Resources\ModelProfiles\ModelProfileResource;
+use App\Filament\Resources\ModelProfiles\Pages\ViewModelProfile;
+use Livewire\Livewire;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelPhotosRelationManager;
 use App\Models\ModelPhoto;
 use App\Models\User;
@@ -146,6 +148,29 @@ class ModelPhotoModerationTest extends TestCase
     public function test_model_profile_detail_registers_the_photo_relation_manager(): void
     {
         $this->assertSame(ModelPhotosRelationManager::class, ModelProfileResource::getRelations()[0]);
+    }
+
+    public function test_verified_admin_without_model_profile_can_see_pending_photos(): void
+    {
+        [, $photo] = $this->uploadPhoto();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $admin->modelProfile()->delete();
+        $this->assertFalse($admin->modelProfile()->exists());
+        $this->actingAs($admin);
+
+        $this->assertTrue(ModelPhotosRelationManager::canViewForRecord($photo->modelProfile, ViewModelProfile::class));
+        $this->get(ModelProfileResource::getUrl('view', ['record' => $photo->modelProfile]))
+            ->assertOk()->assertSee('Fotografías');
+
+        Livewire::test(ModelPhotosRelationManager::class, [
+            'ownerRecord' => $photo->modelProfile,
+            'pageClass' => ViewModelProfile::class,
+        ])->assertCanSeeTableRecords([$photo])
+            ->assertTableActionVisible('approve', $photo)
+            ->assertTableActionVisible('reject', $photo);
+
+        $this->actingAs(User::factory()->unverified()->create(['is_admin' => true]));
+        $this->assertFalse(ModelPhotosRelationManager::canViewForRecord($photo->modelProfile, ViewModelProfile::class));
     }
 
     /**

@@ -2,6 +2,8 @@
 
 @php
     $homeUrl = route('home');
+    $headerProvinces = \App\Models\Province::query()->active()->orderBy('name')->get(['slug', 'name']);
+    $headerProvince = request()->query('provincia', '');
 @endphp
 
 <div class="dc-front-header-wrap">
@@ -13,9 +15,16 @@
                 <span>DIVAS CUYO</span>
             </a>
             <nav class="dc-front-navigation" aria-label="Navegación principal">
+                {{-- <label class="dc-front-province-label" for="dc-front-province">Provincia</label>
+                <select id="dc-front-province" class="dc-front-province" aria-label="Filtrar por provincia" data-home-url="{{ $homeUrl }}" onchange="var u=this.getAttribute('data-home-url');window.location.href=this.value?u+'?provincia='+encodeURIComponent(this.value):u;">
+                    <option value="">Todas las provincias</option>
+                    @foreach ($headerProvinces as $headerProvinceItem)
+                        <option value="{{ $headerProvinceItem->slug }}" {{ $headerProvince === $headerProvinceItem->slug ? 'selected' : '' }}>{{ $headerProvinceItem->name }}</option>
+                    @endforeach
+                </select> --}}
                 {{-- <a class="dc-front-nav-item" href="{{ $onHome ? '#novedades' : $homeUrl.'#novedades' }}"><span class="dc-front-nav-icon" aria-hidden="true">ϟ</span><span>Novedades</span></a> --}}
-                <a class="dc-front-nav-item" href="{{ $onHome ? '#videos' : $homeUrl.'#videos' }}"><span class="dc-front-nav-icon" aria-hidden="true">▶</span><span>Videos</span></a>
-                <a class="dc-front-nav-item" href="{{ $onHome ? '#llamadas' : $homeUrl.'#llamadas' }}"><span class="dc-front-nav-icon" aria-hidden="true">▣</span><span>VideoLlamadas</span></a>
+                <a class="dc-front-nav-item" href="{{ $onHome ? '#modelos' : $homeUrl.'#modelos' }}"><span class="dc-front-nav-icon" aria-hidden="true">◇</span><span>Modelos</span></a>
+                <a class="dc-front-nav-item" href="{{ $onHome ? '#destacadas' : $homeUrl.'#destacadas' }}"><span class="dc-front-nav-icon" aria-hidden="true">☆</span><span>Destacadas</span></a>
                 @if (auth()->guest())
                     <a class="dc-front-create" href="{{ route('register.show') }}">Crear perfil</a>
                 @else
@@ -45,7 +54,14 @@
                     </details>
                 @endif
                 <a class="dc-front-star" href="{{ $onHome ? '#favoritos' : $homeUrl.'#favoritos' }}" aria-label="Favoritos">★</a>
-                <a class="dc-front-menu" href="{{ $onHome ? '#menu' : $homeUrl.'#menu' }}" aria-label="Menú">☰</a>
+                <details class="dc-front-user-menu">
+                    <summary class="dc-front-menu" aria-label="Abrir menú">☰</summary>
+                    <div class="dc-front-user-menu-panel">
+                        <a href="{{ $homeUrl }}#modelos">Explorar modelos</a>
+                        <a href="{{ auth()->check() ? route('account.dashboard') : route('login.show') }}">Mi cuenta</a>
+                        <a href="{{ route('terms.show') }}">Términos y condiciones</a>
+                    </div>
+                </details>
             </nav>
         </div>
     </header>

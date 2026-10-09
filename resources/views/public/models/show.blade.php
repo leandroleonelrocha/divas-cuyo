@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $publicProfile->title }}</title>
     <meta name="description" content="{{ $publicProfile->description }}">
-    @vite('resources/css/styles.css')
     @include('components.front-header-styles')
+    <meta name="theme-color" content="#0d1013">
+    <link rel="stylesheet" href="{{ asset('css/model-home.css') }}?v={{ filemtime(public_path('css/model-home.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/model-profile.css') }}?v={{ filemtime(public_path('css/model-profile.css')) }}">
+    <script src="{{ asset('js/model-profile.js') }}" defer></script>
 </head>
-<body class="account-page public-model-page">
+<body class="model-home model-profile-page">
 <a class="public-profile-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
 <x-front-header />
-<div class="account-shell public-profile-shell">
+<div class="shell public-profile-shell">
     <main id="contenido-principal" class="public-profile-main" tabindex="-1">
+        <nav class="profile-breadcrumb" aria-label="Ruta de navegación"><a href="{{ route('home') }}#modelos">← Volver a modelos</a><span aria-hidden="true">/</span><span>{{ $publicProfile->stageName }}</span></nav>
         <section class="account-card public-profile-hero" aria-labelledby="profile-name">
             <div class="account-hero public-profile-hero-copy">
+                <p class="eyebrow">DIVAS CUYO / PORTFOLIO</p>
                 <x-public-model.verified-badge :label="$publicProfile->verifiedLabel" />
                 <h1 id="profile-name">{{ $publicProfile->stageName }}</h1>
             </div>
-            <x-public-model.availability :label="$publicProfile->availabilityLabel" />
+            <a class="profile-gallery-link" href="#gallery-title">Ver fotografías <span aria-hidden="true">↘</span></a>
         </section>
         <div class="public-profile-layout">
             <div class="public-profile-gallery-column">
@@ -44,31 +49,6 @@
                         </dl>
                     </section>
                 @endif
-                @if ($publicProfile->publicationTypeLabel !== null)
-                    <section class="account-card" aria-labelledby="publication-type-title">
-                        <h2 id="publication-type-title">Modalidad</h2>
-                        <p>{{ $publicProfile->publicationTypeLabel }}</p>
-                    </section>
-                @endif
-                @if ($publicProfile->serviceGroups !== [])
-                    <section class="account-card public-profile-services" aria-labelledby="public-services-title">
-                        <h2 id="public-services-title">Servicios</h2>
-                        <dl class="account-details">
-                            @foreach ($publicProfile->serviceGroups as $group => $services)
-                                <div>
-                                    <dt>{{ $group }}</dt>
-                                    <dd>
-                                        <ul>
-                                            @foreach ($services as $service)
-                                                <li>{{ $service }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </dd>
-                                </div>
-                            @endforeach
-                        </dl>
-                    </section>
-                @endif
                 @if ($publicProfile->bio !== null)
                     <section class="account-card" aria-labelledby="bio-title">
                         <h2 id="bio-title">Sobre mí</h2>
@@ -79,5 +59,6 @@
         </div>
     </main>
 </div>
+<footer class="shell"><span>© {{ date('Y') }} <strong>DIVAS CUYO</strong> · Comunidad de modelos</span><a href="{{ route('terms.show') }}">Términos y condiciones ↗</a></footer>
 </body>
 </html>

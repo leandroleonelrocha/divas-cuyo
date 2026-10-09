@@ -7,6 +7,10 @@
   .dc-front-brand img { display:block; width:76px; height:56px; object-fit:contain; }
   .dc-front-brand span { color:#fff; font-size:20px; font-weight:800; letter-spacing:.04em; white-space:nowrap; }
   .dc-front-navigation { display:flex; align-items:center; gap:42px; color:#fff; font-size:17px; font-weight:600; }
+  .dc-front-province-label { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  .dc-front-province { appearance:none; -webkit-appearance:none; max-width:210px; padding:10px 34px 10px 14px; color:#fff; background:rgba(255,255,255,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23f04a50' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center; border:1px solid rgba(255,255,255,.25); border-radius:10px; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer; }
+  .dc-front-province:hover { border-color:rgba(255,255,255,.5); }
+  .dc-front-province option { color:#111827; }
   .dc-front-nav-item { display:flex; align-items:center; gap:11px; color:inherit; text-decoration:none; }
   .dc-front-nav-icon { color:#d71920; font-size:25px; }
   .dc-front-create { padding:13px 22px; color:#fff; background:#d71920; border-radius:13px; text-decoration:none; }
@@ -21,7 +25,7 @@
   .dc-front-user-menu-panel a:hover, .dc-front-user-menu-panel button:hover { color:#b9141a; background:#fdebec; }
   .dc-front-star { color:#fff; font-size:26px; text-decoration:none; }
   .dc-front-menu { color:#fff; font-size:27px; text-decoration:none; }
-  .dc-front-header a:focus-visible, .dc-front-user-menu summary:focus-visible, .dc-front-user-menu button:focus-visible { outline:3px solid #f04a50; outline-offset:4px; }
+  .dc-front-header a:focus-visible, .dc-front-user-menu summary:focus-visible, .dc-front-user-menu button:focus-visible, .dc-front-province:focus-visible { outline:3px solid #f04a50; outline-offset:4px; }
   .public-model-page .dc-front-header-wrap { margin-right:-16px; margin-left:-16px; }
 
   @media (max-width:900px) {
@@ -31,6 +35,7 @@
     .dc-front-brand img { width:58px; height:44px; }
     .dc-front-brand span { font-size:14px; }
     .dc-front-navigation { gap:14px; font-size:0; }
+    .dc-front-province { max-width:150px; padding:8px 30px 8px 12px; font-size:13px; }
     .dc-front-nav-icon, .dc-front-star, .dc-front-menu { font-size:23px; }
     .dc-front-create { padding:10px 13px; font-size:13px; }
   }

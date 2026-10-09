@@ -1,0 +1,45 @@
+.model-profile-page { background: var(--bg); }
+.public-profile-skip-link { position: absolute; top: -100px; left: 16px; z-index: 100; padding: 12px 18px; background: #921c36; }
+.public-profile-skip-link:focus { top: 12px; }
+.public-profile-shell { padding-block: 28px 60px; }
+.profile-breadcrumb { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 12px; }
+.profile-breadcrumb a { color: #ff7389; }
+.public-profile-hero { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 35px 30px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+.public-profile-hero .eyebrow { color: #ff7389; margin-bottom: 16px; }
+.public-profile-hero h1 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(38px, 5vw, 68px); font-weight: 400; line-height: 1.1; letter-spacing: -1px; margin: 12px 0 0; overflow-wrap: anywhere; }
+.public-profile-verified { display: inline-flex; margin: 0; padding: 7px 11px; border: 1px solid #683443; border-radius: 25px; background: #ff73890c; color: #ff9aae; font-size: 11px; }
+.profile-gallery-link { display: flex; align-items: center; gap: 25px; padding: 13px 19px; border: 1px solid #774050; border-radius: 28px; font-size: 12px; white-space: nowrap; }
+.profile-gallery-link span { color: #ff7389; }
+.public-profile-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(290px, 1fr); align-items: start; gap: 28px; }
+.public-profile-gallery-column, .public-profile-details { min-width: 0; }
+.public-profile-details { display: grid; gap: 20px; }
+.public-profile-details .account-card { padding: 26px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(140deg, #1b1f27, #12151b); }
+.public-profile-main h2 { margin: 0 0 20px; color: #ff7389; font-size: 19px; font-weight: 600; letter-spacing: -.3px; }
+.public-profile-location { margin: 0; color: var(--text); font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.account-details { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; }
+.account-details > div { border-bottom: 1px solid #ffffff12; padding: 15px 0; }
+.account-details dt { font-size: 11px; color: var(--muted); margin-bottom: 7px; }
+.account-details dd { margin: 0; font-size: 15px; color: var(--text); overflow-wrap: anywhere; }
+.profile-bio-preview { margin: 0; font-size: 14px; line-height: 1.9; color: #c1c3cb; overflow-wrap: anywhere; }
+.public-model-gallery .photo-card { margin: 0; padding: 0; overflow: hidden; border-radius: 16px; }
+.public-model-gallery .photo-preview { display: block; overflow: hidden; background: #191b23; }
+.profile-main-photo { border: 1px solid var(--line); border-radius: 16px; }
+.profile-main-photo img { display: block; width: 100%; height: clamp(360px, 48vw, 660px); object-fit: contain; background: radial-gradient(ellipse, #28212c, #111319); }
+.gallery-instruction { margin: 13px 0 17px; font-size: 11px; line-height: 1.6; color: var(--muted); }
+.public-model-gallery .photos-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); list-style: none; gap: 10px; padding: 0; margin: 0; }
+.public-model-gallery .photos-grid .photo-card { border-radius: 10px; overflow: visible; }
+.public-model-gallery .profile-thumbnail { width: 100%; padding: 3px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; transition: border-color .2s; }
+.profile-thumbnail[aria-pressed="true"] { border-color: #ff7389; box-shadow: 0 0 0 1px #ff7389; }
+.profile-thumbnail:hover { border-color: #ff7389; }
+.profile-thumbnail img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 6px; }
+@media (max-width: 850px) {
+  .public-profile-layout { grid-template-columns: minmax(0, 1fr); }
+  .public-profile-hero { padding-block: 26px; }
+  .profile-main-photo img { height: min(110vw, 640px); }
+}
+@media (max-width: 480px) {
+  .public-profile-hero { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .public-profile-details .account-card { padding: 20px; }
+  .public-model-gallery .photos-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .public-profile-shell { padding-top: 20px; }
+}

@@ -41,7 +41,7 @@ class WelcomePublicProfilesTest extends TestCase
     {
         $profile = $this->publicProfile('mia');
         $inactiveProvince = Province::factory()->create(['name' => 'Provincia Oculta', 'slug' => 'provincia-oculta', 'is_active' => false]);
-        Locality::factory()->create([
+        Locality::query()->create([
             'province_id' => $inactiveProvince->id,
             'name' => 'Localidad Oculta',
             'slug' => 'localidad-oculta',

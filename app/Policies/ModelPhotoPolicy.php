@@ -10,7 +10,8 @@ class ModelPhotoPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasVerifiedEmail() && $user->modelProfile()->exists();
+        return $user->isVerifiedAdmin()
+            || ($user->hasVerifiedEmail() && $user->modelProfile()->exists());
     }
 
     public function view(User $user, ModelPhoto $photo): bool
