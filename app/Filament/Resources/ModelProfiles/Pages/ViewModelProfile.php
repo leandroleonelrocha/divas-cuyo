@@ -3,11 +3,10 @@
 namespace App\Filament\Resources\ModelProfiles\Pages;
 
 use App\Filament\Resources\ModelProfiles\ModelProfileResource;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\Enums\ContentTabPosition;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Schemas\Components\Component;
-use Filament\Schemas\Components\Tabs;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -35,23 +34,17 @@ class ViewModelProfile extends ViewRecord
         return ContentTabPosition::Before;
     }
 
-    public function getRelationManagersContentComponent(): Component
-    {
-        $component = parent::getRelationManagersContentComponent();
-
-        if ($component instanceof Tabs) {
-            $component->vertical();
-        }
-
-        return $component;
-    }
-
     protected function getHeaderActions(): array
     {
         return [
             EditAction::make()
-                ->label('Editar'),
-            ...ModelProfileResource::moderationActions(),
+                ->label('Editar')
+                ->icon(Heroicon::OutlinedPencilSquare),
+            ActionGroup::make(ModelProfileResource::moderationActions())
+                ->label('Moderación')
+                ->icon(Heroicon::OutlinedShieldCheck)
+                ->color('gray')
+                ->button(),
         ];
     }
 }

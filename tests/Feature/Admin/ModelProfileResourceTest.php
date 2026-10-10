@@ -59,13 +59,13 @@ class ModelProfileResourceTest extends TestCase
             ->assertTableColumnExists('created_at');
     }
 
-    public function test_admin_root_redirects_to_the_model_profiles_list(): void
+    public function test_admin_root_shows_the_dashboard(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
 
         $this->actingAs($admin)
             ->get('/admin')
-            ->assertRedirect('/admin/model-profiles');
+            ->assertOk()->assertSee('Resumen');
     }
 
     public function test_admin_can_open_a_model_profile_detail(): void

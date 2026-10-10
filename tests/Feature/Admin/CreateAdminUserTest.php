@@ -50,7 +50,7 @@ class CreateAdminUserTest extends TestCase
 
         $this->assertTrue($admin->isVerifiedAdmin());
         $this->assertTrue(Hash::check('A-long-secret-123', $admin->password));
-        $this->actingAs($admin)->get('/admin')->assertRedirect('/admin/model-profiles');
+        $this->actingAs($admin)->get('/admin')->assertOk()->assertSee('Resumen');
     }
 
     public function test_command_does_not_modify_an_existing_account(): void

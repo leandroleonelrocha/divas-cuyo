@@ -80,7 +80,7 @@
     </section>
 
     <section class="shell portfolio-section" id="modelos" aria-labelledby="profiles-title">
-      <div class="section-heading"><div><h2 id="profiles-title">Modelos de la región</h2><p>Personalidad que se ve. Talento que inspira.</p></div>
+      <div class="section-heading"><div><h2 id="profiles-title">Modelos de la región</h2><p>Las mejores experiencias, reales y verificadas.</p></div>
         <label class="control sort-control"><span aria-hidden="true">↕</span><select id="sort-order" aria-label="Ordenar perfiles"><option value="recent">Más recientes</option><option value="name">Nombre: A a Z</option></select></label>
       </div>
       <p class="results-count" id="result-count" role="status" aria-live="polite">{{ count($publicProfiles) }} {{ count($publicProfiles) === 1 ? 'perfil' : 'perfiles' }} para descubrir</p>

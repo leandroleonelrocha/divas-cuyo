@@ -2,6 +2,11 @@
 
 @php
     $homeUrl = route('home');
+    $headerIsAdmin = auth()->user()?->isVerifiedAdmin() ?? false;
+    $headerAccountUrl = $headerIsAdmin
+        ? url('/admin')
+        : (auth()->check() ? route('account.dashboard') : route('login.show'));
+    $headerAccountLabel = $headerIsAdmin ? 'Administración' : 'Mi cuenta';
     $headerProvinces = \App\Models\Province::query()->active()->orderBy('name')->get(['slug', 'name']);
     $headerProvince = request()->query('provincia', '');
 @endphp
@@ -45,7 +50,7 @@
                             <span>{{ $frontUser->name }}</span>
                         </summary>
                         <div class="dc-front-user-menu-panel">
-                            <a href="{{ route('account.dashboard') }}">Mi cuenta</a>
+                            <a href="{{ $headerAccountUrl }}">{{ $headerAccountLabel }}</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit">Cerrar sesión</button>
@@ -58,7 +63,7 @@
                     <summary class="dc-front-menu" aria-label="Abrir menú">☰</summary>
                     <div class="dc-front-user-menu-panel">
                         <a href="{{ $homeUrl }}#modelos">Explorar modelos</a>
-                        <a href="{{ auth()->check() ? route('account.dashboard') : route('login.show') }}">Mi cuenta</a>
+                        <a href="{{ $headerAccountUrl }}">{{ $headerAccountLabel }}</a>
                         <a href="{{ route('terms.show') }}">Términos y condiciones</a>
                     </div>
                 </details>

@@ -20,6 +20,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -63,57 +65,95 @@ class ModelProfileResource extends Resource
             ]);
     }
 
+    /** @return array<Component> */
+    private static function summarySchema(): array
+    {
+        return [
+            Grid::make(['default' => 1, 'md' => 3])
+                ->schema([
+                    Section::make('Verificación')
+                        ->icon(Heroicon::OutlinedIdentification)
+                        ->compact()
+                        ->schema([
+                            TextEntry::make('identity_status')
+                                ->label('Identidad')
+                                ->badge()
+                                ->formatStateUsing(fn (string $state): string => static::identityStatusLabel($state))
+                                ->color(fn (string $state): string => static::identityStatusColor($state)),
+                            TextEntry::make('user.email_verified_at')
+                                ->label('Email verificado')
+                                ->state(fn (ModelProfile $record): string => $record->user?->email_verified_at ? 'Verificado' : 'No verificado')
+                                ->badge()
+                                ->color(fn (ModelProfile $record): string => $record->user?->email_verified_at ? 'success' : 'warning'),
+                        ]),
+                    Section::make('Revisión')
+                        ->icon(Heroicon::OutlinedClipboardDocumentCheck)
+                        ->compact()
+                        ->schema([
+                            TextEntry::make('review_status')
+                                ->label('Estado de revisión')
+                                ->badge()
+                                ->formatStateUsing(fn (string $state): string => match ($state) {
+                                    'approved' => 'Aprobado',
+                                    'rejected' => 'Rechazado',
+                                    default => 'Pendiente',
+                                })
+                                ->color(fn (string $state): string => match ($state) {
+                                    'approved' => 'success',
+                                    'rejected' => 'danger',
+                                    default => 'warning',
+                                }),
+                        ]),
+                    Section::make('Publicación')
+                        ->icon(Heroicon::OutlinedGlobeAlt)
+                        ->compact()
+                        ->schema([
+                            TextEntry::make('is_published')
+                                ->label('Estado de publicación')
+                                ->badge()
+                                ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
+                                ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
+                        ]),
+                ]),
+            Grid::make(['default' => 1, 'lg' => 3])
+                ->schema([
+                    Section::make('Datos principales')
+                        ->icon(Heroicon::OutlinedUserCircle)
+                        ->compact()
+                        ->columnSpan(['default' => 1, 'lg' => 2])
+                        ->columns(['default' => 1, 'sm' => 2])
+                        ->schema([
+                            TextEntry::make('stage_name')->label('Nombre artístico')->placeholder('No cargado'),
+                            TextEntry::make('name')->label('Nombre público'),
+                            TextEntry::make('user.email')->label('Email')->copyable(),
+                            TextEntry::make('whatsapp')->label('WhatsApp')->placeholder('No cargado')->copyable(),
+                            TextEntry::make('location')->label('Ubicación')->placeholder('No cargada'),
+                            TextEntry::make('province.name')->label('Provincia')->placeholder('No seleccionada'),
+                            TextEntry::make('locality.name')->label('Localidad')->placeholder('No seleccionada'),
+                        ]),
+                    Section::make('Registro y revisión')
+                        ->icon(Heroicon::OutlinedClock)
+                        ->compact()
+                        ->schema([
+                            TextEntry::make('created_at')->label('Fecha de registro')->dateTime('d/m/Y H:i'),
+                            TextEntry::make('reviewed_at')->label('Revisado el')->dateTime('d/m/Y H:i')->placeholder('Pendiente de revisión'),
+                            TextEntry::make('reviewer.email')->label('Revisado por')->placeholder('Sin revisor'),
+                        ]),
+                ]),
+        ];
+    }
+
     public static function infolist(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Tabs::make('Información del perfil')
-                    ->vertical()
                     ->persistTabInQueryString('perfil-tab')
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Resumen')
                             ->icon(Heroicon::OutlinedUserCircle)
-                            ->schema([
-                                Section::make('Datos de la cuenta')
-                                    ->columns(2)
-                                    ->schema([
-                                        TextEntry::make('name')->label('Nombre público'),
-                                        TextEntry::make('user.email')->label('Email'),
-                                        TextEntry::make('whatsapp')->label('WhatsApp'),
-                                        TextEntry::make('location')->label('Ubicación'),
-                                        TextEntry::make('created_at')->label('Fecha de registro')->dateTime('d/m/Y H:i'),
-                                        TextEntry::make('user.email_verified_at')
-                                            ->label('Email verificado')
-                                            ->state(fn (ModelProfile $record): string => $record->user->email_verified_at ? 'Verificado' : 'No verificado')
-                                            ->badge()
-                                            ->color(fn (ModelProfile $record): string => $record->user->email_verified_at ? 'success' : 'warning'),
-                                    ]),
-                                Section::make('Estado del perfil')
-                                    ->columns(2)
-                                    ->schema([
-                                        TextEntry::make('review_status')
-                                            ->label('Estado de revisión')
-                                            ->badge()
-                                            ->formatStateUsing(fn (string $state): string => match ($state) {
-                                                'approved' => 'Aprobado',
-                                                'rejected' => 'Rechazado',
-                                                default => 'Pendiente',
-                                            })
-                                            ->color(fn (string $state): string => match ($state) {
-                                                'approved' => 'success',
-                                                'rejected' => 'danger',
-                                                default => 'warning',
-                                            }),
-                                        TextEntry::make('is_published')
-                                            ->label('Publicación')
-                                            ->badge()
-                                            ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
-                                            ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
-                                        TextEntry::make('reviewed_at')->label('Revisado el')->dateTime('d/m/Y H:i')->placeholder('Pendiente de revisión'),
-                                        TextEntry::make('reviewer.email')->label('Revisado por')->placeholder('Sin revisor'),
-                                    ]),
-                            ]),
+                            ->schema(static::summarySchema()),
                         Tab::make('Identidad')
                             ->icon(Heroicon::OutlinedIdentification)
                             ->schema([

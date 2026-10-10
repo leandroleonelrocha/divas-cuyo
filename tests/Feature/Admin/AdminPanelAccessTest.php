@@ -19,7 +19,7 @@ class AdminPanelAccessTest extends TestCase
 
         $this->actingAs($admin)
             ->get('/admin')
-            ->assertRedirect('/admin/model-profiles');
+            ->assertOk()->assertSee('Resumen');
 
         $this->actingAs($admin)
             ->get('/admin/model-profiles')

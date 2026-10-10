@@ -3,12 +3,26 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\ModelProfiles\ModelProfileResource;
+use App\Filament\Widgets\ModelProfileStats;
+use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BaseDashboard;
 
 class Dashboard extends BaseDashboard
 {
-    public function mount(): void
+    protected static ?string $title = 'Resumen';
+
+    public function getWidgets(): array
     {
-        $this->redirect(ModelProfileResource::getUrl());
+        return [ModelProfileStats::class];
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('models')
+                ->label('Ver modelos')
+                ->icon('heroicon-o-users')
+                ->url(ModelProfileResource::getUrl()),
+        ];
     }
 }
