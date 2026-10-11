@@ -114,9 +114,9 @@ class DemoModelProfilesSeeder extends Seeder
 
     public function run(): void
     {
-        if (! app()->environment('local')) {
-            return;
-        }
+        // if (! app()->environment('local')) {
+        //     return;
+        // }
 
         foreach (self::PROFILES as $index => $data) {
             $this->seedProfile($data, $index + 1);
