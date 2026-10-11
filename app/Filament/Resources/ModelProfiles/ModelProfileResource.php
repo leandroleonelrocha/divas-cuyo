@@ -16,6 +16,7 @@ use App\Services\ModelProfileModerationService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
@@ -32,6 +33,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 
 class ModelProfileResource extends Resource
@@ -45,6 +47,36 @@ class ModelProfileResource extends Resource
     protected static ?string $modelLabel = 'modelo';
 
     protected static ?string $pluralModelLabel = 'modelos';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = static::pendingReviewCount();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return static::pendingReviewCount() > 0 ? 'warning' : null;
+    }
+
+    public static function getNavigationBadgeTooltip(): string|Htmlable|null
+    {
+        $count = static::pendingReviewCount();
+
+        return $count > 0
+            ? ($count === 1 ? '1 modelo pendiente de revisión' : "{$count} modelos pendientes de revisión")
+            : null;
+    }
+
+    private static function pendingReviewCount(): int
+    {
+        return ModelProfile::query()
+            ->where(fn (Builder $query): Builder => $query
+                ->where('review_status', 'pending')
+                ->orWhere('identity_status', 'pending'))
+            ->count();
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -62,6 +94,27 @@ class ModelProfileResource extends Resource
                     ->label('Ubicación')
                     ->required()
                     ->maxLength(255),
+                Select::make('schedule_availability')
+                    ->label('Disponibilidad horaria')
+                    ->options([
+                        'part_time' => 'Part Time',
+                        'full_time' => 'Full Time',
+                    ])
+                    ->placeholder('Sin definir'),
+                Select::make('gender')
+                    ->label('Género')
+                    ->options([
+                        'female' => 'Femenino',
+                        'trans' => 'Trans',
+                    ])
+                    ->placeholder('Sin definir'),
+                Select::make('depilation')
+                    ->label('Depilación')
+                    ->options([
+                        'full' => 'Full',
+                        'partial' => 'Parcial',
+                    ])
+                    ->placeholder('Sin definir'),
             ]);
     }
 
@@ -202,6 +255,30 @@ class ModelProfileResource extends Resource
                                             ->badge()
                                             ->formatStateUsing(fn (string $state): string => $state === 'unavailable' ? 'No disponible' : 'Disponible')
                                             ->color(fn (string $state): string => $state === 'unavailable' ? 'warning' : 'success'),
+                                        TextEntry::make('schedule_availability')
+                                            ->label('Disponibilidad horaria')
+                                            ->formatStateUsing(fn (?string $state): string => match ($state) {
+                                                'part_time' => 'Part Time',
+                                                'full_time' => 'Full Time',
+                                                default => 'Sin definir',
+                                            })
+                                            ->placeholder('Sin definir'),
+                                        TextEntry::make('gender')
+                                            ->label('Género')
+                                            ->formatStateUsing(fn (?string $state): string => match ($state) {
+                                                'female' => 'Femenino',
+                                                'trans' => 'Trans',
+                                                default => 'Sin definir',
+                                            })
+                                            ->placeholder('Sin definir'),
+                                        TextEntry::make('depilation')
+                                            ->label('Depilación')
+                                            ->formatStateUsing(fn (?string $state): string => match ($state) {
+                                                'full' => 'Full',
+                                                'partial' => 'Parcial',
+                                                default => 'Sin definir',
+                                            })
+                                            ->placeholder('Sin definir'),
                                         TextEntry::make('province.name')->label('Provincia')->placeholder('No seleccionada'),
                                         TextEntry::make('locality.name')->label('Localidad')->placeholder('No seleccionada'),
                                         TextEntry::make('approximate_location_text')->label('Zona aproximada')->placeholder('No cargada'),

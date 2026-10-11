@@ -16,9 +16,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/terminos-y-condiciones', 'legal.terms')->name('terms.show');
+Route::view('/politicas-del-sitio', 'legal.privacy')->name('privacy.show');
 
 Route::get('/', function (PublicModelHomepageProfiles $profiles) {
-    return view('welcome', ['publicProfiles' => $profiles->cards()]);
+    $profilesByProvince = $profiles->groupedByProvince();
+    $publicProfiles = array_merge(...array_map(fn (array $group) => $group['profiles'], $profilesByProvince) ?: [[]]);
+
+    return view('welcome', ['publicProfiles' => $publicProfiles, 'profilesByProvince' => $profilesByProvince]);
 })->name('home');
 
 Route::get('/modelos/fotos/{publicToken}', PublicModelPhotoController::class)

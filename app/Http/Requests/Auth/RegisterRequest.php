@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\LocalityBelongsToProvince;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -26,6 +27,12 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'whatsapp' => ['required', 'string', 'max:50'],
             'province_id' => ['required', 'integer', Rule::exists('provinces', 'id')->where('is_active', true)],
+            'locality_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('localities', 'id')->where('is_active', true),
+                new LocalityBelongsToProvince($this->input('province_id')),
+            ],
             'publication_type_id' => ['required', 'integer', Rule::exists('publication_types', 'id')
                 ->where('is_active', true)
                 ->whereIn('slug', array_keys(config('publication.monthly_prices_ars')))],
@@ -40,6 +47,7 @@ class RegisterRequest extends FormRequest
             'province_id.required' => 'Elegí una provincia.',
             'province_id.integer' => 'La provincia seleccionada no es válida.',
             'province_id.exists' => 'La provincia seleccionada no está disponible.',
+            'locality_id.exists' => 'La ciudad seleccionada no está disponible.',
             'publication_type_id.required' => 'Elegí una modalidad de publicación.',
             'publication_type_id.exists' => 'La modalidad seleccionada no está disponible.',
             'terms_accepted.accepted' => 'Debés aceptar los términos y condiciones.',

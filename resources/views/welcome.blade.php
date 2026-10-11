@@ -8,8 +8,8 @@
   <title>Divas Cuyo — Modelos de la región</title>
   @include('components.front-header-styles')
   <link rel="stylesheet" href="{{ asset('css/model-home.css') }}?v={{ filemtime(public_path('css/model-home.css')) }}">
-  <script src="{{ asset('js/model-home.js') }}" defer></script>
-  <script src="{{ asset('js/home-fire.js') }}" defer></script>
+  <script src="{{ asset('js/model-home.js') }}?v={{ filemtime(public_path('js/model-home.js')) }}" defer></script>
+  <script src="{{ asset('js/home-fire.js') }}?v={{ filemtime(public_path('js/home-fire.js')) }}" defer></script>
 </head>
 <body class="model-home">
   <a class="skip-link" href="#modelos">Saltar a los perfiles</a>
@@ -53,20 +53,20 @@
         </label>
         <label class="control search-control"><span aria-hidden="true">⌕</span><input id="name-filter" type="search" placeholder="Buscar modelo" aria-label="Buscar modelo por nombre" autocomplete="off"></label>
         <div class="filter-tabs" role="group" aria-label="Perfiles a mostrar">
-          <button type="button" class="pill active" data-view="all" aria-pressed="true">Escorts</button>
-          <button type="button" class="pill " data-view="all" aria-pressed="true">Virtual</button>
+          <button type="button" class="pill active" data-view="escort" aria-pressed="true">Escorts</button>
+          <button type="button" class="pill" data-view="virtual" aria-pressed="false">Virtual</button>
           {{-- <button type="button" class="pill" data-view="favorites" aria-pressed="false">♡ Favoritos <span id="favorite-count">0</span></button> --}}
         </div>
-        <a class="explore-link" href="#modelos">EXPLORAR <span aria-hidden="true">↗</span></a>
+        {{-- <a class="explore-link" href="#modelos">EXPLORAR <span aria-hidden="true">↗</span></a> --}}
       </div>
     </section>
 
     <section class="spotlight" id="destacadas" aria-labelledby="spotlight-title">
       <div class="shell spotlight-inner">
-        <div class="spotlight-heading"><p class="eyebrow">EN EL RADAR</p><h2 id="spotlight-title">Destacadas hoy</h2><p>Conocé a las divas más activas de la región.</p></div>
+        <div class="spotlight-heading"><h2 id="spotlight-title">Destacadas hoy</h2><p>Conocé a las divas más activas de la región.</p></div>
         <div class="avatar-scroller" aria-label="Perfiles destacados" tabindex="0">
           @foreach ($publicProfiles as $profile)
-            <a class="avatar-card" href="{{ $profile['url'] }}">
+            <a class="avatar-card" href="{{ $profile['url'] }}" data-service="{{ $profile['service'] ?? 'escort' }}">
               <span class="avatar-ring"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="88" height="88"></span>
               <strong>{{ $profile['name'] }}</strong><span>{{ $profile['location'] }}</span>
             </a>
@@ -84,14 +84,20 @@
         <label class="control sort-control"><span aria-hidden="true">↕</span><select id="sort-order" aria-label="Ordenar perfiles"><option value="recent">Más recientes</option><option value="name">Nombre: A a Z</option></select></label>
       </div>
       <p class="results-count" id="result-count" role="status" aria-live="polite">{{ count($publicProfiles) }} {{ count($publicProfiles) === 1 ? 'perfil' : 'perfiles' }} para descubrir</p>
-      <div class="card-grid" id="profile-grid">
-        @foreach ($publicProfiles as $profile)
-          <article class="profile-card" data-name="{{ $profile['name'] }}" data-province="{{ $profile['province'] }}" data-locality="{{ $profile['locality'] }}" data-key="{{ $profile['url'] }}" data-order="{{ $loop->index }}">
-            <a class="profile-photo" href="{{ $profile['url'] }}" aria-label="Ver portfolio de {{ $profile['name'] }}"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="360" height="480"></a>
-            <span class="profile-label">PORTFOLIO</span>
-            <button class="favorite-button" type="button" aria-label="Guardar a {{ $profile['name'] }} en favoritos" aria-pressed="false" data-name="{{ $profile['name'] }}"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
-            <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }}</h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p><a class="portfolio-link" href="{{ $profile['url'] }}">Ver portfolio <span aria-hidden="true">↗</span></a></div>
-          </article>
+      <div id="profile-groups">
+        @foreach (($profilesByProvince ?? []) as $group)
+          <section class="province-group" data-province-group="{{ $group['slug'] }}" aria-label="Modelos en {{ $group['name'] }}">
+            <h3 class="province-title"><span aria-hidden="true">⌖</span> {{ $group['name'] }} <span class="province-count">{{ count($group['profiles']) }} {{ count($group['profiles']) === 1 ? 'perfil' : 'perfiles' }}</span></h3>
+            <div class="card-grid">
+              @foreach ($group['profiles'] as $profile)
+                <article class="profile-card" data-name="{{ $profile['name'] }}" data-province="{{ $profile['province'] }}" data-locality="{{ $profile['locality'] }}" data-service="{{ $profile['service'] ?? 'escort' }}" data-key="{{ $profile['url'] }}" data-order="{{ $loop->index }}">
+                  <a class="profile-photo" href="{{ $profile['url'] }}" aria-label="Ver portfolio de {{ $profile['name'] }}"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="360" height="480"></a>
+                  <span class="profile-label {{ ($profile['available'] ?? true) ? 'is-available' : 'is-unavailable' }}">{{ ($profile['available'] ?? true) ? 'DISPONIBLE' : 'NO DISPONIBLE' }}</span>
+                  <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }} <svg class="verified-icon" viewBox="0 0 24 24" width="17" height="17" role="img" aria-label="Perfil verificado"><circle cx="12" cy="12" r="10" fill="#3b82f6"/><path d="M8 12.5l2.7 2.7L16.5 9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p><a class="portfolio-link" href="{{ $profile['url'] }}">Ver portfolio <span aria-hidden="true">↗</span></a></div>
+                </article>
+              @endforeach
+            </div>
+          </section>
         @endforeach
       </div>
       <div class="empty-state" id="empty-state" @if (count($publicProfiles) > 0) hidden @endif>

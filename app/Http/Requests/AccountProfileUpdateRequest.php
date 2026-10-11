@@ -36,6 +36,9 @@ class AccountProfileUpdateRequest extends FormRequest
             // Optional for backwards-compatible clients that predate US2; the
             // database default keeps legacy profiles in the available state.
             'availability_status' => ['sometimes', 'in:available,unavailable'],
+            'schedule_availability' => ['sometimes', 'nullable', 'in:part_time,full_time'],
+            'gender' => ['sometimes', 'nullable', 'in:female,trans'],
+            'depilation' => ['sometimes', 'nullable', 'in:full,partial'],
             'province_id' => [
                 'sometimes',
                 'nullable',

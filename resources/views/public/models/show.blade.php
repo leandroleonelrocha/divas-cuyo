@@ -9,7 +9,8 @@
     <meta name="theme-color" content="#0d1013">
     <link rel="stylesheet" href="{{ asset('css/model-home.css') }}?v={{ filemtime(public_path('css/model-home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/model-profile.css') }}?v={{ filemtime(public_path('css/model-profile.css')) }}">
-    <script src="{{ asset('js/model-profile.js') }}" defer></script>
+    <script src="{{ asset('js/model-profile.js') }}?v={{ filemtime(public_path('js/model-profile.js')) }}" defer></script>
+    <noscript><style>.artist-panel[hidden] { display: grid; }</style></noscript>
 </head>
 <body class="model-home model-profile-page">
 <a class="public-profile-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
@@ -29,7 +30,7 @@
             $facts = array_slice($publicProfile->characteristics, 0, 4, true);
             $experienceNames = $tagServices;
         @endphp
-        <nav class="profile-breadcrumb" aria-label="Ruta de navegación">
+        <nav class="profile-breadcrumb artist-topbar" aria-label="Ruta de navegación">
             <span class="dv-crumb-left">
                 <a href="{{ route('home') }}#modelos">← Volver</a>
                 @if ($publicProfile->location !== [])
@@ -48,7 +49,7 @@
             @endif
         </nav>
 
-        <div class="dv-hero">
+        <div class="dv-hero artist-hero">
             <div class="dv-hero-photo">
                 <x-public-model.gallery
                     :primary-photo="$publicProfile->primaryPhoto"
@@ -58,8 +59,10 @@
             </div>
 
             <div class="dv-hero-info">
-                <x-public-model.verified-badge :label="$publicProfile->verifiedLabel" />
-                <h1 id="profile-name">{{ $publicProfile->stageName }}</h1>
+                <div class="artist-title-line">
+                    <h1 id="profile-name">{{ $publicProfile->stageName }}</h1>
+                    <x-public-model.verified-badge :label="$publicProfile->verifiedLabel" />
+                </div>
                 <p class="dv-status-row">
                     <span class="dv-status {{ $isAvailable ? 'is-on' : 'is-off' }}">
                         <span class="dv-dot" aria-hidden="true"></span>{{ $publicProfile->availabilityLabel }}
@@ -69,7 +72,7 @@
                     @endif
                 </p>
                 @if ($publicProfile->publicationTypeLabel !== null || $tagServices !== [])
-                    <ul class="dv-tags" aria-label="Tipos de experiencia">
+                    <ul class="dv-tags artist-chips" aria-label="Especialidades del artista">
                         @if ($publicProfile->publicationTypeLabel !== null)
                             <li class="dv-tag dv-tag-hot">{{ $publicProfile->publicationTypeLabel }}</li>
                         @endif
@@ -91,15 +94,15 @@
                         @endforeach
                     </dl>
                 @endif
-                <div class="dv-cta-row">
-                    <a class="dv-btn dv-btn-primary" href="#gallery-title">Ver galería</a>
-                    <button class="dv-btn dv-btn-ghost" type="button" disabled title="Próximamente">Enviar mensaje</button>
-                    <button class="dv-btn dv-btn-ghost" type="button" disabled title="Próximamente">Agendar videollamada</button>
-                    <button class="dv-fav" type="button" data-favorite-name="{{ $publicProfile->stageName }}" aria-pressed="false" aria-label="Guardar a {{ $publicProfile->stageName }} en favoritas">♥</button>
+                <div class="dv-cta-row artist-actions" role="tablist" aria-label="Contenido del perfil">
+                    <button class="dv-btn dv-btn-primary artist-tab-btn is-active" type="button" role="tab" id="tab-galeria" aria-selected="true" aria-controls="panel-galeria" data-panel-btn="galeria">▧ &nbsp; Galería</button>
+                    {{-- <button class="dv-btn dv-btn-ghost" type="button" disabled title="Próximamente">◯ &nbsp; Comentarios</button> --}}
+                    <button class="dv-btn dv-btn-ghost artist-tab-btn" type="button" role="tab" id="tab-info" aria-selected="false" aria-controls="panel-info" data-panel-btn="info">ⓘ &nbsp; Info</button>
+                    {{-- <button class="dv-fav" type="button" data-favorite-name="{{ $publicProfile->stageName }}" aria-pressed="false" aria-label="Guardar a {{ $publicProfile->stageName }} en favoritas">♡</button> --}}
                 </div>
             </div>
 
-            <aside class="dv-aside" aria-label="Resumen del perfil">
+            {{-- <aside class="dv-aside" aria-label="Resumen del perfil">
                 <div class="dv-aside-status {{ $isAvailable ? 'is-on' : 'is-off' }}">
                     <span class="dv-aside-dot {{ $isAvailable ? 'is-on' : 'is-off' }}" aria-hidden="true"></span>
                     <div>
@@ -126,10 +129,43 @@
                     <span><strong>Verificada</strong><span>{{ $publicProfile->verifiedLabel }}</span></span>
                     <span aria-hidden="true">›</span>
                 </a>
-            </aside>
+            </aside> --}}
         </div>
 
-        <div class="dv-columns">
+        {{-- <div class="artist-profile-tabs" aria-hidden="true">
+            <span class="is-active">Galería</span><span>Comentarios</span><span>Info</span>
+        </div> --}}
+
+        <div class="artist-detail-rows">
+            @if ($isAvailable || $publicProfile->serviceGroups !== [])
+                <section class="artist-detail-row" aria-labelledby="availability-title">
+                    <h2 id="availability-title">◷ <span>Disponibilidad</span></h2>
+                    <div class="artist-pills">
+                        <span class="artist-pill {{ $isAvailable ? 'pill-green' : '' }}">● &nbsp;{{ $isAvailable ? 'Tiempo completo' : 'No disponible' }}</span>
+                        @foreach (array_slice($tagServices, 0, 2) as $tag)
+                            <span class="artist-pill">✧ &nbsp;{{ $tag }}</span>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+        </div>
+
+        <section class="artist-panel" id="panel-galeria" role="tabpanel" aria-labelledby="tab-galeria" data-panel="galeria">
+            <h2 class="artist-panel-title" id="all-photos-title">Todas las fotos de {{ $publicProfile->stageName }} ({{ count($publicProfile->photos) }})</h2>
+            <ul class="photos-all-grid" aria-label="Todas las fotografías de {{ $publicProfile->stageName }}">
+                @foreach ($publicProfile->photos as $photo)
+                    <li class="photo-all-card">
+                        <a class="photo-preview profile-photo-all" href="{{ $photo['url'] }}" target="_blank" rel="noopener" aria-label="Ampliar fotografía {{ $loop->iteration }} de {{ $publicProfile->stageName }}">
+                            <img src="{{ $photo['url'] }}" alt="{{ $photo['alt'] }}"
+                                 width="{{ $photo['width'] }}" height="{{ $photo['height'] }}"
+                                 loading="{{ $loop->first ? 'eager' : 'lazy' }}">
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+
+        <div class="dv-columns artist-columns artist-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info" data-panel="info" hidden>
             @if ($publicProfile->bio !== null)
                 <section class="dv-card" id="dv-sobre-mi" aria-labelledby="bio-title">
                     <h2 id="bio-title">Sobre mí</h2>
@@ -174,7 +210,33 @@
                     </dl>
                 </section>
             @endif
+            @if ($publicProfile->location !== [])
+                <section class="dv-card artist-map-card" aria-labelledby="map-title">
+                    <h2 id="map-title">Mapa</h2>
+                    <p class="artist-map-caption">Zona aproximada: {{ implode(' · ', $publicProfile->location) }}</p>
+                    <div class="artist-map-embed">
+                        <iframe
+                            title="Mapa de la zona aproximada: {{ implode(', ', $publicProfile->location) }}"
+                            src="https://www.google.com/maps?q={{ urlencode(implode(', ', $publicProfile->location)) }}&output=embed"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            allowfullscreen></iframe>
+                    </div>
+                </section>
+            @endif
         </div>
+
+        {{-- @if ($publicProfile->location !== [])
+            <section class="artist-location" aria-labelledby="location-title">
+                <div class="artist-location-copy">
+                    <h2 id="location-title">⌖ &nbsp;Ubicación</h2>
+                    <div class="artist-pills"><span class="artist-pill">⌂ &nbsp; {{ $publicProfile->location[0] }}</span><span class="artist-pill">▣ &nbsp; Eventos</span></div>
+                    <p>Me encuentro en {{ implode(', ', $publicProfile->location) }}. Coordiná visitas y encuentros creativos según disponibilidad.</p>
+                    <a class="dv-btn dv-btn-ghost" href="{{ route('home') }}#modelos">⌖ &nbsp; Ver en el mapa</a>
+                </div>
+                <div class="artist-map" role="img" aria-label="Mapa de ubicación aproximada en {{ implode(', ', $publicProfile->location) }}"><span>⌖</span><b>{{ $publicProfile->location[0] }}</b></div>
+            </section>
+        @endif --}}
 
         @if ($similar !== [])
             <section class="dv-similar" aria-labelledby="similar-title">

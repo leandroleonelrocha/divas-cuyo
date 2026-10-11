@@ -20,7 +20,7 @@ class PublicModelProfileVisibility
     public function candidates(): Builder
     {
         return ModelProfile::query()
-            ->select(['id', 'slug', 'stage_name', 'availability_status', 'province_id', 'locality_id', 'approximate_location_text'])
+            ->select(['id', 'slug', 'stage_name', 'availability_status', 'province_id', 'locality_id', 'publication_type_id', 'approximate_location_text'])
             ->whereNotNull('slug')
             ->whereNotNull('stage_name')
             ->where('stage_name', '!=', '')

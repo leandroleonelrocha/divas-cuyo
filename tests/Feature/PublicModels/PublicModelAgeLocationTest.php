@@ -47,10 +47,14 @@ class PublicModelAgeLocationTest extends TestCase
         $profile->update(['locality_id' => $locality->id, 'approximate_location_text' => '<script>zona()</script>']);
         $response = $this->get('/modelos/mia')->assertOk()->assertSee('Mendoza')->assertDontSee('LOCALIDAD_INCOMPATIBLE')
             ->assertSee('<script>zona()</script>')->assertDontSee('<script>', false);
-        foreach (['DOMICILIO_PRIVADO_123', '-32.1234567', '-68.1234567', 'approximate_latitude', 'approximate_longitude', '<iframe', 'maps.google', 'geolocation'] as $secret) {
+        foreach (['DOMICILIO_PRIVADO_123', '-32.1234567', '-68.1234567', 'approximate_latitude', 'approximate_longitude', 'geolocation'] as $secret) {
             $response->assertDontSee($secret, false);
             $this->assertStringNotContainsString($secret, serialize($response->viewData('publicProfile')));
         }
+        // El mapa embebido solo usa texto público de zona, nunca coordenadas ni domicilio privado.
+        $this->assertStringContainsString('www.google.com/maps?q=', $response->getContent());
+        $this->assertStringNotContainsString('-32.1234567', $response->getContent());
+        $this->assertStringNotContainsString('-68.1234567', $response->getContent());
         $profile->update(['province_id' => null, 'locality_id' => null, 'approximate_location_text' => '   ']);
         $response = $this->get('/modelos/mia')->assertOk()->assertDontSee('Ubicación');
         $this->assertSame([], $response->viewData('publicProfile')->location);

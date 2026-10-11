@@ -58,7 +58,7 @@
                         </div>
                     </details>
                 @endif
-                <a class="dc-front-star" href="{{ $onHome ? '#favoritos' : $homeUrl.'#favoritos' }}" aria-label="Favoritos">★</a>
+                {{-- <a class="dc-front-star" href="{{ $onHome ? '#favoritos' : $homeUrl.'#favoritos' }}" aria-label="Favoritos">★</a> --}}
                 <details class="dc-front-user-menu">
                     <summary class="dc-front-menu" aria-label="Abrir menú">☰</summary>
                     <div class="dc-front-user-menu-panel">

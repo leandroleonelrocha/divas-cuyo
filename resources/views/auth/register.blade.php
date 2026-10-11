@@ -103,7 +103,7 @@
                 <label class="registration-field">Ubicación · Provincia
                     <span class="registration-input-wrap">
                         <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-6.1 7-12A7 7 0 0 0 5 10c0 5.9 7 12 7 12Zm0-9a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
-                        <select name="province_id" required>
+                        <select name="province_id" id="province_id" required>
                             <option value="">Seleccioná una provincia</option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province->id }}" @selected((string) old('province_id') === (string) $province->id)>{{ $province->name }}</option>
@@ -112,6 +112,21 @@
                     </span>
                 </label>
                 @error('province_id')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
+
+                <label class="registration-field">Ubicación · Ciudad
+                    <span class="registration-input-wrap">
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-6.1 7-12A7 7 0 0 0 5 10c0 5.9 7 12 7 12Zm0-9a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+                        <select name="locality_id" id="locality_id">
+                            <option value="">Seleccioná una ciudad</option>
+                            @foreach ($provinces as $province)
+                                @foreach ($province->localities as $locality)
+                                    <option value="{{ $locality->id }}" data-province-id="{{ $province->id }}" @selected((string) old('locality_id') === (string) $locality->id)>{{ $locality->name }}</option>
+                                @endforeach
+                            @endforeach
+                        </select>
+                    </span>
+                </label>
+                @error('locality_id')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 
                 <p class="registration-publication-note">La documentación que presentes para verificar tu identidad y mayoría de edad será privada. Los datos destinados a tu perfil público serán visibles cuando este sea aprobado y publicado.</p>
 
@@ -123,7 +138,7 @@
 
                 <label class="registration-consent">
                     <input type="checkbox" name="privacy_accepted" value="1" required>
-                    <span>Acepto la <a href="#privacidad">política de privacidad</a>.</span>
+                    <span>Acepto la <a href="{{ route('privacy.show') }}" target="_blank" rel="noopener">política de privacidad</a>.</span>
                 </label>
                 @error('privacy_accepted')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 
@@ -134,5 +149,24 @@
             </form>
         </section>
     </main>
+<script>
+    (() => {
+        const province = document.getElementById('province_id');
+        const locality = document.getElementById('locality_id');
+        if (!province || !locality) return;
+
+        const filterLocalities = () => {
+            [...locality.options].forEach((option) => {
+                if (!option.dataset.provinceId) return;
+                const visible = option.dataset.provinceId === province.value;
+                option.hidden = !visible;
+                if (!visible && option.selected) locality.value = '';
+            });
+        };
+
+        province.addEventListener('change', filterLocalities);
+        filterLocalities();
+    })();
+</script>
 </body>
 </html>

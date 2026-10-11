@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
-use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,7 +31,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Divas Cuyo')
             ->brandLogo(fn () => view('components.admin-home-brand'))
             ->brandLogoHeight('2.25rem')
-            ->homeUrl(fn (): string => route('home'))
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -59,13 +57,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->userMenuItems([
-                Action::make('view-public-home')
-                    ->label('Ver home público')
-                    ->icon('heroicon-o-globe-alt')
-                    ->url(fn (): string => route('home'))
-                    ->openUrlInNewTab(),
             ]);
     }
 }

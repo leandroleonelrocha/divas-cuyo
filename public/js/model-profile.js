@@ -33,6 +33,38 @@
     });
   }
 
+  const panelBtns = [...document.querySelectorAll('[data-panel-btn]')];
+  const panels = [...document.querySelectorAll('[data-panel]')];
+  if (panelBtns.length > 0 && panels.length > 0) {
+    const showPanel = (name, scroll = true) => {
+      panelBtns.forEach((btn) => {
+        const active = btn.getAttribute('data-panel-btn') === name;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-selected', String(active));
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-panel') !== name;
+      });
+      if (scroll) {
+        const target = panels.find((p) => p.getAttribute('data-panel') === name);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    panelBtns.forEach((btn) => {
+      btn.addEventListener('click', () => showPanel(btn.getAttribute('data-panel-btn') || 'galeria'));
+    });
+
+    const hash = window.location.hash.replace('#', '');
+    if (['galeria', 'info'].includes(hash)) {
+      showPanel(hash, false);
+    } else if (hash === 'panel-info' || hash === 'dv-servicios' || hash === 'dv-sobre-mi') {
+      showPanel('info', false);
+    } else if (hash === 'panel-galeria' || hash === 'gallery-title') {
+      showPanel('galeria', false);
+    }
+  }
+
   const favKey = 'dv-favs';
   const readFavs = () => {
     try {

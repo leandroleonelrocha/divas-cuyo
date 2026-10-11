@@ -16,6 +16,9 @@ class EditModelProfile extends EditRecord
             'name',
             'whatsapp',
             'location',
+            'schedule_availability',
+            'gender',
+            'depilation',
         ]);
     }
 }

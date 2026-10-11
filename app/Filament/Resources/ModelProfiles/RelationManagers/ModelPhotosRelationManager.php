@@ -10,13 +10,43 @@ use Filament\Forms\Components\Textarea;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ModelPhotosRelationManager extends RelationManager
 {
     protected static string $relationship = 'photos';
 
     protected static ?string $title = 'Fotografías';
+
+    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    {
+        $count = static::pendingCount($ownerRecord);
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getBadgeColor(Model $ownerRecord, string $pageClass): ?string
+    {
+        return static::pendingCount($ownerRecord) > 0 ? 'warning' : null;
+    }
+
+    public static function getBadgeTooltip(Model $ownerRecord, string $pageClass): string|Htmlable|null
+    {
+        $count = static::pendingCount($ownerRecord);
+
+        return $count > 0
+            ? ($count === 1 ? '1 fotografía pendiente de revisión' : "{$count} fotografías pendientes de revisión")
+            : null;
+    }
+
+    private static function pendingCount(Model $ownerRecord): int
+    {
+        return $ownerRecord->photos()
+            ->whereHas('latestVersion', fn (Builder $query): Builder => $query->where('status', ModelPhotoVersionStatus::Pending))
+            ->count();
+    }
 
     public function table(Table $table): Table
     {

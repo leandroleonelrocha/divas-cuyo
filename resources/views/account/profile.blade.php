@@ -91,6 +91,27 @@
                         <option value="unavailable" @selected(old('availability_status', $profile->availability_status) === 'unavailable')>No disponible</option>
                     </select>
                 </label>
+                <label>Disponibilidad horaria
+                    <select name="schedule_availability">
+                        <option value="">Seleccioná una opción</option>
+                        <option value="part_time" @selected(old('schedule_availability', $profile->schedule_availability) === 'part_time')>Part Time</option>
+                        <option value="full_time" @selected(old('schedule_availability', $profile->schedule_availability) === 'full_time')>Full Time</option>
+                    </select>
+                </label>
+                <label>Género
+                    <select name="gender">
+                        <option value="">Seleccioná una opción</option>
+                        <option value="female" @selected(old('gender', $profile->gender) === 'female')>Femenino</option>
+                        <option value="trans" @selected(old('gender', $profile->gender) === 'trans')>Trans</option>
+                    </select>
+                </label>
+                <label>Depilación
+                    <select name="depilation">
+                        <option value="">Seleccioná una opción</option>
+                        <option value="full" @selected(old('depilation', $profile->depilation) === 'full')>Full</option>
+                        <option value="partial" @selected(old('depilation', $profile->depilation) === 'partial')>Parcial</option>
+                    </select>
+                </label>
                 <label>Provincia
                     <select name="province_id" id="province_id">
                         <option value="">Seleccioná una provincia</option>

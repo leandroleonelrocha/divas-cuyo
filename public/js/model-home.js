@@ -1,15 +1,19 @@
 (() => {
-  const grid = document.getElementById('profile-grid');
-  if (!grid) return;
-  const cards = [...grid.querySelectorAll('.profile-card')];
+  const groupsContainer = document.getElementById('profile-groups');
+  if (!groupsContainer) return;
+  const grids = [...groupsContainer.querySelectorAll('.card-grid')];
+  const groups = [...groupsContainer.querySelectorAll('.province-group')];
+  const cards = [...groupsContainer.querySelectorAll('.profile-card')];
   const province = document.getElementById('province-filter');
   const locality = document.getElementById('locality-filter');
   const search = document.getElementById('name-filter');
   const sort = document.getElementById('sort-order');
   const tabs = [...document.querySelectorAll('[data-view]')];
+  const avatarCards = [...document.querySelectorAll('.avatar-card[data-service]')];
   const key = 'divas-cuyo:model-favorites:v1';
   let favorites = new Set();
   let onlyFavorites = location.hash === '#favoritos';
+  let serviceView = 'escort';
   try {
     const saved = JSON.parse(localStorage.getItem(key) || '[]');
     if (Array.isArray(saved)) favorites = new Set(saved.filter(value => typeof value === 'string'));
@@ -25,6 +29,9 @@
   }
   function render() {
     let count = 0;
+    avatarCards.forEach(avatar => {
+      avatar.hidden = avatar.dataset.service !== serviceView;
+    });
     cards.forEach(card => {
       const saved = favorites.has(card.dataset.key);
       const button = card.querySelector('.favorite-button');
@@ -34,11 +41,16 @@
       }
       card.hidden = !((!province.value || card.dataset.province === province.value) &&
         (!locality.value || card.dataset.locality === locality.value) &&
+        (card.dataset.service || 'escort') === serviceView &&
         normalize(card.dataset.name).includes(normalize(search.value.trim())) && (!onlyFavorites || saved));
       if (!card.hidden) count++;
     });
+    groups.forEach(group => {
+      const visible = [...group.querySelectorAll('.profile-card')].some(card => !card.hidden);
+      group.hidden = !visible;
+    });
     tabs.forEach(tab => {
-      const active = (tab.dataset.view === 'favorites') === onlyFavorites;
+      const active = tab.dataset.view === 'favorites' ? onlyFavorites : (!onlyFavorites && tab.dataset.view === serviceView);
       tab.classList.toggle('active', active);
       tab.setAttribute('aria-pressed', String(active));
     });
@@ -47,7 +59,10 @@
     const resultCount = document.getElementById('result-count');
     if (resultCount) resultCount.textContent = `${count} ${count === 1 ? 'perfil' : 'perfiles'} ${onlyFavorites ? 'en favoritos' : 'para descubrir'}`;
     const profilesTitle = document.getElementById('profiles-title');
-    if (profilesTitle) profilesTitle.textContent = onlyFavorites ? 'Tus modelos favoritos' : province.value ? `Modelos en ${province.selectedOptions[0].textContent}` : 'Modelos de la región';
+    if (profilesTitle) {
+      const place = province.value ? province.selectedOptions[0].textContent : 'la región';
+      profilesTitle.textContent = onlyFavorites ? 'Tus modelos favoritos' : serviceView === 'virtual' ? `Modelos virtuales de ${place}` : `Escorts de ${place}`;
+    }
     const emptyState = document.getElementById('empty-state');
     if (emptyState) emptyState.hidden = count > 0;
     if (cards.length) {
@@ -64,7 +79,15 @@
   province.addEventListener('change', () => { updateCities(); render(); });
   locality.addEventListener('change', render);
   search.addEventListener('input', render);
-  tabs.forEach(tab => tab.addEventListener('click', () => { onlyFavorites = tab.dataset.view === 'favorites'; render(); }));
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    if (tab.dataset.view === 'favorites') {
+      onlyFavorites = true;
+    } else {
+      serviceView = tab.dataset.view;
+      onlyFavorites = false;
+    }
+    render();
+  }));
   cards.forEach(card => card.querySelector('.favorite-button')?.addEventListener('click', () => {
     const id = card.dataset.key;
     favorites.has(id) ? favorites.delete(id) : favorites.add(id);
@@ -73,7 +96,9 @@
     render();
   }));
   sort?.addEventListener('change', () => {
-    [...cards].sort((a, b) => sort.value === 'name' ? a.dataset.name.localeCompare(b.dataset.name, 'es') : Number(a.dataset.order) - Number(b.dataset.order)).forEach(card => grid.append(card));
+    grids.forEach(grid => {
+      [...grid.querySelectorAll('.profile-card')].sort((a, b) => sort.value === 'name' ? a.dataset.name.localeCompare(b.dataset.name, 'es') : Number(a.dataset.order) - Number(b.dataset.order)).forEach(card => grid.append(card));
+    });
   });
   document.getElementById('reset-filters')?.addEventListener('click', () => {
     province.value = ''; search.value = ''; onlyFavorites = false; updateCities(); render();
@@ -83,7 +108,10 @@
     document.getElementById('modelos').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   });
   if (onlyFavorites) document.getElementById('modelos').scrollIntoView();
-  const requestedProvince = new URLSearchParams(location.search).get('provincia');
+  const params = new URLSearchParams(location.search);
+  const requestedService = params.get('tipo');
+  if (requestedService === 'virtual' || requestedService === 'escort') serviceView = requestedService;
+  const requestedProvince = params.get('provincia');
   if ([...province.options].some(option => option.value === requestedProvince)) province.value = requestedProvince;
   updateCities(); render();
 })();

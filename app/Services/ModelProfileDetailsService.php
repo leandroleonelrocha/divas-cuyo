@@ -48,6 +48,15 @@ class ModelProfileDetailsService
                 'availability_status' => $data['availability_status']
                     ?? $lockedProfile->availability_status
                     ?? 'available',
+                'schedule_availability' => array_key_exists('schedule_availability', $data)
+                    ? $data['schedule_availability']
+                    : $lockedProfile->schedule_availability,
+                'gender' => array_key_exists('gender', $data)
+                    ? $data['gender']
+                    : $lockedProfile->gender,
+                'depilation' => array_key_exists('depilation', $data)
+                    ? $data['depilation']
+                    : $lockedProfile->depilation,
                 'province_id' => array_key_exists('province_id', $data)
                     ? $data['province_id']
                     : $lockedProfile->province_id,

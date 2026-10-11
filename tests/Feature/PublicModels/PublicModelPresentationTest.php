@@ -20,14 +20,23 @@ class PublicModelPresentationTest extends TestCase
         $this->assertSame(1, preg_match_all('/<h1\b/', $html));
         $this->assertMatchesRegularExpression('/<ul\b[^>]*class="photos-grid"[^>]*aria-label="Galería de fotografías"/', $html);
         $this->assertSame(1, preg_match_all('/<li\b[^>]*class="photo-card"/', $html));
-        $this->assertSame(2, preg_match_all('/<img\b[^>]*\balt="Foto de Mia"/', $html));
+        // Hero (principal + miniatura) + panel "Todas las fotos": 2N+1 imgs con el mismo alt.
+        $photoCount = count($response->viewData('publicProfile')->photos);
+        $this->assertSame(1 + 2 * $photoCount, preg_match_all('/<img\b[^>]*\balt="Foto de Mia"/', $html));
+        // Paneles Galería/Info conmutables por pestañas.
+        $this->assertStringContainsString('id="panel-galeria"', $html);
+        $this->assertStringContainsString('id="panel-info"', $html);
+        $this->assertStringContainsString('Todas las fotos de Mia', $html);
         $this->assertStringNotContainsString('Características', $html);
         $this->assertStringNotContainsString('Sobre mí', $html);
         $this->assertStringNotContainsString('Modalidad', $html);
         $this->assertStringNotContainsString('Servicios', $html);
-        foreach (['tel:', 'wa.me', 'whatsapp', 'Contacto', 'Mapa', 'href="#"'] as $unavailable) {
+        foreach (['tel:', 'wa.me', 'whatsapp', 'Contacto', 'href="#"'] as $unavailable) {
             $this->assertStringNotContainsString($unavailable, $html);
         }
+        // El mapa usa solo la zona pública aproximada (sin coordenadas ni domicilio privado).
+        $this->assertStringContainsString('Zona aproximada', $html);
+        $this->assertStringContainsString('www.google.com/maps?q=', $html);
     }
 
     public function test_not_found_page_keeps_generic_semantic_structure(): void

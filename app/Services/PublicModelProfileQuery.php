@@ -37,7 +37,8 @@ class PublicModelProfileQuery
 
         $profile = $this->visibility->candidates()->whereKey($reservation->model_profile_id)
             ->addSelect(['height_cm', 'weight_kg', 'measurements', 'eye_color', 'hair_color',
-                'skin_color', 'body_type', 'nationality', 'show_age', 'public_age', 'current_bio_id', 'publication_type_id'])
+                'skin_color', 'body_type', 'nationality', 'show_age', 'public_age', 'current_bio_id', 'publication_type_id',
+                'schedule_availability', 'gender', 'depilation'])
             ->with(['publicationType:id,slug',
                 'services' => fn (BelongsToMany $services) => $services
                     ->where('services.is_active', true)
@@ -146,6 +147,30 @@ class PublicModelProfileQuery
             if ($profile->$field !== null && trim($profile->$field) !== '') {
                 $values[$label] = trim($profile->$field);
             }
+        }
+        $schedule = match ($profile->schedule_availability) {
+            'part_time' => 'Part Time',
+            'full_time' => 'Full Time',
+            default => null,
+        };
+        if ($schedule !== null) {
+            $values['Disponibilidad horaria'] = $schedule;
+        }
+        $gender = match ($profile->gender) {
+            'female' => 'Femenino',
+            'trans' => 'Trans',
+            default => null,
+        };
+        if ($gender !== null) {
+            $values['Género'] = $gender;
+        }
+        $depilation = match ($profile->depilation) {
+            'full' => 'Full',
+            'partial' => 'Parcial',
+            default => null,
+        };
+        if ($depilation !== null) {
+            $values['Depilación'] = $depilation;
         }
 
         return $values;
