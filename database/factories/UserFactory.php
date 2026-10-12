@@ -38,12 +38,12 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'whatsapp' => fake()->numerify('+54 9 261 ### ####'),
-            'location' => fake()->city(),
+            'whatsapp' => $this->faker->numerify('+54 9 261 ### ####'),
+            'location' => $this->faker->city(),
             'is_published' => false,
             'remember_token' => Str::random(10),
         ];

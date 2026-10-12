@@ -13,7 +13,7 @@ class ProvinceFactory extends Factory
 
     public function definition(): array
     {
-        $name = fake()->unique()->state();
+        $name = $this->faker->unique()->state();
 
         return [
             'name' => $name,
