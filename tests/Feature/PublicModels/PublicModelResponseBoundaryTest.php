@@ -24,7 +24,7 @@ class PublicModelResponseBoundaryTest extends TestCase
         DB::disableQueryLog();
         $response->assertViewHas('publicProfile', fn ($data) => $data instanceof PublicModelProfileViewModel);
         $data = $response->viewData('publicProfile');
-        $this->assertSame(['stageName', 'canonicalUrl', 'verifiedLabel', 'availabilityLabel', 'location', 'primaryPhoto', 'photos', 'characteristics', 'bio', 'publicationTypeLabel', 'serviceGroups', 'title', 'description'], array_keys(get_object_vars($data)));
+        $this->assertSame(['stageName', 'canonicalUrl', 'verifiedLabel', 'availabilityLabel', 'location', 'primaryPhoto', 'photos', 'characteristics', 'bio', 'publicationTypeLabel', 'serviceGroups', 'title', 'description', 'whatsappUrl', 'scheduleLabel', 'rates'], array_keys(get_object_vars($data)));
         foreach (['SECRET_FIRST', 'SECRET_LAST', '1981-11-23', 'SECRET_PHONE', 'SECRET_LEGACY', 'SECRET_CONTACT', 'SECRET_ADDRESS', $profile->user->email, 'user_id', 'model_profile_id', 'reviewed_by', 'rejection_reason', 'storage_path', 'identity_status', 'review_status', '-32.1234567', '-68.1234567'] as $secret) {
             $response->assertDontSee($secret, false);
             $this->assertStringNotContainsString($secret, json_encode($data));

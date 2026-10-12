@@ -115,6 +115,29 @@ class ModelProfileResource extends Resource
                         'partial' => 'Parcial',
                     ])
                     ->placeholder('Sin definir'),
+                Select::make('rate_visibility')
+                    ->label('Mostrar precios')
+                    ->options([
+                        'consult' => 'Consultar',
+                        'published' => 'Publicar valores',
+                    ])
+                    ->placeholder('Consultar'),
+                TextInput::make('rate_30min')
+                    ->label('30 minutos')
+                    ->numeric()
+                    ->minValue(0),
+                Select::make('rate_30min_currency')
+                    ->label('Moneda 30 min')
+                    ->options(['ARS' => 'ARS', 'USD' => 'USD'])
+                    ->placeholder('Sin definir'),
+                TextInput::make('rate_60min')
+                    ->label('1 hora')
+                    ->numeric()
+                    ->minValue(0),
+                Select::make('rate_60min_currency')
+                    ->label('Moneda 1 hora')
+                    ->options(['ARS' => 'ARS', 'USD' => 'USD'])
+                    ->placeholder('Sin definir'),
             ]);
     }
 
@@ -279,6 +302,22 @@ class ModelProfileResource extends Resource
                                                 default => 'Sin definir',
                                             })
                                             ->placeholder('Sin definir'),
+                                        TextEntry::make('rate_visibility')
+                                            ->label('Precios')
+                                            ->formatStateUsing(fn (?string $state): string => $state === 'published' ? 'Publica valores' : 'Consultar')
+                                            ->placeholder('Consultar'),
+                                        TextEntry::make('rate_30min')
+                                            ->label('30 minutos')
+                                            ->formatStateUsing(fn ($state, ModelProfile $record): string => $state === null
+                                                ? 'Sin definir'
+                                                : ($record->rate_30min_currency === 'USD' ? 'USD ' : '$ ').number_format((float) $state, 0, ',', '.'))
+                                            ->placeholder('Sin definir'),
+                                        TextEntry::make('rate_60min')
+                                            ->label('1 hora')
+                                            ->formatStateUsing(fn ($state, ModelProfile $record): string => $state === null
+                                                ? 'Sin definir'
+                                                : ($record->rate_60min_currency === 'USD' ? 'USD ' : '$ ').number_format((float) $state, 0, ',', '.'))
+                                            ->placeholder('Sin definir'),
                                         TextEntry::make('province.name')->label('Provincia')->placeholder('No seleccionada'),
                                         TextEntry::make('locality.name')->label('Localidad')->placeholder('No seleccionada'),
                                         TextEntry::make('approximate_location_text')->label('Zona aproximada')->placeholder('No cargada'),
@@ -319,7 +358,9 @@ class ModelProfileResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with([
+        return parent::getEloquentQuery()
+            ->whereDoesntHave('user', fn (Builder $query): Builder => $query->where('is_admin', true))
+            ->with([
             'user:id,email,email_verified_at',
             'reviewer:id,email',
             'documents',

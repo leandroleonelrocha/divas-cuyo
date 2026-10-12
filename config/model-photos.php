@@ -28,9 +28,9 @@ return [
     'watermark' => [
         'enabled' => true,
         'asset' => 'public/images/watermark-divas-cuyo.png',
-        'position' => 'bottom-right',
+        'position' => 'center',
         'opacity' => 38,
-        'relative_width' => 0.20,
+        'relative_width' => 0.35,
         'margin' => 24,
     ],
     'path_prefix' => 'model-profiles',

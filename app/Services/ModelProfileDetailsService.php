@@ -57,6 +57,19 @@ class ModelProfileDetailsService
                 'depilation' => array_key_exists('depilation', $data)
                     ? $data['depilation']
                     : $lockedProfile->depilation,
+                'rate_visibility' => $data['rate_visibility'] ?? $lockedProfile->rate_visibility ?? 'consult',
+                'rate_30min' => array_key_exists('rate_30min', $data)
+                    ? $data['rate_30min']
+                    : $lockedProfile->rate_30min,
+                'rate_30min_currency' => array_key_exists('rate_30min_currency', $data)
+                    ? $data['rate_30min_currency']
+                    : $lockedProfile->rate_30min_currency,
+                'rate_60min' => array_key_exists('rate_60min', $data)
+                    ? $data['rate_60min']
+                    : $lockedProfile->rate_60min,
+                'rate_60min_currency' => array_key_exists('rate_60min_currency', $data)
+                    ? $data['rate_60min_currency']
+                    : $lockedProfile->rate_60min_currency,
                 'province_id' => array_key_exists('province_id', $data)
                     ? $data['province_id']
                     : $lockedProfile->province_id,

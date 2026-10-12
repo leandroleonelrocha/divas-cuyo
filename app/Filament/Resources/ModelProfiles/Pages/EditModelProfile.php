@@ -19,6 +19,11 @@ class EditModelProfile extends EditRecord
             'schedule_availability',
             'gender',
             'depilation',
+            'rate_visibility',
+            'rate_30min',
+            'rate_30min_currency',
+            'rate_60min',
+            'rate_60min_currency',
         ]);
     }
 }

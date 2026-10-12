@@ -31,9 +31,12 @@ class PublicModelPresentationTest extends TestCase
         $this->assertStringNotContainsString('Sobre mí', $html);
         $this->assertStringNotContainsString('Modalidad', $html);
         $this->assertStringNotContainsString('Servicios', $html);
-        foreach (['tel:', 'wa.me', 'whatsapp', 'Contacto', 'href="#"'] as $unavailable) {
+        foreach (['tel:', 'whatsapp', 'href="#"'] as $unavailable) {
             $this->assertStringNotContainsString($unavailable, $html);
         }
+        // El WhatsApp del perfil se expone solo como enlace wa.me (sin el número en crudo).
+        $this->assertStringContainsString('wa.me/', $html);
+        $this->assertStringContainsString('por WhatsApp', $html);
         // El mapa usa solo la zona pública aproximada (sin coordenadas ni domicilio privado).
         $this->assertStringContainsString('Zona aproximada', $html);
         $this->assertStringContainsString('www.google.com/maps?q=', $html);

@@ -112,6 +112,37 @@
                         <option value="partial" @selected(old('depilation', $profile->depilation) === 'partial')>Parcial</option>
                     </select>
                 </label>
+                <fieldset class="profile-rate-group" id="rate-group">
+                    <legend>Precios</legend>
+                    <label>Mostrar precios
+                        <select name="rate_visibility" id="rate_visibility">
+                            <option value="consult" @selected(old('rate_visibility', $profile->rate_visibility ?? 'consult') === 'consult')>Consultar</option>
+                            <option value="published" @selected(old('rate_visibility', $profile->rate_visibility ?? 'consult') === 'published')>Publicar mis valores</option>
+                        </select>
+                    </label>
+                    <div class="profile-rate-row">
+                        <label>30 minutos
+                            <input type="number" name="rate_30min" id="rate_30min" step="0.01" min="0" value="{{ old('rate_30min', $profile->rate_30min) }}" placeholder="Ej: 20000">
+                        </label>
+                        <label>Moneda
+                            <select name="rate_30min_currency">
+                                <option value="ARS" @selected(old('rate_30min_currency', $profile->rate_30min_currency ?? 'ARS') === 'ARS')>Pesos (ARS)</option>
+                                <option value="USD" @selected(old('rate_30min_currency', $profile->rate_30min_currency) === 'USD')>Dólares (USD)</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="profile-rate-row">
+                        <label>1 hora
+                            <input type="number" name="rate_60min" id="rate_60min" step="0.01" min="0" value="{{ old('rate_60min', $profile->rate_60min) }}" placeholder="Ej: 35000">
+                        </label>
+                        <label>Moneda
+                            <select name="rate_60min_currency">
+                                <option value="ARS" @selected(old('rate_60min_currency', $profile->rate_60min_currency ?? 'ARS') === 'ARS')>Pesos (ARS)</option>
+                                <option value="USD" @selected(old('rate_60min_currency', $profile->rate_60min_currency) === 'USD')>Dólares (USD)</option>
+                            </select>
+                        </label>
+                    </div>
+                </fieldset>
                 <label>Provincia
                     <select name="province_id" id="province_id">
                         <option value="">Seleccioná una provincia</option>
@@ -132,12 +163,6 @@
                 </label>
                 <label>Zona aproximada
                     <input name="approximate_location_text" value="{{ old('approximate_location_text', $profile->approximate_location_text) }}" maxlength="255" placeholder="Barrio, zona o calles cercanas">
-                </label>
-                <label>Latitud aproximada
-                    <input type="number" name="approximate_latitude" step="0.0000001" min="-90" max="90" value="{{ old('approximate_latitude', $profile->approximate_latitude) }}">
-                </label>
-                <label>Longitud aproximada
-                    <input type="number" name="approximate_longitude" step="0.0000001" min="-180" max="180" value="{{ old('approximate_longitude', $profile->approximate_longitude) }}">
                 </label>
             </div>
             <p class="profile-help">La edad pública puede ser como máximo tu edad real y hasta cinco años menor. La ubicación es aproximada; no ingreses un domicilio exacto.</p>
@@ -321,6 +346,20 @@
 
         province.addEventListener('change', filterLocalities);
         filterLocalities();
+    })();
+</script>
+<script>
+    (() => {
+        const visibility = document.getElementById('rate_visibility');
+        const amounts = [document.getElementById('rate_30min'), document.getElementById('rate_60min')].filter(Boolean);
+        if (!visibility || amounts.length === 0) return;
+
+        const toggle = () => amounts.forEach((input) => {
+            input.disabled = visibility.value !== 'published';
+        });
+
+        visibility.addEventListener('change', toggle);
+        toggle();
     })();
 </script>
 <script>

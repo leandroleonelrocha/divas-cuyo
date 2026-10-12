@@ -20,15 +20,10 @@
         @php
             $similar = $similarProfiles ?? [];
             $isAvailable = $publicProfile->availabilityLabel === 'Disponible';
-            $tagServices = [];
-            foreach ($publicProfile->serviceGroups as $groupServices) {
-                foreach ($groupServices as $serviceName) {
-                    if (count($tagServices) >= 4) break 2;
-                    $tagServices[] = $serviceName;
-                }
-            }
-            $facts = array_slice($publicProfile->characteristics, 0, 4, true);
-            $experienceNames = $tagServices;
+            $galleryPhotos = array_values(array_filter(
+                $publicProfile->photos,
+                fn (array $photo): bool => $photo['url'] !== $publicProfile->primaryPhoto['url']
+            ));
         @endphp
         <nav class="profile-breadcrumb artist-topbar" aria-label="Ruta de navegación">
             <span class="dv-crumb-left">
@@ -62,6 +57,9 @@
                 <div class="artist-title-line">
                     <h1 id="profile-name">{{ $publicProfile->stageName }}</h1>
                     <x-public-model.verified-badge :label="$publicProfile->verifiedLabel" />
+                    @if ($publicProfile->whatsappUrl !== null)
+                        <a class="dv-wa" href="{{ $publicProfile->whatsappUrl }}" target="_blank" rel="noopener" aria-label="Hablar con {{ $publicProfile->stageName }} por WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+                    @endif
                 </div>
                 <p class="dv-status-row">
                     <span class="dv-status {{ $isAvailable ? 'is-on' : 'is-off' }}">
@@ -71,35 +69,22 @@
                         <span class="dv-loc">⌖ {{ implode(' · ', $publicProfile->location) }}</span>
                     @endif
                 </p>
-                @if ($publicProfile->publicationTypeLabel !== null || $tagServices !== [])
-                    <ul class="dv-tags artist-chips" aria-label="Especialidades del artista">
-                        @if ($publicProfile->publicationTypeLabel !== null)
-                            <li class="dv-tag dv-tag-hot">{{ $publicProfile->publicationTypeLabel }}</li>
-                        @endif
-                        @foreach ($tagServices as $tag)
-                            <li class="dv-tag">{{ $tag }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-                @if ($publicProfile->bio !== null)
-                    <p class="dv-lead">{{ \Illuminate\Support\Str::limit($publicProfile->bio, 220) }}</p>
-                @endif
-                @if ($facts !== [])
-                    <dl class="dv-quickfacts" aria-label="Datos principales">
-                        @foreach ($facts as $label => $value)
-                            <div>
-                                <dt>{{ $label }}</dt>
-                                <dd>{{ $value }}</dd>
-                            </div>
-                        @endforeach
-                    </dl>
-                @endif
                 <div class="dv-cta-row artist-actions" role="tablist" aria-label="Contenido del perfil">
                     <button class="dv-btn dv-btn-primary artist-tab-btn is-active" type="button" role="tab" id="tab-galeria" aria-selected="true" aria-controls="panel-galeria" data-panel-btn="galeria">▧ &nbsp; Galería</button>
                     {{-- <button class="dv-btn dv-btn-ghost" type="button" disabled title="Próximamente">◯ &nbsp; Comentarios</button> --}}
                     <button class="dv-btn dv-btn-ghost artist-tab-btn" type="button" role="tab" id="tab-info" aria-selected="false" aria-controls="panel-info" data-panel-btn="info">ⓘ &nbsp; Info</button>
                     {{-- <button class="dv-fav" type="button" data-favorite-name="{{ $publicProfile->stageName }}" aria-pressed="false" aria-label="Guardar a {{ $publicProfile->stageName }} en favoritas">♡</button> --}}
                 </div>
+                @if ($publicProfile->availabilityLabel !== null || $publicProfile->rates !== [])
+                    <div class="artist-quick-info" aria-label="Información rápida">
+                        <div class="artist-quick-items">
+                            @if ($publicProfile->scheduleLabel !== null || $publicProfile->availabilityLabel !== null)
+                                <div class="artist-quick-item"><span class="artist-quick-icon" aria-hidden="true">◷</span><span><strong>Horario</strong><small>{{ $publicProfile->scheduleLabel ?? 'Full time' }}</small></span></div>
+                            @endif
+                            <div class="artist-quick-item"><span class="artist-quick-icon" aria-hidden="true">▣</span><span><strong>Tarifa</strong><small>{{ $publicProfile->rates !== [] ? implode(' · ', array_map(fn (array $rate): string => $rate['label'].' · '.$rate['price'], $publicProfile->rates)) : 'Consultar' }}</small></span></div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             {{-- <aside class="dv-aside" aria-label="Resumen del perfil">
@@ -135,25 +120,11 @@
         {{-- <div class="artist-profile-tabs" aria-hidden="true">
             <span class="is-active">Galería</span><span>Comentarios</span><span>Info</span>
         </div> --}}
-
-        <div class="artist-detail-rows">
-            @if ($isAvailable || $publicProfile->serviceGroups !== [])
-                <section class="artist-detail-row" aria-labelledby="availability-title">
-                    <h2 id="availability-title">◷ <span>Disponibilidad</span></h2>
-                    <div class="artist-pills">
-                        <span class="artist-pill {{ $isAvailable ? 'pill-green' : '' }}">● &nbsp;{{ $isAvailable ? 'Tiempo completo' : 'No disponible' }}</span>
-                        @foreach (array_slice($tagServices, 0, 2) as $tag)
-                            <span class="artist-pill">✧ &nbsp;{{ $tag }}</span>
-                        @endforeach
-                    </div>
-                </section>
-            @endif
-        </div>
-
+        
         <section class="artist-panel" id="panel-galeria" role="tabpanel" aria-labelledby="tab-galeria" data-panel="galeria">
-            <h2 class="artist-panel-title" id="all-photos-title">Todas las fotos de {{ $publicProfile->stageName }} ({{ count($publicProfile->photos) }})</h2>
+            <h2 class="artist-panel-title" id="all-photos-title">Todas las fotos de {{ $publicProfile->stageName }} ({{ count($galleryPhotos) }})</h2>
             <ul class="photos-all-grid" aria-label="Todas las fotografías de {{ $publicProfile->stageName }}">
-                @foreach ($publicProfile->photos as $photo)
+                @foreach ($galleryPhotos as $photo)
                     <li class="photo-all-card">
                         <a class="photo-preview profile-photo-all" href="{{ $photo['url'] }}" target="_blank" rel="noopener" aria-label="Ampliar fotografía {{ $loop->iteration }} de {{ $publicProfile->stageName }}">
                             <img src="{{ $photo['url'] }}" alt="{{ $photo['alt'] }}"
@@ -165,54 +136,63 @@
             </ul>
         </section>
 
-        <div class="dv-columns artist-columns artist-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info" data-panel="info" hidden>
-            @if ($publicProfile->bio !== null)
-                <section class="dv-card" id="dv-sobre-mi" aria-labelledby="bio-title">
-                    <h2 id="bio-title">Sobre mí</h2>
-                    <p class="profile-bio-preview">{!! nl2br(e($publicProfile->bio)) !!}</p>
-                </section>
-            @endif
-            @if ($publicProfile->characteristics !== [])
-                <section class="dv-card" aria-labelledby="characteristics-title">
-                    <h2 id="characteristics-title">Características</h2>
-                    <dl class="dv-feats">
-                        @foreach ($publicProfile->characteristics as $label => $value)
-                            <div class="dv-feat">
-                                <dt>{{ $label }}</dt>
-                                <dd>{{ $value }}</dd>
-                            </div>
-                        @endforeach
-                    </dl>
-                </section>
-            @endif
-            @if ($publicProfile->serviceGroups !== [])
-                <section class="dv-card" id="dv-servicios" aria-labelledby="services-title">
-                    <h2 id="services-title">Servicios y detalles</h2>
-                    <dl class="dv-servicerows">
-                        @if ($publicProfile->publicationTypeLabel !== null)
-                            <div>
-                                <dt>Tipo de publicación</dt>
-                                <dd>{{ $publicProfile->publicationTypeLabel }}</dd>
-                            </div>
-                        @endif
-                        @foreach ($publicProfile->serviceGroups as $group => $services)
-                            <div>
-                                <dt>{{ $group }}</dt>
-                                <dd>{{ implode(', ', $services) }}</dd>
-                            </div>
-                        @endforeach
-                        @if ($publicProfile->location !== [])
-                            <div>
-                                <dt>Zona de atención</dt>
-                                <dd>{{ implode(' · ', $publicProfile->location) }}</dd>
-                            </div>
-                        @endif
-                    </dl>
-                </section>
+        <div class="artist-info-grid artist-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info" data-panel="info" hidden>
+            @if ($publicProfile->bio !== null || $publicProfile->serviceGroups !== [] || $publicProfile->characteristics !== [])
+                <div class="artist-info-main">
+                    @if ($publicProfile->bio !== null)
+                        <section class="dv-card" id="dv-sobre-mi" aria-labelledby="bio-title">
+                            <h2 id="bio-title"><span class="dv-card-ico" aria-hidden="true">✎</span> Sobre mí</h2>
+                            <p class="profile-bio-preview">{!! nl2br(e($publicProfile->bio)) !!}</p>
+                        </section>
+                    @endif
+                    @if ($publicProfile->serviceGroups !== [])
+                        <section class="dv-card" id="dv-servicios" aria-labelledby="services-title">
+                            <h2 id="services-title"><span class="dv-card-ico" aria-hidden="true">✧</span> Mis servicios</h2>
+                            @if ($publicProfile->publicationTypeLabel !== null)
+                                <p class="dv-modality"><span class="dv-modality-badge">★ {{ $publicProfile->publicationTypeLabel }}</span></p>
+                            @endif
+                            <dl class="dv-servicerows">
+                                @foreach ($publicProfile->serviceGroups as $group => $services)
+                                    <div>
+                                        <dt>{{ $group }}</dt>
+                                        <dd>
+                                            @foreach ($services as $service)
+                                                <span class="dv-service-badge">✧ {{ $service }}</span>
+                                            @endforeach
+                                        </dd>
+                                    </div>
+                                @endforeach
+                            </dl>
+                            @if ($publicProfile->scheduleLabel !== null || $publicProfile->rates !== [])
+                                <div class="dv-service-meta">
+                                    @if ($publicProfile->scheduleLabel !== null)
+                                        <span class="artist-pill">◷ &nbsp;{{ $publicProfile->scheduleLabel }}</span>
+                                    @endif
+                                    @foreach ($publicProfile->rates as $rate)
+                                        <span class="artist-pill pill-gold">$ &nbsp;{{ $rate['label'] }} · {{ $rate['price'] }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </section>
+                    @endif
+                    @if ($publicProfile->characteristics !== [])
+                        <section class="dv-card" aria-labelledby="characteristics-title">
+                            <h2 id="characteristics-title"><span class="dv-card-ico" aria-hidden="true">✦</span> Características</h2>
+                            <dl class="dv-feats">
+                                @foreach ($publicProfile->characteristics as $label => $value)
+                                    <div class="dv-feat">
+                                        <dt>{{ $label }}</dt>
+                                        <dd>{{ $value }}</dd>
+                                    </div>
+                                @endforeach
+                            </dl>
+                        </section>
+                    @endif
+                </div>
             @endif
             @if ($publicProfile->location !== [])
-                <section class="dv-card artist-map-card" aria-labelledby="map-title">
-                    <h2 id="map-title">Mapa</h2>
+                <aside class="dv-card artist-map-card" aria-labelledby="map-title">
+                    <h2 id="map-title"><span class="dv-card-ico" aria-hidden="true">⌖</span> Zona de atención</h2>
                     <p class="artist-map-caption">Zona aproximada: {{ implode(' · ', $publicProfile->location) }}</p>
                     <div class="artist-map-embed">
                         <iframe
@@ -222,7 +202,7 @@
                             referrerpolicy="no-referrer-when-downgrade"
                             allowfullscreen></iframe>
                     </div>
-                </section>
+                </aside>
             @endif
         </div>
 

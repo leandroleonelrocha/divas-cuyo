@@ -12,6 +12,12 @@ class ListModelProfiles extends ListRecords
 {
     protected static string $resource = ModelProfileResource::class;
 
+    protected function getTableQuery(): Builder
+    {
+        return parent::getTableQuery()
+            ->whereDoesntHave('user', fn (Builder $query): Builder => $query->where('is_admin', true));
+    }
+
     /**
      * @return array<string, Tab>
      */

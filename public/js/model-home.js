@@ -13,7 +13,7 @@
   const key = 'divas-cuyo:model-favorites:v1';
   let favorites = new Set();
   let onlyFavorites = location.hash === '#favoritos';
-  let serviceView = 'escort';
+  let serviceView = 'all';
   try {
     const saved = JSON.parse(localStorage.getItem(key) || '[]');
     if (Array.isArray(saved)) favorites = new Set(saved.filter(value => typeof value === 'string'));
@@ -29,8 +29,9 @@
   }
   function render() {
     let count = 0;
+    const serviceMatch = service => serviceView === 'all' || (service || 'escort') === serviceView;
     avatarCards.forEach(avatar => {
-      avatar.hidden = avatar.dataset.service !== serviceView;
+      avatar.hidden = !serviceMatch(avatar.dataset.service);
     });
     cards.forEach(card => {
       const saved = favorites.has(card.dataset.key);
@@ -41,7 +42,7 @@
       }
       card.hidden = !((!province.value || card.dataset.province === province.value) &&
         (!locality.value || card.dataset.locality === locality.value) &&
-        (card.dataset.service || 'escort') === serviceView &&
+        serviceMatch(card.dataset.service) &&
         normalize(card.dataset.name).includes(normalize(search.value.trim())) && (!onlyFavorites || saved));
       if (!card.hidden) count++;
     });
@@ -59,9 +60,14 @@
     const resultCount = document.getElementById('result-count');
     if (resultCount) resultCount.textContent = `${count} ${count === 1 ? 'perfil' : 'perfiles'} ${onlyFavorites ? 'en favoritos' : 'para descubrir'}`;
     const profilesTitle = document.getElementById('profiles-title');
+    const virtualDisclaimer = document.getElementById('virtual-disclaimer');
+    if (virtualDisclaimer) virtualDisclaimer.hidden = serviceView !== 'virtual';
     if (profilesTitle) {
       const place = province.value ? province.selectedOptions[0].textContent : 'la región';
-      profilesTitle.textContent = onlyFavorites ? 'Tus modelos favoritos' : serviceView === 'virtual' ? `Modelos virtuales de ${place}` : `Escorts de ${place}`;
+      if (onlyFavorites) profilesTitle.textContent = 'Tus modelos favoritos';
+      else if (serviceView === 'virtual') profilesTitle.textContent = `Modelos virtuales de ${place}`;
+      else if (serviceView === 'escort') profilesTitle.textContent = `Escorts de ${place}`;
+      else profilesTitle.textContent = province.value ? `Modelos en ${place}` : 'Modelos de la región';
     }
     const emptyState = document.getElementById('empty-state');
     if (emptyState) emptyState.hidden = count > 0;
@@ -101,7 +107,7 @@
     });
   });
   document.getElementById('reset-filters')?.addEventListener('click', () => {
-    province.value = ''; search.value = ''; onlyFavorites = false; updateCities(); render();
+    province.value = ''; search.value = ''; onlyFavorites = false; serviceView = 'all'; updateCities(); render();
   });
   document.querySelector('.dc-front-star')?.addEventListener('click', event => {
     event.preventDefault(); onlyFavorites = true; render();
@@ -110,7 +116,7 @@
   if (onlyFavorites) document.getElementById('modelos').scrollIntoView();
   const params = new URLSearchParams(location.search);
   const requestedService = params.get('tipo');
-  if (requestedService === 'virtual' || requestedService === 'escort') serviceView = requestedService;
+  if (requestedService === 'virtual' || requestedService === 'escort' || requestedService === 'all') serviceView = requestedService;
   const requestedProvince = params.get('provincia');
   if ([...province.options].some(option => option.value === requestedProvince)) province.value = requestedProvince;
   updateCities(); render();

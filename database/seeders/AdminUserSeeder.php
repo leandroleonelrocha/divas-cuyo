@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
 
         (new User)->forceFill([
             'name' => 'admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@divascuyo.com',
             'password' => 'admin2026*',
             // La cuenta administrativa no tiene datos de contacto de modelo.
             'whatsapp' => '',

@@ -38,7 +38,8 @@ class PublicModelProfileQuery
         $profile = $this->visibility->candidates()->whereKey($reservation->model_profile_id)
             ->addSelect(['height_cm', 'weight_kg', 'measurements', 'eye_color', 'hair_color',
                 'skin_color', 'body_type', 'nationality', 'show_age', 'public_age', 'current_bio_id', 'publication_type_id',
-                'schedule_availability', 'gender', 'depilation'])
+                'schedule_availability', 'gender', 'depilation', 'whatsapp',
+                'rate_visibility', 'rate_30min', 'rate_30min_currency', 'rate_60min', 'rate_60min_currency'])
             ->with(['publicationType:id,slug',
                 'services' => fn (BelongsToMany $services) => $services
                     ->where('services.is_active', true)
@@ -76,6 +77,14 @@ class PublicModelProfileQuery
             return null;
         }
 
+        $whatsappDigits = preg_replace('/\D+/', '', (string) $profile->whatsapp);
+        $whatsappUrl = $whatsappDigits !== '' ? 'https://wa.me/'.$whatsappDigits : null;
+        $scheduleLabel = match ($profile->schedule_availability) {
+            'part_time' => 'Part Time',
+            'full_time' => 'Full Time',
+            default => null,
+        };
+        $rate = $this->rates($profile);
         return new PublicModelProfileViewModel(
             stageName: $profile->stage_name,
             canonicalUrl: route('public.models.show', ['slug' => $profile->slug]),
@@ -91,7 +100,36 @@ class PublicModelProfileQuery
             serviceGroups: $this->serviceGroups($profile),
             title: $profile->stage_name.' | Divas Cuyo',
             description: $description,
+            whatsappUrl: $whatsappUrl,
+            scheduleLabel: $scheduleLabel,
+            rates: $rate,
         );
+    }
+
+    /**
+     * Valores publicados de 30 min / 1 h. Vacío cuando la modelo elige
+     * "Consultar" o no cargó ningún valor.
+     *
+     * @return list<array{label:string, price:string}>
+     */
+    private function rates(ModelProfile $profile): array
+    {
+        if (($profile->rate_visibility ?? 'consult') !== 'published') {
+            return [];
+        }
+
+        $rates = [];
+        foreach ([['30 min', $profile->rate_30min, $profile->rate_30min_currency], ['1 h', $profile->rate_60min, $profile->rate_60min_currency]] as [$label, $amount, $currency]) {
+            if ($amount === null) {
+                continue;
+            }
+            $rates[] = [
+                'label' => $label,
+                'price' => ($currency === 'USD' ? 'USD ' : '$ ').number_format((float) $amount, 0, ',', '.'),
+            ];
+        }
+
+        return $rates;
     }
 
     private function publicationTypeLabel(?string $slug): ?string

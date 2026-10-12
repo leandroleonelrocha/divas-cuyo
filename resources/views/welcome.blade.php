@@ -53,7 +53,8 @@
         </label>
         <label class="control search-control"><span aria-hidden="true">⌕</span><input id="name-filter" type="search" placeholder="Buscar modelo" aria-label="Buscar modelo por nombre" autocomplete="off"></label>
         <div class="filter-tabs" role="group" aria-label="Perfiles a mostrar">
-          <button type="button" class="pill active" data-view="escort" aria-pressed="true">Escorts</button>
+          <button type="button" class="pill active" data-view="all" aria-pressed="true">Todas</button>
+          <button type="button" class="pill" data-view="escort" aria-pressed="false">Escorts</button>
           <button type="button" class="pill" data-view="virtual" aria-pressed="false">Virtual</button>
           {{-- <button type="button" class="pill" data-view="favorites" aria-pressed="false">♡ Favoritos <span id="favorite-count">0</span></button> --}}
         </div>
@@ -80,9 +81,10 @@
     </section>
 
     <section class="shell portfolio-section" id="modelos" aria-labelledby="profiles-title">
-      <div class="section-heading"><div><h2 id="profiles-title">Modelos de la región</h2><p>Las mejores experiencias, reales y verificadas.</p></div>
+      <div class="section-heading"><div><h2 id="profiles-title">Modelos de la región</h2></div>
         <label class="control sort-control"><span aria-hidden="true">↕</span><select id="sort-order" aria-label="Ordenar perfiles"><option value="recent">Más recientes</option><option value="name">Nombre: A a Z</option></select></label>
       </div>
+      <p>Las mejores experiencias, reales y verificadas.</p><p id="virtual-disclaimer" class="virtual-disclaimer" hidden><strong>Esta sección reúne perfiles que ofrecen exclusivamente servicios virtuales.</strong><br><strong>Divas Cuyo no intermedia ni gestiona servicios virtuales. Cada perfil es responsable de su contenido, contacto y acuerdos.</strong></p>
       <p class="results-count" id="result-count" role="status" aria-live="polite">{{ count($publicProfiles) }} {{ count($publicProfiles) === 1 ? 'perfil' : 'perfiles' }} para descubrir</p>
       <div id="profile-groups">
         @foreach (($profilesByProvince ?? []) as $group)
@@ -93,7 +95,7 @@
                 <article class="profile-card" data-name="{{ $profile['name'] }}" data-province="{{ $profile['province'] }}" data-locality="{{ $profile['locality'] }}" data-service="{{ $profile['service'] ?? 'escort' }}" data-key="{{ $profile['url'] }}" data-order="{{ $loop->index }}">
                   <a class="profile-photo" href="{{ $profile['url'] }}" aria-label="Ver portfolio de {{ $profile['name'] }}"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="360" height="480"></a>
                   <span class="profile-label {{ ($profile['available'] ?? true) ? 'is-available' : 'is-unavailable' }}">{{ ($profile['available'] ?? true) ? 'DISPONIBLE' : 'NO DISPONIBLE' }}</span>
-                  <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }} <svg class="verified-icon" viewBox="0 0 24 24" width="17" height="17" role="img" aria-label="Perfil verificado"><circle cx="12" cy="12" r="10" fill="#3b82f6"/><path d="M8 12.5l2.7 2.7L16.5 9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p><a class="portfolio-link" href="{{ $profile['url'] }}">Ver portfolio <span aria-hidden="true">↗</span></a></div>
+                  <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }} <svg class="verified-icon" viewBox="0 0 24 24" width="17" height="17" role="img" aria-label="Perfil verificado"><circle cx="12" cy="12" r="10" fill="#3b82f6"/><path d="M8 12.5l2.7 2.7L16.5 9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p>@php($service = $profile['service'] ?? 'escort')<span class="service-badge {{ $service === 'virtual' ? 'is-virtual' : 'is-escort' }}">{{ $service === 'virtual' ? 'VIRTUAL' : 'ESCORT' }}</span></div>
                 </article>
               @endforeach
             </div>
@@ -112,7 +114,7 @@
 
       <p class="storage-note" id="storage-note" role="status" hidden>Los favoritos se conservarán solo mientras esta página esté abierta: el almacenamiento del navegador no está disponible.</p>
     </section>
-    <section class="shell join-banner"><div><p class="eyebrow">CONVIERTETE EN DIVA</p><h2>Tu próximo capítulo empieza acá.</h2><p>Compartí tu portfolio. Mostrá lo que te hace única.</p></div><a class="primary-button" href="{{ auth()->check() ? route('account.dashboard') : route('register.show') }}">{{ auth()->check() ? 'Mi cuenta' : 'Sumarme a Divas Cuyo' }} <span aria-hidden="true">↗</span></a></section>
+    <section class="shell join-banner"><div><p class="eyebrow">CONVIERTETE EN DIVA</p><h3>No publicas en Divas Cuyo.</h3><h3 class="join-grow">¡Creces en Divas Cuyo!</h3></div><a class="primary-button" href="{{ auth()->check() ? route('account.dashboard') : route('register.show') }}">{{ auth()->check() ? 'Mi cuenta' : 'Sumarme a Divas Cuyo' }} <span aria-hidden="true">↗</span></a></section>
     <section class="sponsor-section" aria-labelledby="sponsor-title">
       <div class="shell sponsor-inner">
         <h2 class="eyebrow" id="sponsor-title">EXPERIENCIAS DE NUESTRAS CHICAS PUBLICADAS</h2>

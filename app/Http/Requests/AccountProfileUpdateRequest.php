@@ -39,6 +39,11 @@ class AccountProfileUpdateRequest extends FormRequest
             'schedule_availability' => ['sometimes', 'nullable', 'in:part_time,full_time'],
             'gender' => ['sometimes', 'nullable', 'in:female,trans'],
             'depilation' => ['sometimes', 'nullable', 'in:full,partial'],
+            'rate_visibility' => ['sometimes', 'in:consult,published'],
+            'rate_30min' => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:99999999.99'],
+            'rate_30min_currency' => ['sometimes', 'nullable', 'required_with:rate_30min', 'in:ARS,USD'],
+            'rate_60min' => ['sometimes', 'nullable', 'numeric', 'min:0', 'max:99999999.99'],
+            'rate_60min_currency' => ['sometimes', 'nullable', 'required_with:rate_60min', 'in:ARS,USD'],
             'province_id' => [
                 'sometimes',
                 'nullable',
