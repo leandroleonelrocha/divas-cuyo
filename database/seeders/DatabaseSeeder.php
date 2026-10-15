@@ -21,6 +21,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceSeeder::class);
         $this->call(AdminUserSeeder::class);
 
+        if (config('divas.seed_real_profiles')) {
+            $this->call(PerfilesDivasCuyoSeeder::class);
+        }
+
         if (app()->environment('local')) {
             if (! User::query()->where('email', 'test@example.com')->exists()) {
                 User::factory()->create([

@@ -10,6 +10,16 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ListModelProfiles extends ListRecords
 {
+    protected function getHeaderActions(): array
+    {
+        return [
+            \Filament\Actions\Action::make('import')
+                ->label('Importar Excel')
+                ->icon('heroicon-o-arrow-up-tray')
+                ->url(\App\Filament\Pages\ImportModelProfiles::getUrl()),
+        ];
+    }
+
     protected static string $resource = ModelProfileResource::class;
 
     protected function getTableQuery(): Builder

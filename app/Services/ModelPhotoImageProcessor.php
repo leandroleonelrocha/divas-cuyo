@@ -17,9 +17,10 @@ class ModelPhotoImageProcessor
     }
 
     /**
+     * @param bool $watermark Si es false no se aplica la marca del sitio (para fotos que ya vienen marcadas).
      * @return array{contents:array{original:string, processed:string, public:string, thumbnail:string}, public_watermarked:bool, mime_type:string, extension:string, original_name:?string, file_size:int, width:int, height:int, processed_width:int, processed_height:int}
      */
-    public function process(UploadedFile $file): array
+    public function process(UploadedFile $file, bool $watermark = true): array
     {
         $path = $file->getRealPath();
         $mime = $path ? (new \finfo(FILEINFO_MIME_TYPE))->file($path) : false;
@@ -60,7 +61,7 @@ class ModelPhotoImageProcessor
             );
             $thumbnailContent = $thumbnail->toWebp(quality: 86)->toString();
 
-            $public = $this->publicVariant($processedContent);
+            $public = $this->publicVariant($processedContent, $watermark);
         } catch (Throwable $exception) {
             throw ValidationException::withMessages(['photo' => 'No pudimos procesar la imagen enviada.']);
         }
@@ -72,7 +73,8 @@ class ModelPhotoImageProcessor
                 'public' => $public['contents'],
                 'thumbnail' => $thumbnailContent,
             ],
-            'public_watermarked' => $public['watermarked'],
+            // Sin marca propia se considera lista igual: la foto ya venía marcada.
+            'public_watermarked' => $watermark ? $public['watermarked'] : true,
             'mime_type' => $mime,
             'extension' => match ($mime) {
                 'image/jpeg' => 'jpg',
@@ -89,11 +91,11 @@ class ModelPhotoImageProcessor
     }
 
     /** @return array{contents:string, watermarked:bool} */
-    public function publicVariant(string $processedContent): array
+    public function publicVariant(string $processedContent, bool $watermark = true): array
     {
         $public = $this->manager->read($processedContent);
         $unmarkedContent = $public->toWebp(quality: 88)->toString();
-        if (config('model-photos.watermark.enabled')) {
+        if ($watermark && config('model-photos.watermark.enabled')) {
             $watermarkAsset = (string) config('model-photos.watermark.asset');
             $watermarkPath = str_starts_with($watermarkAsset, 'public/')
                 ? base_path($watermarkAsset)

@@ -48,6 +48,20 @@ class ServiceSeeder extends Seeder
             ['name' => 'Oral sin preservativo', 'slug' => 'oral-sin-preservativo', 'service_type' => 'in_person'],
             ['name' => 'Fantasías', 'slug' => 'fantasias', 'service_type' => 'in_person'],
             ['name' => 'Squirt', 'slug' => 'squirt', 'service_type' => 'in_person'],
+            ['name' => 'Venta de contenido', 'slug' => 'venta-de-contenido', 'service_type' => 'virtual'],
+            ['name' => 'Packs', 'slug' => 'packs', 'service_type' => 'virtual'],
+            ['name' => 'Bailes', 'slug' => 'bailes', 'service_type' => 'in_person'],
+            ['name' => 'Beso novia', 'slug' => 'beso-novia', 'service_type' => 'in_person'],
+            ['name' => 'Cena y eventos', 'slug' => 'cena-y-eventos', 'service_type' => 'in_person'],
+            ['name' => 'Despedidas de soltero', 'slug' => 'despedidas-de-soltero', 'service_type' => 'in_person'],
+            ['name' => 'Full domingos', 'slug' => 'full-domingos', 'service_type' => 'in_person'],
+            ['name' => 'Full noches', 'slug' => 'full-noches', 'service_type' => 'in_person'],
+            ['name' => 'Masaje descontracturante', 'slug' => 'masaje-descontracturante', 'service_type' => 'in_person'],
+            ['name' => 'Masaje erótico', 'slug' => 'masaje-erotico', 'service_type' => 'in_person'],
+            ['name' => 'Masaje prostático', 'slug' => 'masaje-prostatico', 'service_type' => 'in_person'],
+            ['name' => 'Nivel vip', 'slug' => 'nivel-vip', 'service_type' => 'in_person'],
+            ['name' => 'Solo hombres', 'slug' => 'solo-hombres', 'service_type' => 'in_person'],
+            ['name' => 'Tríos', 'slug' => 'trios', 'service_type' => 'in_person'],
         ];
 
         foreach ($services as $sortOrder => $service) {

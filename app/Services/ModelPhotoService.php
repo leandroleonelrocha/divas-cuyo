@@ -21,21 +21,23 @@ class ModelPhotoService
         private readonly ModelPhotoDomainRules $rules,
     ) {}
 
-    public function uploadForAuthenticatedModel(User $user, UploadedFile $file): ModelPhoto
+    public function uploadForAuthenticatedModel(User $user, UploadedFile $file, bool $watermark = true): ModelPhoto
     {
         $profile = $user->modelProfile()->first();
         abort_unless($profile && $user->hasVerifiedEmail(), 403);
+        // El procesado GD de fotos grandes puede superar el límite del request.
+        @set_time_limit(180);
         $writtenPaths = [];
 
         try {
-            $result = DB::transaction(function () use ($profile, $file, &$writtenPaths): ModelPhoto {
+            $result = DB::transaction(function () use ($profile, $file, $watermark, &$writtenPaths): ModelPhoto {
                 $lockedProfile = ModelProfile::query()->lockForUpdate()->findOrFail($profile->getKey());
                 $count = ModelPhoto::query()->where('model_profile_id', $lockedProfile->getKey())->count();
                 if ($count >= $this->rules->maxPhotos()) {
                     throw ValidationException::withMessages(['photo' => 'Alcanzaste el máximo de 5 fotografías.']);
                 }
 
-                $processed = $this->processor->process($file);
+                $processed = $this->processor->process($file, $watermark);
                 $paths = $this->storage->storeVariants(
                     (int) $lockedProfile->getKey(),
                     $processed['contents'],
@@ -73,9 +75,9 @@ class ModelPhotoService
         }
     }
 
-    public function upload(User $user, UploadedFile $file): ModelPhoto
+    public function upload(User $user, UploadedFile $file, bool $watermark = true): ModelPhoto
     {
-        return $this->uploadForAuthenticatedModel($user, $file);
+        return $this->uploadForAuthenticatedModel($user, $file, $watermark);
     }
 
     public function reorderForAuthenticatedModel(User $user, array $photoIds): void
