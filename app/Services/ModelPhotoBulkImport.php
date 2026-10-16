@@ -67,7 +67,7 @@ class ModelPhotoBulkImport
                 'stageName' => $profile?->stage_name,
                 'files' => count($files),
                 'warning' => $profile === null
-                    ? 'Sin perfil (usá su ID o slug como nombre de carpeta).'
+                    ? 'Sin perfil: ningún ID o slug coincide con esta carpeta.'
                     : ($files === [] ? 'Carpeta sin imágenes JPG/PNG/WebP.'
                         : ($profile->user && ! $profile->user->hasVerifiedEmail() ? 'Usuario sin email verificado.' : null)),
             ];
@@ -78,7 +78,7 @@ class ModelPhotoBulkImport
 
     /**
      * @param bool $watermark Si es false no se aplica la marca del sitio (fotos que ya vienen marcadas).
-     * @return array{imported: int, omitted: int, profiles: int}
+     * @return array{imported: int, omitted: int, profiles: int, errors: array<string, int>}
      */
     public function import(string $baseDir, User $reviewer, bool $approve, bool $watermark = true): array
     {
@@ -90,22 +90,30 @@ class ModelPhotoBulkImport
         $imported = 0;
         $omitted = 0;
         $profiles = 0;
+        $errors = [];
         foreach ($this->folders($baseDir) as $dir) {
             $profile = $this->resolveProfile(basename($dir));
             $files = $this->imageFiles($dir);
             if (! $profile || $files === []) {
+                $reason = ! $profile
+                    ? 'Carpeta '.basename($dir).': sin perfil coincidente.'
+                    : 'Carpeta '.basename($dir).': sin imágenes.';
                 $omitted += count($files);
+                $errors[$reason] = ($errors[$reason] ?? 0) + count($files);
                 continue;
             }
-            [$done, $skipped] = $this->importProfile($profile, $files, $approve ? $reviewer : null, $watermark);
+            [$done, $skipped, $reasons] = $this->importProfile($profile, $files, $approve ? $reviewer : null, $watermark);
             $imported += $done;
             $omitted += $skipped;
+            foreach ($reasons as $reason => $count) {
+                $errors[$profile->slug.': '.$reason] = ($errors[$profile->slug.': '.$reason] ?? 0) + $count;
+            }
             if ($done > 0) {
                 $profiles++;
             }
         }
 
-        return ['imported' => $imported, 'omitted' => $omitted, 'profiles' => $profiles];
+        return ['imported' => $imported, 'omitted' => $omitted, 'profiles' => $profiles, 'errors' => $errors];
     }
 
     /** @return list<string> */
@@ -113,7 +121,9 @@ class ModelPhotoBulkImport
     {
         $dirs = array_values(array_filter(
             glob($baseDir.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR) ?: [],
-            fn (string $dir): bool => basename($dir) !== '' && ! str_starts_with(basename($dir), '.'),
+            fn (string $dir): bool => basename($dir) !== ''
+                && ! str_starts_with(basename($dir), '.')
+                && strcasecmp(basename($dir), '__MACOSX') !== 0,
         ));
         sort($dirs);
 
@@ -122,17 +132,18 @@ class ModelPhotoBulkImport
 
     /**
      * @param list<string> $files
-     * @return array{0: int, 1: int}
+     * @return array{0: int, 1: int, 2: array<string, int>}
      */
     private function importProfile(ModelProfile $profile, array $files, ?User $reviewer, bool $watermark = true): array
     {
         $user = $profile->user;
         if (! $user || ! $user->hasVerifiedEmail()) {
-            return [0, count($files)];
+            return [0, count($files), ['usuario sin email verificado' => count($files)]];
         }
 
         $done = 0;
         $skipped = 0;
+        $reasons = [];
         $firstApproved = null;
         foreach ($files as $path) {
             try {
@@ -142,7 +153,11 @@ class ModelPhotoBulkImport
                     $firstApproved ??= $photo;
                 }
                 $done++;
-            } catch (Throwable) {
+            } catch (Throwable $exception) {
+                $reason = $exception instanceof \Illuminate\Validation\ValidationException
+                    ? implode(' ', array_merge(...array_values($exception->errors())))
+                    : 'no se pudo importar ('.basename($path).')';
+                $reasons[$reason] = ($reasons[$reason] ?? 0) + 1;
                 $skipped++;
             }
         }
@@ -151,6 +166,6 @@ class ModelPhotoBulkImport
             $this->photos->setPrimaryForAuthenticatedModel($user, $firstApproved);
         }
 
-        return [$done, $skipped];
+        return [$done, $skipped, $reasons];
     }
 }

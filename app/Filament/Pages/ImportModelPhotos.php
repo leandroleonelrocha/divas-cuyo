@@ -62,7 +62,8 @@ class ImportModelPhotos extends Page
         $path = null;
         try {
             $path = $this->file->store('batches', 'profile_imports');
-            $dir = $this->extract(Storage::disk('profile_imports')->path($path));
+            $zipName = pathinfo($this->file->getClientOriginalName(), PATHINFO_FILENAME);
+            $dir = $this->extract(Storage::disk('profile_imports')->path($path), $zipName);
             $this->batch = basename($dir);
             $this->preview = app(ModelPhotoBulkImport::class)->preview($dir);
             if ($this->preview === []) {
@@ -103,7 +104,7 @@ class ImportModelPhotos extends Page
         }
     }
 
-    private function extract(string $zipPath): string
+    private function extract(string $zipPath, string $zipName): string
     {
         $zip = new ZipArchive;
         if ($zip->open($zipPath) !== true || $zip->numFiles < 1) {
@@ -132,6 +133,18 @@ class ImportModelPhotos extends Page
             @rmdir($entries[0]);
         }
 
+        // Sin subcarpetas pero con imágenes sueltas: se agrupan bajo el
+        // nombre del ZIP para matchear un único perfil (ej. zaira.zip).
+        if (! $this->hasSubdirs($dir) && $this->hasImages($dir) && $this->safeFolder($zipName) !== '') {
+            $target = $dir.DIRECTORY_SEPARATOR.$this->safeFolder($zipName);
+            @mkdir($target, 0755, true);
+            foreach (glob($dir.DIRECTORY_SEPARATOR.'*') ?: [] as $path) {
+                if (is_file($path)) {
+                    @rename($path, $target.DIRECTORY_SEPARATOR.basename($path));
+                }
+            }
+        }
+
         return $dir;
     }
 
@@ -144,6 +157,27 @@ class ImportModelPhotos extends Page
         }
 
         return false;
+    }
+
+    private function hasImages(string $dir): bool
+    {
+        foreach (glob($dir.DIRECTORY_SEPARATOR.'*') ?: [] as $path) {
+            if (is_file($path) && in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function safeFolder(string $name): string
+    {
+        $name = trim(basename($name));
+        if ($name === '' || $name === '.' || str_contains($name, DIRECTORY_SEPARATOR)) {
+            return '';
+        }
+
+        return $name;
     }
 
     private function cleanupBatch(): void

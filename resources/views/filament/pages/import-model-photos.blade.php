@@ -2,6 +2,7 @@
     <x-filament::section heading="1. Subir ZIP">
         <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
             Una subcarpeta por modelo, nombrada con su <strong>ID o slug</strong> (ej. <code>8/</code>, <code>anastasia/</code>).
+            Si el ZIP trae fotos sueltas sin carpetas, se usa el <strong>nombre del ZIP</strong> (ej. <code>zaira.zip</code>).
             Imágenes JPG/PNG/WebP, hasta 100 MB por ZIP. Se respeta el máximo de 5 fotos por perfil.
         </p>
         <form wire:submit="analyze" class="space-y-4">
@@ -76,6 +77,13 @@
             <p role="status" class="font-medium">
                 {{ $result['imported'] }} fotos importadas en {{ $result['profiles'] }} perfiles · {{ $result['omitted'] }} omitidas.
             </p>
+            @if (! empty($result['errors']))
+                <ul style="margin-top:8px;font-size:13px;">
+                    @foreach ($result['errors'] as $reason => $count)
+                        <li>⚠️ {{ $reason }} ({{ $count }})</li>
+                    @endforeach
+                </ul>
+            @endif
         @endif
     </x-filament::section>
 </x-filament-panels::page>
