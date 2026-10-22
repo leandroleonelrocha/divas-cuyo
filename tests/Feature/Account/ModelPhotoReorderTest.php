@@ -12,7 +12,7 @@ class ModelPhotoReorderTest extends TestCase
 {
     public function test_model_can_reorder_its_own_photos_with_dense_positions(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $photos = collect(range(0, 2))->map(fn (int $position) => $this->createPhoto($user->modelProfile, $position));
 
         $this->actingAs($user)
@@ -30,8 +30,8 @@ class ModelPhotoReorderTest extends TestCase
 
     public function test_reorder_rejects_foreign_duplicate_and_incomplete_photo_sets(): void
     {
-        $user = User::factory()->create();
-        $other = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $own = $this->createPhoto($user->modelProfile, 0);
         $foreign = $this->createPhoto($other->modelProfile, 0);
 

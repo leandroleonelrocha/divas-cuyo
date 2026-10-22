@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class PublicModelResponseBoundaryTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_only_allowlisted_data_reaches_view_and_private_relations_are_not_queried(): void

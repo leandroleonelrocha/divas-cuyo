@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/model-profile.css') }}?v={{ filemtime(public_path('css/model-profile.css')) }}">
     <script src="{{ asset('js/model-profile.js') }}?v={{ filemtime(public_path('js/model-profile.js')) }}" defer></script>
     <noscript><style>.artist-panel[hidden] { display: grid; }</style></noscript>
+    <script src="{{ asset('js/legal-access-navigation.js') }}" defer></script>
 </head>
 <body class="model-home model-profile-page">
 <a class="public-profile-skip-link" href="#contenido-principal">Saltar al contenido principal</a>
@@ -218,7 +219,7 @@
             </section>
         @endif --}}
 
-        @if ($similar !== [])
+        {{-- @if ($similar !== [])
             <section class="dv-similar" aria-labelledby="similar-title">
                 <h2 id="similar-title">Perfiles similares en {{ $publicProfile->location[0] ?? 'la región' }}</h2>
                 <div class="dv-similar-grid">
@@ -241,7 +242,7 @@
                     @endforeach
                 </div>
             </section>
-        @endif
+        @endif --}}
     </main>
 </div>
 <footer class="shell"><span>© {{ date('Y') }} <strong>DIVAS CUYO</strong> · Comunidad de modelos</span><a href="{{ route('terms.show') }}">Términos y condiciones ↗</a></footer>

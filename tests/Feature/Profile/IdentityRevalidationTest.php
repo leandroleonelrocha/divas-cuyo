@@ -15,9 +15,9 @@ class IdentityRevalidationTest extends TestCase
     public function test_real_identity_change_resets_resolution_and_preserves_documents(): void
     {
         Storage::fake('identity_private');
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $profile = $user->modelProfile;
-        $reviewer = User::factory()->create(['is_admin' => true]);
+        $reviewer = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile->privateDetails()->create([
             'real_first_name' => 'Mía',
             'real_last_name' => 'Original',
@@ -70,7 +70,7 @@ class IdentityRevalidationTest extends TestCase
 
     public function test_birth_date_change_also_requires_a_new_identity_submission(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $profile = $user->modelProfile;
         $profile->privateDetails()->create([
             'real_first_name' => 'Mía',

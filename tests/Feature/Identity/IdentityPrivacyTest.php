@@ -19,7 +19,7 @@ class IdentityPrivacyTest extends TestCase
 
     public function test_private_document_is_not_available_from_public_storage_and_path_traversal_is_ignored(): void
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $document = app(IdentityDocumentService::class)->upload(
             $owner->modelProfile,
             'dni_front',
@@ -42,7 +42,7 @@ class IdentityPrivacyTest extends TestCase
 
     public function test_identity_page_and_download_response_do_not_expose_physical_paths(): void
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $document = app(IdentityDocumentService::class)->upload(
             $owner->modelProfile,
             'dni_front',
@@ -66,7 +66,7 @@ class IdentityPrivacyTest extends TestCase
 
     public function test_model_document_serialization_hides_storage_path(): void
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $document = app(IdentityDocumentService::class)->upload(
             $owner->modelProfile,
             'dni_front',

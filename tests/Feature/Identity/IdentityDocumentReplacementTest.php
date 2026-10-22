@@ -19,7 +19,7 @@ class IdentityDocumentReplacementTest extends TestCase
 
     public function test_model_can_replace_a_document_in_incomplete_and_only_the_new_file_remains(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('identity.documents.store', $user), [
             'type' => 'dni_front',
@@ -42,7 +42,7 @@ class IdentityDocumentReplacementTest extends TestCase
 
     public function test_model_can_replace_a_document_after_rejection(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->forceFill([
             'identity_status' => 'rejected',
             'identity_rejection_reason' => 'El DNI no se lee.',
@@ -60,7 +60,7 @@ class IdentityDocumentReplacementTest extends TestCase
     public function test_replacement_is_blocked_in_pending_and_approved(): void
     {
         foreach (['pending', 'approved'] as $status) {
-            $user = User::factory()->create();
+            $user = User::factory()->withCompletedRegistration()->create();
             $this->actingAs($user)->post(route('identity.documents.store', $user), [
                 'type' => 'dni_front',
                 'document' => UploadedFile::fake()->image('old.jpg'),
@@ -80,7 +80,7 @@ class IdentityDocumentReplacementTest extends TestCase
 
     public function test_failed_replacement_keeps_the_previous_file_and_record(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $this->actingAs($user)->post(route('identity.documents.store', $user), [
             'type' => 'dni_front',
             'document' => UploadedFile::fake()->image('old.jpg'),

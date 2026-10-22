@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{{ asset('css/model-home.css') }}?v={{ filemtime(public_path('css/model-home.css')) }}">
   <script src="{{ asset('js/model-home.js') }}?v={{ filemtime(public_path('js/model-home.js')) }}" defer></script>
   <script src="{{ asset('js/home-fire.js') }}?v={{ filemtime(public_path('js/home-fire.js')) }}" defer></script>
+    <script src="{{ asset('js/legal-access-navigation.js') }}" defer></script>
 </head>
 <body class="model-home">
   <a class="skip-link" href="#modelos">Saltar a los perfiles</a>
@@ -20,11 +21,11 @@
       <div class="shell hero-content">
         <h1 id="hero-title">LAS MÁS CALIENTES <br><span>DE LA REGIÓN</span></h1>
         <p class="hero-tagline">ENCUENTRA · CONECTA · DISFRUTA</p>
-        <div class="hero-values">
+        {{-- <div class="hero-values">
           <div><span class="value-icon" aria-hidden="true">♛</span><p><strong>PERFILES REALES </strong><span>Verificados </span></p></div>
           <div><span class="value-icon" aria-hidden="true">◇</span><p><strong>DISCRECIÓN</strong><span>Totalmente privada  </span></p></div>
           <div><span class="value-icon" aria-hidden="true">ϟ</span><p><strong>EXPERIENCIAS</strong><span>Únicas en tu ciudad</span></p></div>
-        </div>
+        </div> --}}
       </div>
     </section>
 
@@ -33,15 +34,15 @@
     @endphp
     <section class="filter-bar" aria-label="Buscar modelos">
       <div class="shell filter-inner">
-        <label class="control location-control"><span aria-hidden="true">⌖</span>
+        {{-- <label class="control location-control"><span aria-hidden="true">⌖</span>
           <select id="province-filter" aria-label="Provincia">
             <option value="">Toda la región</option>
             @foreach ($provinces as $province)
               <option value="{{ $province->slug }}">{{ $province->name }}</option>
             @endforeach
           </select>
-        </label>
-        <label class="control">
+        </label> --}}
+        {{-- <label class="control">
           <select id="locality-filter" disabled aria-label="Localidad">
             <option value="">Todas las ciudades</option>
             @foreach ($provinces as $province)
@@ -50,12 +51,14 @@
               @endforeach
             @endforeach
           </select>
-        </label>
-        <label class="control search-control"><span aria-hidden="true">⌕</span><input id="name-filter" type="search" placeholder="Buscar modelo" aria-label="Buscar modelo por nombre" autocomplete="off"></label>
+        </label> --}}
+        {{-- <label class="control search-control"><span aria-hidden="true">⌕</span><input id="name-filter" type="search" placeholder="Buscar modelo" aria-label="Buscar modelo por nombre" autocomplete="off"></label> --}}
         <div class="filter-tabs" role="group" aria-label="Perfiles a mostrar">
           <button type="button" class="pill active" data-view="all" aria-pressed="true">Todas</button>
           <button type="button" class="pill" data-view="escort" aria-pressed="false">Escorts</button>
           <button type="button" class="pill" data-view="virtual" aria-pressed="false">Virtual</button>
+          <button type="button" class="pill" data-view="masajistas" aria-pressed="false">Masajistas</button>
+          <button type="button" class="pill" data-view="trans" aria-pressed="false">Trans</button>
           {{-- <button type="button" class="pill" data-view="favorites" aria-pressed="false">♡ Favoritos <span id="favorite-count">0</span></button> --}}
         </div>
         {{-- <a class="explore-link" href="#modelos">EXPLORAR <span aria-hidden="true">↗</span></a> --}}
@@ -94,8 +97,8 @@
               @foreach ($group['profiles'] as $profile)
                 <article class="profile-card" data-name="{{ $profile['name'] }}" data-province="{{ $profile['province'] }}" data-locality="{{ $profile['locality'] }}" data-service="{{ $profile['service'] ?? 'escort' }}" data-key="{{ $profile['url'] }}" data-order="{{ $loop->index }}">
                   <a class="profile-photo" href="{{ $profile['url'] }}" aria-label="Ver portfolio de {{ $profile['name'] }}"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="360" height="480"></a>
-                  <span class="profile-label {{ ($profile['available'] ?? true) ? 'is-available' : 'is-unavailable' }}">{{ ($profile['available'] ?? true) ? 'DISPONIBLE' : 'NO DISPONIBLE' }}</span>
-                  <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }} <svg class="verified-icon" viewBox="0 0 24 24" width="17" height="17" role="img" aria-label="Perfil verificado"><circle cx="12" cy="12" r="10" fill="#3b82f6"/><path d="M8 12.5l2.7 2.7L16.5 9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p>@php($service = $profile['service'] ?? 'escort')<span class="service-badge {{ $service === 'virtual' ? 'is-virtual' : 'is-escort' }}">{{ $service === 'virtual' ? 'VIRTUAL' : 'ESCORT' }}</span></div>
+                  {{-- <span class="profile-label {{ ($profile['available'] ?? true) ? 'is-available' : 'is-unavailable' }}">{{ ($profile['available'] ?? true) ? 'DISPONIBLE' : 'NO DISPONIBLE' }}</span> --}}
+                  <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }} <svg class="verified-icon" viewBox="0 0 24 24" width="17" height="17" role="img" aria-label="Perfil verificado"><circle cx="12" cy="12" r="10" fill="var(--red)"/><path d="M8 12.5l2.7 2.7L16.5 9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p>@php($service = $profile['service'] ?? 'escort')<span class="service-badge {{ $service === 'virtual' ? 'is-virtual' : 'is-escort' }}">{{ $service === 'virtual' ? 'VIRTUAL' : 'ESCORT' }}</span></div>
                 </article>
               @endforeach
             </div>

@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class PublicModelSeoTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_profile_has_exact_public_title_description_and_one_h1(): void

@@ -14,7 +14,7 @@ class ModelProfilePhysicalRevisionTest extends TestCase
 
     public function test_model_submits_a_pending_physical_revision_without_changing_approved_values(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->forceFill([
             'height_cm' => 165,
             'weight_kg' => 55,
@@ -47,8 +47,8 @@ class ModelProfilePhysicalRevisionTest extends TestCase
 
     public function test_admin_can_approve_a_physical_revision_and_promote_its_snapshot(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
-        $user = User::factory()->create();
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $user = User::factory()->withCompletedRegistration()->create();
         $revision = $user->modelProfile->physicalRevisions()->create([
             'height_cm' => 172,
             'weight_kg' => 60,
@@ -69,8 +69,8 @@ class ModelProfilePhysicalRevisionTest extends TestCase
 
     public function test_admin_rejection_requires_reason_and_keeps_approved_values(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
-        $user = User::factory()->create();
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->forceFill(['height_cm' => 165])->save();
         $revision = $user->modelProfile->physicalRevisions()->create([
             'height_cm' => 172,
@@ -93,7 +93,7 @@ class ModelProfilePhysicalRevisionTest extends TestCase
 
     public function test_physical_revision_service_rejects_a_second_pending_revision(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $service = app(ModelProfilePhysicalModerationService::class);
         $data = [
             'height_cm' => 170,

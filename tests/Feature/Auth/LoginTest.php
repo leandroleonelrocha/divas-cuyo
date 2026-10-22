@@ -13,7 +13,7 @@ class LoginTest extends TestCase
 
     public function test_verified_model_can_log_in(): void
     {
-        $user = User::factory()->create([
+        $user = User::factory()->withCompletedRegistration()->create([
             'email' => 'modelo@example.com',
             'password' => 'password123',
         ]);
@@ -29,7 +29,7 @@ class LoginTest extends TestCase
 
     public function test_verified_admin_is_sent_to_filament(): void
     {
-        $admin = User::factory()->create(['is_admin' => true, 'password' => 'password123']);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true, 'password' => 'password123']);
 
         $response = $this->post(route('login.store'), [
             'email' => $admin->email,
@@ -42,7 +42,7 @@ class LoginTest extends TestCase
 
     public function test_admin_with_model_profile_prioritizes_filament(): void
     {
-        $admin = User::factory()->create(['is_admin' => true, 'password' => 'password123']);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true, 'password' => 'password123']);
 
         $response = $this->post(route('login.store'), [
             'email' => $admin->email,
@@ -54,7 +54,7 @@ class LoginTest extends TestCase
 
     public function test_verified_model_ignores_admin_intended_destination(): void
     {
-        $user = User::factory()->create(['password' => 'password123']);
+        $user = User::factory()->withCompletedRegistration()->create(['password' => 'password123']);
 
         $response = $this->withSession(['url.intended' => '/admin'])
             ->post(route('login.store'), [
@@ -67,7 +67,7 @@ class LoginTest extends TestCase
 
     public function test_verified_model_ignores_other_internal_intended_destination(): void
     {
-        $user = User::factory()->create(['password' => 'password123']);
+        $user = User::factory()->withCompletedRegistration()->create(['password' => 'password123']);
 
         $response = $this->withSession(['url.intended' => '/password/forgot'])
             ->post(route('login.store'), [
@@ -80,7 +80,7 @@ class LoginTest extends TestCase
 
     public function test_verified_user_without_profile_is_sent_to_incomplete_profile(): void
     {
-        $user = User::factory()->create(['password' => 'password123']);
+        $user = User::factory()->withCompletedRegistration()->create(['password' => 'password123']);
         $user->modelProfile()->delete();
 
         $response = $this->post(route('login.store'), [
@@ -93,7 +93,7 @@ class LoginTest extends TestCase
 
     public function test_unverified_model_cannot_log_in(): void
     {
-        $user = User::factory()->unverified()->create([
+        $user = User::factory()->withCompletedRegistration()->unverified()->create([
             'email' => 'modelo@example.com',
             'password' => 'password123',
         ]);
@@ -111,7 +111,7 @@ class LoginTest extends TestCase
 
     public function test_invalid_credentials_do_not_reveal_account_details(): void
     {
-        User::factory()->create(['email' => 'modelo@example.com']);
+        User::factory()->withCompletedRegistration()->create(['email' => 'modelo@example.com']);
 
         $response = $this->from(route('login.show'))->post(route('login.store'), [
             'email' => 'modelo@example.com',

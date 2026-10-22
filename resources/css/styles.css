@@ -110,8 +110,9 @@ body {
 .account-logout { padding: 8px 0; color: var(--color-muted); background: transparent; border: 0; cursor: pointer; }
 .account-logout:hover { color: var(--color-red); }
 .account-rejection { flex-basis: 100%; margin: 0; color: #991b1b; }
-.account-incomplete { max-width: 760px; }
-.account-incomplete-card { max-width: 650px; margin: 0 auto; padding: 42px; text-align: center; }
+.account-incomplete { max-width: 900px; }
+.account-incomplete-card { max-width: 800px; margin: 0 auto; padding: 42px; text-align: center; }
+.registration-enrollment .account-incomplete-card .registration-card { max-width: none; margin-top: 28px; text-align: left; }
 .account-incomplete-card .account-empty-icon { margin: 0 auto 22px; }
 .account-incomplete-card .account-eyebrow { margin-bottom: 12px; }
 .account-incomplete-card p:not(.account-eyebrow) { margin: 0 auto; max-width: 530px; }
@@ -448,7 +449,7 @@ textarea {
 }
 
 .sponsor-title {
-  color: #ff7389;
+  color: #fff;
   margin: 0 0 36px;
   font-size: 22px;
   font-weight: 700;

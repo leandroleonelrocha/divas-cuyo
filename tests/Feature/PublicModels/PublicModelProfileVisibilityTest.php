@@ -9,6 +9,8 @@ use Tests\TestCase;
 
 class PublicModelProfileVisibilityTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_guest_can_read_basic_public_profile_without_mutating_it(): void

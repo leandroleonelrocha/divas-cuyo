@@ -52,7 +52,7 @@ class ModelPhotoPrivacyTest extends TestCase
 
     public function test_invalid_upload_is_rejected_before_processing(): void
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->create('fake.jpg', 10, 'image/jpeg'),
@@ -66,7 +66,7 @@ class ModelPhotoPrivacyTest extends TestCase
      */
     private function uploadPhoto(): array
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->image('photo.jpg', 1000, 1000),
         ])->assertRedirect();

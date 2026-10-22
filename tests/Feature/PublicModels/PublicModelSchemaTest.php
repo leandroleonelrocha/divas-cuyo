@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class PublicModelSchemaTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_existing_accounts_can_remain_without_a_public_slug(): void

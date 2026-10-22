@@ -20,7 +20,7 @@ class ModelPhotoReplacementTest extends TestCase
 
     public function test_pending_and_rejected_photos_receive_a_new_pending_version(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $pending = $this->upload($user);
         $rejected = $this->upload($user);
         $rejected->latestVersion()->update([
@@ -44,7 +44,7 @@ class ModelPhotoReplacementTest extends TestCase
 
     public function test_approved_replacement_keeps_the_previous_current_version_until_promotion(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $photo = $this->upload($user);
         $oldVersion = $photo->latestVersion;
         $oldVersion->update(['status' => 'approved']);
@@ -79,7 +79,7 @@ class ModelPhotoReplacementTest extends TestCase
 
     public function test_rejected_new_version_does_not_break_the_previous_approved_version(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $photo = $this->upload($user);
         $oldVersion = $photo->latestVersion;
         $oldVersion->update(['status' => 'approved']);
@@ -99,7 +99,7 @@ class ModelPhotoReplacementTest extends TestCase
 
     public function test_failed_replacement_keeps_the_previous_version_and_does_not_create_a_new_one(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $photo = $this->upload($user);
         $oldVersionId = $photo->latestVersion->id;
 

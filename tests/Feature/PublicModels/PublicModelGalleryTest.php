@@ -13,6 +13,8 @@ use Tests\TestCase;
 
 class PublicModelGalleryTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_gallery_includes_primary_in_position_and_exposes_only_safe_projection(): void

@@ -17,7 +17,7 @@ class PrivateDocumentAccessTest extends TestCase
 
     public function test_private_document_cannot_be_read_from_public_storage_url(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('identity.documents.store', $user), [
             'type' => 'dni_front',
@@ -31,8 +31,8 @@ class PrivateDocumentAccessTest extends TestCase
 
     public function test_another_model_cannot_download_a_private_document(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->post(route('identity.documents.store', $owner), [
             'type' => 'dni_front',

@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class PublicModelSlugBackfillTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     public function test_backfill_reserves_existing_before_assigning_missing_and_is_idempotent(): void
     {
         $missing = User::factory()->create()->modelProfile;

@@ -17,7 +17,7 @@ class IdentityDocumentUploadTest extends TestCase
 
     public function test_verified_model_can_upload_all_required_documents_and_submit(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         foreach (['dni_front', 'dni_back', 'selfie'] as $type) {
             $this->actingAs($user)
@@ -51,7 +51,7 @@ class IdentityDocumentUploadTest extends TestCase
 
     public function test_upload_rejects_invalid_mime_and_files_over_five_megabytes(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)
             ->post(route('identity.documents.store', $user), [
@@ -80,7 +80,7 @@ class IdentityDocumentUploadTest extends TestCase
         ];
 
         foreach ($files as $file) {
-            $user = User::factory()->create();
+            $user = User::factory()->withCompletedRegistration()->create();
 
             $this->actingAs($user)
                 ->post(route('identity.documents.store', $user), [
@@ -95,8 +95,8 @@ class IdentityDocumentUploadTest extends TestCase
 
     public function test_guest_and_another_model_cannot_upload_for_the_profile(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->post(route('identity.documents.store', $owner), [
             'type' => 'dni_front',
@@ -115,7 +115,7 @@ class IdentityDocumentUploadTest extends TestCase
 
     public function test_pending_identity_blocks_new_uploads(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->forceFill(['identity_status' => 'pending'])->save();
 
         $this->actingAs($user)

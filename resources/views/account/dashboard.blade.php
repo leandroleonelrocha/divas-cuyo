@@ -21,6 +21,8 @@
     };
 @endphp
 <main class="account-shell" id="contenido-principal">
+
+
     <header class="account-header" aria-label="Navegación de mi cuenta">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">

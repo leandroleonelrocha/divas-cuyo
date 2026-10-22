@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class PublicModelApprovedContentTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_only_current_bio_is_visible_until_replacement_is_approved(): void

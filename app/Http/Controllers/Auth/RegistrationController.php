@@ -4,24 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\Locality;
-use App\Models\Province;
-use App\Models\PublicationType;
 use App\Models\User;
+use App\Services\AccountEnrollmentState;
 use App\Services\EmailVerificationService;
-use App\Services\PublicationTypeChangeService;
-use Illuminate\Support\Facades\DB;
 
 class RegistrationController extends Controller
 {
     public function show()
     {
-        return view('auth.register', [
-            'provinces' => Province::query()->active()->with(['localities' => fn ($query) => $query->active()->orderBy('name')])->orderBy('name')->get(),
-            'publicationTypes' => PublicationType::query()->active()
-                ->whereIn('slug', array_keys(config('publication.monthly_prices_ars')))
-                ->orderBy('name')->get(),
-        ]);
+        return view('auth.register');
     }
 
     public function pending()
@@ -33,54 +24,16 @@ class RegistrationController extends Controller
 
     public function store(RegisterRequest $request, EmailVerificationService $verificationService)
     {
-        $user = DB::transaction(function () use ($request): User {
-            $province = Province::query()->active()->findOrFail($request->integer('province_id'));
-            $locality = $request->filled('locality_id')
-                ? Locality::query()->active()->where('province_id', $province->id)->findOrFail($request->integer('locality_id'))
-                : null;
-            $location = $locality?->name ?? $province->name;
-            $user = User::query()->create([
-                'name' => $request->string('name')->toString(),
-                'email' => $request->string('email')->toString(),
-                'password' => $request->input('password'),
-                'whatsapp' => $request->string('whatsapp')->toString(),
-                'location' => $location,
-                'is_published' => false,
-            ]);
+        $user = new User([
+            'email' => $request->validated('email'),
+            'password' => $request->validated('password'),
+            'name' => null,
+            'whatsapp' => null,
+            'location' => null,
+            'is_published' => false,
+        ]);
 
-            $profile = $user->modelProfile()->create([
-                'name' => $request->string('name')->toString(),
-                'whatsapp' => $request->string('whatsapp')->toString(),
-                'location' => $location,
-                'province_id' => $province->id,
-                'locality_id' => $locality?->id,
-                'is_published' => false,
-                'review_status' => 'pending',
-            ]);
-
-            app(PublicationTypeChangeService::class)->change(
-                $profile,
-                PublicationType::query()->findOrFail($request->integer('publication_type_id')),
-                $user,
-                'model',
-                'Modalidad elegida durante el registro.',
-            );
-
-            $user->policyAcceptances()->createMany([
-                [
-                    'policy' => 'terms',
-                    'version' => config('policies.terms_version'),
-                    'accepted_at' => now(),
-                ],
-                [
-                    'policy' => 'privacy',
-                    'version' => config('policies.privacy_version'),
-                    'accepted_at' => now(),
-                ],
-            ]);
-
-            return $user;
-        });
+        $user->forceFill(['profile_completion_status' => AccountEnrollmentState::INCOMPLETE])->save();
 
         $verificationService->send($user);
 

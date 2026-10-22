@@ -13,7 +13,7 @@ class ModelProfileBioTest extends TestCase
 
     public function test_initial_submission_is_pending_and_not_public(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('account.profile.bios.store'), [
             'content' => 'Una presentación inicial para revisión.',
@@ -27,7 +27,7 @@ class ModelProfileBioTest extends TestCase
 
     public function test_new_version_does_not_replace_current_approved_bio(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $approved = $user->modelProfile->bios()->create([
             'content' => 'Presentación aprobada visible.',
             'status' => 'approved',
@@ -46,8 +46,8 @@ class ModelProfileBioTest extends TestCase
 
     public function test_rejected_bio_can_be_resent_without_overwriting_history(): void
     {
-        $user = User::factory()->create();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $user = User::factory()->withCompletedRegistration()->create();
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $rejected = $user->modelProfile->bios()->create([
             'content' => 'Texto rechazado para corregir.',
             'status' => 'pending',
@@ -71,8 +71,8 @@ class ModelProfileBioTest extends TestCase
 
     public function test_model_cannot_submit_for_another_profile_and_bio_does_not_change_profile_states(): void
     {
-        $user = User::factory()->create();
-        $other = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $profile = $user->modelProfile;
         $profile->forceFill([
             'identity_status' => 'approved',
@@ -95,7 +95,7 @@ class ModelProfileBioTest extends TestCase
 
     public function test_invalid_bio_length_is_rejected(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('account.profile.bios.store'), [
             'content' => 'corto',

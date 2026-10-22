@@ -12,7 +12,7 @@ class ModelAccountPanelTest extends TestCase
 
     public function test_verified_model_can_view_its_dashboard(): void
     {
-        $user = User::factory()->create([
+        $user = User::factory()->withCompletedRegistration()->create([
             'name' => 'Modelo Propia',
             'email' => 'propia@example.com',
         ]);
@@ -32,7 +32,7 @@ class ModelAccountPanelTest extends TestCase
 
     public function test_unverified_user_cannot_view_dashboard(): void
     {
-        $user = User::factory()->unverified()->create();
+        $user = User::factory()->withCompletedRegistration()->unverified()->create();
 
         $this->actingAs($user)
             ->get(route('account.dashboard'))
@@ -41,8 +41,8 @@ class ModelAccountPanelTest extends TestCase
 
     public function test_account_does_not_accept_external_ids_or_cross_account_access(): void
     {
-        $user = User::factory()->create(['email' => 'propia@example.com']);
-        $other = User::factory()->create(['email' => 'otra@example.com']);
+        $user = User::factory()->withCompletedRegistration()->create(['email' => 'propia@example.com']);
+        $other = User::factory()->withCompletedRegistration()->create(['email' => 'otra@example.com']);
 
         $response = $this->actingAs($user)
             ->get(route('account.dashboard', [
@@ -57,18 +57,18 @@ class ModelAccountPanelTest extends TestCase
 
     public function test_verified_user_without_profile_sees_controlled_screen(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile()->delete();
 
         $this->actingAs($user)
             ->get(route('account.incomplete-profile'))
             ->assertOk()
-            ->assertSee('Tu perfil todavía no está disponible');
+            ->assertSee('Bienvenida a Divas Cuyo');
     }
 
     public function test_dashboard_shows_independent_profile_states_and_identity_link(): void
     {
-        $user = User::factory()->create([
+        $user = User::factory()->withCompletedRegistration()->create([
             'email_verified_at' => now(),
         ]);
         $profile = $user->modelProfile;

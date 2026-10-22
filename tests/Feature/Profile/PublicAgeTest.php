@@ -13,7 +13,7 @@ class PublicAgeTest extends TestCase
 
     public function test_real_age_is_calculated_dynamically_from_birth_date(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $details = $user->modelProfile->privateDetails()->create([
             'real_first_name' => 'Mía',
             'real_last_name' => 'Privada',
@@ -26,7 +26,7 @@ class PublicAgeTest extends TestCase
 
     public function test_public_age_can_be_up_to_five_years_younger_but_not_older(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $payload = $this->validPayload();
         $realAge = Carbon::parse($payload['birth_date'])->age;
 
@@ -50,7 +50,7 @@ class PublicAgeTest extends TestCase
 
     public function test_future_birth_date_is_rejected_and_public_age_does_not_change_birth_date(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $payload = $this->validPayload();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
@@ -68,7 +68,7 @@ class PublicAgeTest extends TestCase
 
     public function test_hiding_public_age_does_not_delete_the_configured_age(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $payload = $this->validPayload();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [

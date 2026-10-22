@@ -12,12 +12,12 @@ class AccountAccessTest extends TestCase
 
     public function test_model_can_view_only_its_own_private_account(): void
     {
-        $user = User::factory()->create([
+        $user = User::factory()->withCompletedRegistration()->create([
             'email' => 'one@example.com',
             'whatsapp' => '+54 9 261 111 1111',
             'location' => 'Mendoza',
         ]);
-        $other = User::factory()->create(['email' => 'two@example.com']);
+        $other = User::factory()->withCompletedRegistration()->create(['email' => 'two@example.com']);
 
         $this->actingAs($user)
             ->get(route('account.show', ['user' => $user]))
@@ -33,7 +33,7 @@ class AccountAccessTest extends TestCase
 
     public function test_guest_cannot_view_private_account(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->get(route('account.show', ['user' => $user]))
             ->assertRedirect(route('login.show'));
@@ -41,7 +41,7 @@ class AccountAccessTest extends TestCase
 
     public function test_accounts_are_not_published_by_registration_state(): void
     {
-        $user = User::factory()->create(['is_published' => false]);
+        $user = User::factory()->withCompletedRegistration()->create(['is_published' => false]);
 
         $this->assertFalse($user->fresh()->is_published);
         $this->assertRouteIsNotPubliclyListed($user);

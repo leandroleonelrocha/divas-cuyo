@@ -12,7 +12,7 @@ class ModelPhotoPrimaryTest extends TestCase
 {
     public function test_only_an_approved_photo_can_become_primary_and_changing_it_unsets_the_previous_one(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $first = $this->createPhoto($user->modelProfile, 0, 'approved', true);
         $second = $this->createPhoto($user->modelProfile, 1, 'approved');
 
@@ -27,7 +27,7 @@ class ModelPhotoPrimaryTest extends TestCase
 
     public function test_pending_and_rejected_photos_cannot_become_primary(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $pending = $this->createPhoto($user->modelProfile, 0, 'pending');
         $rejected = $this->createPhoto($user->modelProfile, 1, 'rejected');
 
@@ -42,8 +42,8 @@ class ModelPhotoPrimaryTest extends TestCase
 
     public function test_model_cannot_mark_another_models_photo_as_primary(): void
     {
-        $user = User::factory()->create();
-        $other = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $foreign = $this->createPhoto($other->modelProfile, 0, 'approved');
 
         $this->actingAs($user)

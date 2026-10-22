@@ -7,6 +7,8 @@ use Tests\TestCase;
 
 class PublicModelPresentationTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_minimal_profile_uses_landmarks_public_image_alternatives_and_no_unavailable_actions(): void

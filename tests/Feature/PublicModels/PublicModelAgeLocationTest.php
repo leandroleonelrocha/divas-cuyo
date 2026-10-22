@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class PublicModelAgeLocationTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public static function ages(): array

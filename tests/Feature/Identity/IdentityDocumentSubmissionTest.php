@@ -17,7 +17,7 @@ class IdentityDocumentSubmissionTest extends TestCase
 
     public function test_missing_documents_block_submission_and_keep_incomplete(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)
             ->post(route('identity.submit', $user))
@@ -28,7 +28,7 @@ class IdentityDocumentSubmissionTest extends TestCase
 
     public function test_submission_preserves_email_review_and_publication_states(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $profile = $user->modelProfile;
         $profile->update(['review_status' => 'approved', 'is_published' => true]);
 
@@ -50,7 +50,7 @@ class IdentityDocumentSubmissionTest extends TestCase
 
     public function test_identity_screen_is_private_and_does_not_expose_public_file_urls(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->get(route('identity.show', $user))
             ->assertRedirect(route('login.show'));

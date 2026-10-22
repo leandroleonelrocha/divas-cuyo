@@ -960,7 +960,7 @@ footer strong {
 }
 .sponsor-inner > h2 {
   margin: 0 0 45px;
-  color: #ff7389;
+  color: #fff;
   font-size: clamp(23px, 2.7vw, 40px);
   font-weight: 800;
   line-height: 1.2;
@@ -968,7 +968,7 @@ footer strong {
 }
 .sponsor-heading {
   margin: 0 0 30px;
-  color: #ff7389;
+  color: #fff;
   font-size: clamp(18px, 2vw, 27px);
   font-weight: 700;
 }

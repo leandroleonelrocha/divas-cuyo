@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class PublicModelRevocationTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_alias_and_photo_requests_are_revoked_without_cache_or_existence_hints(): void

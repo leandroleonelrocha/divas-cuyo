@@ -34,7 +34,7 @@ class ModelPhotoAuthorizationTest extends TestCase
     public function test_owner_endpoints_reject_cross_model_photo_ids(): void
     {
         [$owner, $photo] = $this->uploadPhoto();
-        $other = User::factory()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($other)->get(route('account.photos.file', [$photo, 'thumbnail']))->assertForbidden();
         $this->actingAs($other)->post(route('account.photos.primary', $photo))->assertForbidden();
@@ -51,7 +51,7 @@ class ModelPhotoAuthorizationTest extends TestCase
     public function test_model_profile_id_is_ignored_and_cannot_redirect_upload_to_another_profile(): void
     {
         [$owner] = $this->uploadPhoto();
-        $other = User::factory()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'model_profile_id' => $other->modelProfile->id,
@@ -66,7 +66,7 @@ class ModelPhotoAuthorizationTest extends TestCase
     {
         [, $photo] = $this->uploadPhoto();
         [, $otherPhoto] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
 
         $this->actingAs($admin)
             ->get(route('admin.model-photos.file', [$photo, $otherPhoto->latestVersion, 'thumbnail']))
@@ -84,7 +84,7 @@ class ModelPhotoAuthorizationTest extends TestCase
     public function test_stale_approved_version_cannot_be_promoted_after_a_new_version_exists(): void
     {
         [$owner, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         app(ModelPhotoModerationService::class)->approve($photo, $admin);
         $photo->refresh();
         $current = $photo->currentVersion;
@@ -114,7 +114,7 @@ class ModelPhotoAuthorizationTest extends TestCase
      */
     private function uploadPhoto(): array
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->image('photo.jpg', 1000, 1000),
         ])->assertRedirect();

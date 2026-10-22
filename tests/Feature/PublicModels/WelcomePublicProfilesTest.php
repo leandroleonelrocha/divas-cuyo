@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class WelcomePublicProfilesTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_home_cards_only_list_profiles_that_pass_public_visibility(): void

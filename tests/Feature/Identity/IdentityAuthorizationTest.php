@@ -19,7 +19,7 @@ class IdentityAuthorizationTest extends TestCase
 
     public function test_guest_cannot_view_submit_upload_or_download_identity_documents(): void
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $document = $this->uploadDocument($owner);
 
         $this->get(route('identity.show', $owner))->assertRedirect(route('login.show'));
@@ -33,8 +33,8 @@ class IdentityAuthorizationTest extends TestCase
 
     public function test_model_cannot_access_another_models_documents_or_change_the_target_profile(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $document = $this->uploadDocument($owner);
 
         $this->actingAs($other)
@@ -63,16 +63,16 @@ class IdentityAuthorizationTest extends TestCase
 
     public function test_admin_must_be_verified_to_review_or_download_private_documents(): void
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $document = $this->uploadDocument($owner);
-        $unverifiedAdmin = User::factory()->unverified()->create(['is_admin' => true]);
+        $unverifiedAdmin = User::factory()->withCompletedRegistration()->unverified()->create(['is_admin' => true]);
 
         $this->actingAs($unverifiedAdmin)
             ->get('/admin/model-profiles/'.$owner->modelProfile->id)
             ->assertForbidden();
         $this->actingAs($unverifiedAdmin)
             ->get(route('identity.documents.download', [$owner, $document]))
-            ->assertForbidden();
+            ->assertRedirect(route('verification.notice'));
     }
 
     private function uploadDocument(User $owner): ModelDocument

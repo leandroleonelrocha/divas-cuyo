@@ -12,7 +12,7 @@ class ModelProfileDetailsTest extends TestCase
 
     public function test_model_can_update_its_private_and_public_profile_details(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $response = $this->actingAs($user)->patch(route('account.profile.update'), [
             'real_first_name' => 'Mía',
@@ -49,8 +49,8 @@ class ModelProfileDetailsTest extends TestCase
 
     public function test_profile_update_ignores_manipulated_ownership_fields(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->patch(route('account.profile.update'), [
             'model_profile_id' => $other->modelProfile->id,
@@ -76,7 +76,7 @@ class ModelProfileDetailsTest extends TestCase
 
     public function test_invalid_profile_details_are_rejected_without_partial_changes(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
             'real_first_name' => '',

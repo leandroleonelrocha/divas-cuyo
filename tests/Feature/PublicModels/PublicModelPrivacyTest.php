@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class PublicModelPrivacyTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_public_content_has_no_private_or_administrative_data_and_uses_selective_queries(): void

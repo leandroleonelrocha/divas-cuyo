@@ -20,7 +20,7 @@ class ModelPhotoDeletionTest extends TestCase
 
     public function test_deleting_a_photo_removes_database_variants_and_compacts_positions(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $first = $this->upload($user);
         $second = $this->upload($user);
         $first->update(['is_primary' => true]);
@@ -42,7 +42,7 @@ class ModelPhotoDeletionTest extends TestCase
 
     public function test_deleting_the_only_pending_photo_leaves_the_profile_without_a_primary(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $photo = $this->upload($user);
 
         $this->actingAs($user)->delete(route('account.photos.destroy', $photo));
@@ -53,8 +53,8 @@ class ModelPhotoDeletionTest extends TestCase
 
     public function test_deletion_protects_ownership_and_path_traversal(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $photo = $this->upload($owner);
 
         $this->actingAs($other)

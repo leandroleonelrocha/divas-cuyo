@@ -26,7 +26,7 @@ class VerifyModelEmail extends Notification implements ShouldQueue
                 'preheader' => 'Activá tu cuenta en Divas Cuyo. El enlace vence en 24 horas.',
             ])
             ->subject('Verificá tu correo electrónico')
-            ->greeting('Hola '.$notifiable->name)
+            ->greeting(filled($notifiable->name) ? 'Hola '.$notifiable->name : 'Hola')
             ->line('Para activar tu cuenta, verificá tu correo electrónico con el siguiente enlace:')
             ->action('Verificar correo', route('verification.verify', ['token' => $this->token]))
             ->line('El enlace vence en 24 horas.')

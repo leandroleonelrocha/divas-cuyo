@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class LocalityBelongsToProvince implements ValidationRule
 {
-    public function __construct(private readonly mixed $provinceId) {}
+    public function __construct(private readonly mixed $provinceId, private readonly bool $requireActive = true) {}
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -26,8 +26,9 @@ class LocalityBelongsToProvince implements ValidationRule
             ->join('provinces', 'provinces.id', '=', 'localities.province_id')
             ->where('localities.id', $value)
             ->where('localities.province_id', $this->provinceId)
-            ->where('localities.is_active', true)
-            ->where('provinces.is_active', true)
+            ->when($this->requireActive, fn ($query) => $query
+                ->where('localities.is_active', true)
+                ->where('provinces.is_active', true))
             ->exists();
 
         if (! $valid) {

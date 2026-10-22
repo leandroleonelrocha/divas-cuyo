@@ -15,12 +15,12 @@ class PublicModelSlugPersistenceTest extends TestCase
     public function test_initial_generation_collisions_and_historical_reservations(): void
     {
         $service = app(ModelProfileSlugService::class);
-        $first = $service->rename(User::factory()->create()->modelProfile, 'Mia');
-        $second = $service->rename(User::factory()->create()->modelProfile, 'Mia');
+        $first = $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia');
+        $second = $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia');
         $this->assertSame('mia', $first->slug);
         $this->assertSame('mia-2', $second->slug);
         $service->rename($first, 'Luna');
-        $third = $service->rename(User::factory()->create()->modelProfile, 'Mia');
+        $third = $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia');
         $this->assertSame('mia-3', $third->slug);
         $this->assertSame('mia', $service->rename($first, 'Mia')->slug);
         $this->assertSame(2, $first->slugs()->count());
@@ -30,17 +30,17 @@ class PublicModelSlugPersistenceTest extends TestCase
     public function test_deleted_profile_and_explicit_reservations_are_not_reassigned(): void
     {
         $service = app(ModelProfileSlugService::class);
-        $profile = $service->rename(User::factory()->create()->modelProfile, 'Mia');
+        $profile = $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia');
         $profile->delete();
         $this->assertDatabaseHas('model_profile_slugs', ['slug' => 'mia', 'model_profile_id' => null]);
-        $this->assertSame('mia-2', $service->rename(User::factory()->create()->modelProfile, 'Mia')->slug);
+        $this->assertSame('mia-2', $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia')->slug);
     }
 
     public function test_suffix_fits_length_and_number_never_becomes_numeric_slug(): void
     {
         $service = app(ModelProfileSlugService::class);
-        $service->rename(User::factory()->create()->modelProfile, str_repeat('a', 200));
-        $other = $service->rename(User::factory()->create()->modelProfile, str_repeat('a', 200));
+        $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, str_repeat('a', 200));
+        $other = $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, str_repeat('a', 200));
         $this->assertSame(str_repeat('a', 158).'-2', $other->slug);
         $this->assertSame('modelo-123', $service->rename($other, '123')->slug);
     }
@@ -48,7 +48,7 @@ class PublicModelSlugPersistenceTest extends TestCase
     public function test_outer_rollback_restores_name_slug_and_reservations(): void
     {
         $service = app(ModelProfileSlugService::class);
-        $profile = $service->rename(User::factory()->create()->modelProfile, 'Mia');
+        $profile = $service->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia');
         try {
             DB::transaction(function () use ($service, $profile) {
                 $service->rename($profile, 'Luna');
@@ -63,7 +63,7 @@ class PublicModelSlugPersistenceTest extends TestCase
 
     public function test_private_profile_update_generates_slug_and_rejects_manual_assignment(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $data = ['stage_name' => 'Mia', 'real_first_name' => 'PRIVATE_NAME', 'real_last_name' => 'PRIVATE_LAST', 'birth_date' => '1990-05-20', 'show_age' => false, 'nationality' => 'Argentina'];
         $this->actingAs($user)->patch(route('account.profile.update'), $data + ['slug' => '123'])
             ->assertSessionHasErrors('slug');
@@ -78,7 +78,7 @@ class PublicModelSlugPersistenceTest extends TestCase
 
     public function test_details_transaction_rolls_back_private_changes_when_slug_assignment_fails(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $this->mock(ModelProfileSlugService::class, function ($mock) {
             $mock->shouldReceive('rename')->andThrow(new \RuntimeException('simulated failure'));
         });
@@ -94,7 +94,7 @@ class PublicModelSlugPersistenceTest extends TestCase
 
     public function test_reservation_unique_constraint_cannot_be_bypassed(): void
     {
-        $profile = app(ModelProfileSlugService::class)->rename(User::factory()->create()->modelProfile, 'Mia');
+        $profile = app(ModelProfileSlugService::class)->rename(User::factory()->withCompletedRegistration()->create()->modelProfile, 'Mia');
         $this->expectException(UniqueConstraintViolationException::class);
         (new ModelProfileSlug)->forceFill(['slug' => 'mia', 'model_profile_id' => $profile->id])->save();
     }

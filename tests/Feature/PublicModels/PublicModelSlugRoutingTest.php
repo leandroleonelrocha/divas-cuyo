@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class PublicModelSlugRoutingTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_aliases_redirect_directly_to_current_canonical_and_returning_to_old_name_has_no_loop(): void

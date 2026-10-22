@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Términos y condiciones · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/legal-access-navigation.js') }}" defer></script>
 </head>
 <body class="registration-page">
     <header class="registration-header">

@@ -13,6 +13,8 @@ use Tests\TestCase;
 
 class PublicModelPhotoDeliveryTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_only_public_bytes_are_delivered_with_private_headers(): void

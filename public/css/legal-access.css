@@ -1,0 +1,43 @@
+body.legal-access {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: radial-gradient(ellipse at top, #32121c, var(--bg) 65%);
+}
+.legal-access-card {
+    width: min(100%, 780px);
+    padding: clamp(20px, 4vw, 40px);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--panel);
+    box-shadow: 0 24px 80px #0006;
+}
+.legal-access-logo { display: block; object-fit: contain; margin: 0 auto 20px; }
+.legal-access-card h1 { font-size: clamp(1.4rem, 4vw, 2rem); line-height: 1.25; margin: 0 0 16px; }
+.legal-access-card p { line-height: 1.65; }
+.legal-intro { color: #c6c8ce; }
+.legal-access-text {
+    max-height: 42vh;
+    max-height: 42dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    padding: 8px 20px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+}
+.legal-access-text h2 { font-size: 1.15rem; }
+.legal-access-text:focus-visible { outline: 2px solid #ff657a; outline-offset: 4px; }
+.legal-actions { display: flex; gap: 12px; margin-top: 24px; }
+.legal-button { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 14px 20px; border-radius: 12px; font-weight: 700; text-align: center; }
+.legal-primary { flex: 1; background: #c90c28; border: 1px solid #f01835; color: #fff; }
+.legal-primary:hover { background: #ae0a22; }
+.legal-secondary { background: transparent; border: 1px solid #777c86; color: var(--text); }
+@media (max-width: 540px) {
+    body.legal-access { padding: 12px; }
+    .legal-actions { flex-direction: column; }
+    .legal-access-logo { width: 140px; height: 70px; margin-bottom: 12px; }
+}

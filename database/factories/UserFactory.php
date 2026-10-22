@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Province;
+use App\Models\PublicationType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -47,6 +49,23 @@ class UserFactory extends Factory
             'is_published' => false,
             'remember_token' => Str::random(10),
         ];
+    }
+
+    public function withCompletedRegistration(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $profile = $user->modelProfile()->firstOrFail();
+            $profile->update([
+                'province_id' => $profile->province_id ?? Province::factory()->create()->id,
+                'publication_type_id' => $profile->publication_type_id ?? PublicationType::factory()->create()->id,
+            ]);
+            foreach (['terms', 'privacy'] as $policy) {
+                $user->policyAcceptances()->firstOrCreate(['policy' => $policy], [
+                    'version' => config("policies.{$policy}_version"), 'accepted_at' => now(),
+                ]);
+            }
+            $user->unsetRelation('modelProfile');
+        });
     }
 
     /**

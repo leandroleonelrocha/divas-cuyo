@@ -17,7 +17,7 @@ class PrivateDocumentStorageTest extends TestCase
 
     public function test_uploaded_document_uses_a_random_private_path(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('identity.documents.store', $user), [
             'type' => 'dni_front',

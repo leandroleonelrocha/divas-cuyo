@@ -2,7 +2,7 @@
 
 return [
     'monthly_prices_ars' => [
-        'encounters' => 20000,
+        'encounters' => 50000,
         'virtual' => 30000,
     ],
 ];

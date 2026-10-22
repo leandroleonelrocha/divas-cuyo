@@ -12,7 +12,7 @@ class ModelProfileAccountPanelTest extends TestCase
 
     public function test_model_profile_panel_renders_sections_empty_states_and_responsive_contract(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)
             ->get(route('account.profile.edit'))
@@ -29,7 +29,7 @@ class ModelProfileAccountPanelTest extends TestCase
 
     public function test_profile_panel_reports_success_and_validation_errors(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)
             ->patch(route('account.profile.update'), [
@@ -59,8 +59,8 @@ class ModelProfileAccountPanelTest extends TestCase
 
     public function test_profile_panel_always_resolves_the_authenticated_owner(): void
     {
-        $owner = User::factory()->create(['email' => 'owner@example.com']);
-        $other = User::factory()->create(['email' => 'other@example.com']);
+        $owner = User::factory()->withCompletedRegistration()->create(['email' => 'owner@example.com']);
+        $other = User::factory()->withCompletedRegistration()->create(['email' => 'other@example.com']);
 
         $this->actingAs($owner)
             ->get(route('account.profile.edit', [
@@ -74,8 +74,8 @@ class ModelProfileAccountPanelTest extends TestCase
 
     public function test_rejected_bio_can_be_corrected_through_the_contract_route_without_cross_account_access(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $rejected = $owner->modelProfile->bios()->create([
             'content' => 'Texto rechazado que debe conservarse.',
             'status' => 'rejected',

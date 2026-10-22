@@ -19,7 +19,7 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_verified_model_can_upload_jpeg_png_and_webp_as_pending(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         foreach (['jpeg' => 'photo.jpg', 'png' => 'photo.png', 'webp' => 'photo.webp'] as $extension => $name) {
             $response = $this->actingAs($user)->post(route('account.photos.store'), [
@@ -36,7 +36,7 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_invalid_mime_and_unsupported_files_are_rejected(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         foreach ([
             UploadedFile::fake()->create('video.mp4', 10, 'video/mp4'),
@@ -52,7 +52,7 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_size_and_dimension_limits_are_rejected(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->create('large.jpg', 5121, 'image/jpeg'),
@@ -69,7 +69,7 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_maximum_of_five_photos_is_enforced(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         for ($index = 0; $index < 5; $index++) {
             $this->actingAs($user)->post(route('account.photos.store'), [
@@ -86,8 +86,8 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_upload_resolves_ownership_from_authenticated_user(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'model_profile_id' => $other->modelProfile->id,
@@ -104,7 +104,7 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_variants_are_private_and_original_is_never_served(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->image('photo.jpg', 1200, 1000),
@@ -130,8 +130,8 @@ class ModelPhotoUploadTest extends TestCase
 
     public function test_owner_can_see_gallery_and_pending_thumbnail_only_through_authorized_route(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->image('photo.jpg', 1000, 1000),

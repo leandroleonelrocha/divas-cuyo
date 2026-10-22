@@ -17,7 +17,7 @@ class IdentityDocumentResubmissionTest extends TestCase
 
     public function test_rejected_model_sees_reason_and_can_resubmit_a_complete_set(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->forceFill([
             'identity_status' => 'rejected',
             'identity_rejection_reason' => 'Falta claridad en el frente.',
@@ -47,7 +47,7 @@ class IdentityDocumentResubmissionTest extends TestCase
 
     public function test_rejected_model_cannot_resubmit_without_all_required_documents(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->forceFill(['identity_status' => 'rejected'])->save();
 
         $this->actingAs($user)

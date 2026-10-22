@@ -12,8 +12,8 @@ class ModelProfilePrivacyTest extends TestCase
 
     public function test_model_can_only_edit_the_profile_resolved_from_its_session(): void
     {
-        $owner = User::factory()->create();
-        $other = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($owner)->get(route('account.profile.edit'))
             ->assertOk()
@@ -26,7 +26,7 @@ class ModelProfilePrivacyTest extends TestCase
 
     public function test_private_details_are_not_in_the_default_model_profile_serialization(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->privateDetails()->create([
             'real_first_name' => 'Nombre Real',
             'real_last_name' => 'Privado',

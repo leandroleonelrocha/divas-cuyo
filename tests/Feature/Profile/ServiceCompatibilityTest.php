@@ -68,7 +68,7 @@ class ServiceCompatibilityTest extends TestCase
     public function test_model_can_only_update_services_for_its_own_profile(): void
     {
         [$user] = $this->profileWithCatalog('virtual');
-        $other = User::factory()->create();
+        $other = User::factory()->withCompletedRegistration()->create();
         $virtualService = Service::query()->where('service_type', 'virtual')->firstOrFail();
 
         $this->actingAs($user)->patch(route('account.profile.services.update'), [
@@ -86,7 +86,7 @@ class ServiceCompatibilityTest extends TestCase
         $this->seed([PublicationTypeSeeder::class, ServiceSeeder::class]);
         $type = PublicationType::query()->where('slug', $typeSlug)->firstOrFail();
         $inPerson = Service::query()->where('service_type', 'in_person')->firstOrFail();
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $user->modelProfile->update(['publication_type_id' => $type->id]);
 
         return [$user, $type, $inPerson];

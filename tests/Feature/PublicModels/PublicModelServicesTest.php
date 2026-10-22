@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class PublicModelServicesTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
     use RefreshDatabase;
 

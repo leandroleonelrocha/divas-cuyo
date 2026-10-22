@@ -7,27 +7,38 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\LegalAccessController;
 use App\Http\Controllers\ModelPhotoController;
 use App\Http\Controllers\PrivateIdentityDocumentController;
 use App\Http\Controllers\PublicModelPhotoController;
 use App\Http\Controllers\PublicModelProfileController;
+use App\Http\Middleware\EnsureProfileIsComplete;
+use App\Http\Middleware\RequireLegalAcceptance;
 use App\Services\PublicModelHomepageProfiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/terminos-y-condiciones', 'legal.terms')->name('terms.show');
-Route::view('/politicas-del-sitio', 'legal.privacy')->name('privacy.show');
+Route::get('/aviso-legal', [LegalAccessController::class, 'show'])->name('legal.show');
+Route::post('/aviso-legal', [LegalAccessController::class, 'decide'])->name('legal.decide');
+Route::get('/acceso-denegado', [LegalAccessController::class, 'denied'])->name('legal.denied');
 
-Route::get('/', function (PublicModelHomepageProfiles $profiles) {
-    $profilesByProvince = $profiles->groupedByProvince();
-    $publicProfiles = array_merge(...array_map(fn (array $group) => $group['profiles'], $profilesByProvince) ?: [[]]);
+// Keep all public content endpoints (including photo delivery) inside this group.
+Route::middleware(RequireLegalAcceptance::class)->group(function (): void {
+    Route::view('/terminos-y-condiciones', 'legal.terms')->name('terms.show');
+    Route::view('/politicas-del-sitio', 'legal.privacy')->name('privacy.show');
 
-    return view('welcome', ['publicProfiles' => $publicProfiles, 'profilesByProvince' => $profilesByProvince]);
-})->name('home');
+    Route::get('/', function (PublicModelHomepageProfiles $profiles) {
+        $profilesByProvince = $profiles->groupedByProvince();
+        $publicProfiles = array_merge(...array_map(fn (array $group) => $group['profiles'], $profilesByProvince) ?: [[]]);
 
-Route::get('/modelos/fotos/{publicToken}', PublicModelPhotoController::class)
-    ->where('publicToken', '.*')->name('public.models.photos.show');
-Route::get('/modelos/{slug}', PublicModelProfileController::class)->name('public.models.show');
+        return view('welcome', ['publicProfiles' => $publicProfiles, 'profilesByProvince' => $profilesByProvince]);
+    })->name('home');
+
+    Route::get('/modelos/fotos/{publicToken}', PublicModelPhotoController::class)
+        ->where('publicToken', '.*')->name('public.models.photos.show');
+    Route::get('/modelos/{slug}', PublicModelProfileController::class)->name('public.models.show');
+
+});
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/registro', [RegistrationController::class, 'show'])->name('register.show');
@@ -48,7 +59,17 @@ Route::get('/verificar-email', function (Request $request) {
     return view('auth.verification-status', ['email' => $request->user()->email]);
 })->middleware('auth')->name('verification.notice');
 
-Route::middleware(['auth', 'verified'])->group(function (): void {
+Route::get('/account/pending-review', [AccountController::class, 'pendingReview'])
+    ->middleware(['auth', 'verified'])->name('account.pending-review');
+
+Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class.':onboarding'])->group(function (): void {
+    Route::get('/account/incomplete-profile', [AccountController::class, 'incompleteProfile'])
+        ->name('account.incomplete-profile');
+    Route::post('/account/incomplete-profile', [AccountController::class, 'completeProfile'])
+        ->name('account.complete-profile');
+});
+
+Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(function (): void {
     Route::get('/account', [AccountController::class, 'dashboard'])->name('account.dashboard');
     Route::get('/account/profile', [AccountProfileController::class, 'edit'])->name('account.profile.edit');
     Route::patch('/account/profile', [AccountProfileController::class, 'update'])->name('account.profile.update');
@@ -62,8 +83,6 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
         ->name('account.profile.bios.update');
     Route::post('/account/profile/physical-revisions', [AccountProfileController::class, 'storePhysicalRevision'])
         ->name('account.profile.physical-revisions.store');
-    Route::get('/account/incomplete-profile', [AccountController::class, 'incompleteProfile'])
-        ->name('account.incomplete-profile');
     Route::get('/account/photos', [ModelPhotoController::class, 'index'])->name('account.photos.index');
     Route::post('/account/photos', [ModelPhotoController::class, 'store'])->name('account.photos.store');
     Route::patch('/account/photos/order', [ModelPhotoController::class, 'order'])->name('account.photos.order');
@@ -91,10 +110,10 @@ Route::get('/admin/private/model-photos/{photo}/versions/{version}/{variant}', [
     ->name('admin.model-photos.file');
 
 Route::get('/cuenta/{user}', [AccountController::class, 'show'])
-    ->middleware('auth')
+    ->middleware(['auth', 'verified', EnsureProfileIsComplete::class])
     ->name('account.show');
 
-Route::middleware('auth')->group(function (): void {
+Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(function (): void {
     Route::get('/cuenta/{user}/identidad', [PrivateIdentityDocumentController::class, 'show'])
         ->name('identity.show');
     Route::post('/cuenta/{user}/identidad/documentos', [PrivateIdentityDocumentController::class, 'store'])

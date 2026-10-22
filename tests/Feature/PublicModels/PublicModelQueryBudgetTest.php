@@ -11,6 +11,8 @@ use Tests\TestCase;
 
 class PublicModelQueryBudgetTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public function test_public_query_count_stays_constant_for_one_or_five_photos_and_one_or_twenty_services(): void

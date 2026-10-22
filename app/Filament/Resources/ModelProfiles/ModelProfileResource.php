@@ -11,6 +11,7 @@ use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfilePhysicalRe
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfileServicesRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\PublicationTypeHistoryRelationManager;
 use App\Models\ModelProfile;
+use App\Services\AccountEnrollmentState;
 use App\Services\IdentityDocumentService;
 use App\Services\ModelProfileModerationService;
 use BackedEnum;
@@ -166,6 +167,9 @@ class ModelProfileResource extends Resource
                         ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                         ->compact()
                         ->schema([
+                            TextEntry::make('user.profile_completion_status')
+                                ->label('Estado de inscripción')->badge()
+                                ->formatStateUsing(fn (?string $state): string => AccountEnrollmentState::labels()[$state] ?? 'Inscripción habilitada'),
                             TextEntry::make('review_status')
                                 ->label('Estado de revisión')
                                 ->badge()
@@ -361,16 +365,16 @@ class ModelProfileResource extends Resource
         return parent::getEloquentQuery()
             ->whereDoesntHave('user', fn (Builder $query): Builder => $query->where('is_admin', true))
             ->with([
-            'user:id,email,email_verified_at',
-            'reviewer:id,email',
-            'documents',
-            'privateDetails',
-            'province',
-            'locality',
-            'publicationType',
-            'services',
-            'currentBio',
-        ]);
+                'user:id,email,email_verified_at,profile_completion_status',
+                'reviewer:id,email',
+                'documents',
+                'privateDetails',
+                'province',
+                'locality',
+                'publicationType',
+                'services',
+                'currentBio',
+            ]);
     }
 
     public static function getRelations(): array
@@ -418,6 +422,9 @@ class ModelProfileResource extends Resource
                 IconColumn::make('user.email_verified_at')
                     ->label('Email verificado')
                     ->boolean(),
+                TextColumn::make('user.profile_completion_status')
+                    ->label('Inscripción')->badge()
+                    ->formatStateUsing(fn (?string $state): string => AccountEnrollmentState::labels()[$state] ?? 'Inscripción habilitada'),
                 TextColumn::make('review_status')
                     ->label('Revisión')
                     ->badge()
@@ -483,6 +490,22 @@ class ModelProfileResource extends Resource
     public static function moderationActions(): array
     {
         return [
+            Action::make('requireProfileCompletion')
+                ->label('Solicitar completar perfil')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalDescription('La cuenta deberá completar el formulario de inscripción antes de volver a utilizar el panel.')
+                ->authorize('update')
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status !== AccountEnrollmentState::INCOMPLETE)
+                ->action(fn (ModelProfile $record) => app(AccountEnrollmentState::class)->requireCompletion($record->user, auth()->user()))
+                ->successNotificationTitle('Se solicitó completar el perfil'),
+            Action::make('finishEnrollmentReview')
+                ->label('Finalizar revisión de inscripción')
+                ->requiresConfirmation()
+                ->authorize('update')
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::PENDING)
+                ->action(fn (ModelProfile $record) => app(AccountEnrollmentState::class)->finishReview($record->user, auth()->user()))
+                ->successNotificationTitle('Inscripción revisada'),
             Action::make('approve')
                 ->label('Aprobar')
                 ->color('success')

@@ -32,7 +32,7 @@ class ModelProfileResourceTest extends TestCase
         $this->assertContains(ModelProfileBiosRelationManager::class, $relationManagers);
         $this->assertContains(PublicationTypeHistoryRelationManager::class, $relationManagers);
 
-        $this->actingAs(User::factory()->create(['is_admin' => true]))
+        $this->actingAs(User::factory()->withCompletedRegistration()->create(['is_admin' => true]))
             ->get(ModelProfileResource::getUrl('view', ['record' => ModelProfile::query()->firstOrFail()]))
             ->assertOk()
             ->assertSee('Datos privados administrativos')
@@ -43,7 +43,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_admin_can_see_the_model_profiles_list_and_use_its_columns(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = ModelProfile::query()->firstOrFail();
 
         Livewire::actingAs($admin)
@@ -61,7 +61,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_admin_root_shows_the_dashboard(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
 
         $this->actingAs($admin)
             ->get('/admin')
@@ -70,7 +70,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_admin_can_open_a_model_profile_detail(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = $admin->modelProfile;
 
         $this->actingAs($admin)
@@ -93,13 +93,13 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_detail_distinguishes_verification_review_and_publication_states(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
-        $unverified = User::factory()->unverified()->create();
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $unverified = User::factory()->withCompletedRegistration()->unverified()->create();
         $unverified->modelProfile()->update([
             'review_status' => 'approved',
             'is_published' => false,
         ]);
-        $rejected = User::factory()->create();
+        $rejected = User::factory()->withCompletedRegistration()->create();
         $rejected->modelProfile()->update([
             'review_status' => 'rejected',
             'is_published' => false,
@@ -119,8 +119,8 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_regular_user_cannot_open_a_model_profile_detail(): void
     {
-        $owner = User::factory()->create();
-        $regularUser = User::factory()->create(['is_admin' => false]);
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $regularUser = User::factory()->withCompletedRegistration()->create(['is_admin' => false]);
 
         $this->actingAs($regularUser)
             ->get(ModelProfileResource::getUrl('view', ['record' => $owner->modelProfile]))
@@ -129,14 +129,14 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_admin_can_search_by_profile_and_account_fields(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
-        $matchingUser = User::factory()->create([
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $matchingUser = User::factory()->withCompletedRegistration()->create([
             'name' => 'Lucia Mendoza',
             'email' => 'lucia@example.com',
             'whatsapp' => '+54 9 261 123 4567',
             'location' => 'San Rafael',
         ]);
-        $otherUser = User::factory()->create([
+        $otherUser = User::factory()->withCompletedRegistration()->create([
             'name' => 'Otra Modelo',
             'email' => 'otra@example.com',
             'whatsapp' => '+54 9 261 765 4321',
@@ -155,9 +155,9 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_admin_can_filter_by_verification_review_and_publication(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
-        $verified = User::factory()->create(['email_verified_at' => now()]);
-        $unverified = User::factory()->unverified()->create();
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $verified = User::factory()->withCompletedRegistration()->create(['email_verified_at' => now()]);
+        $unverified = User::factory()->withCompletedRegistration()->unverified()->create();
         $approved = $verified->modelProfile()->update(['review_status' => 'approved', 'is_published' => true]);
 
         $component = Livewire::actingAs($admin)->test(ListModelProfiles::class);
@@ -182,7 +182,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_regular_users_cannot_access_the_model_profiles_list(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->withCompletedRegistration()->create(['is_admin' => false]);
 
         $this->actingAs($user)
             ->get('/admin/model-profiles')
@@ -191,7 +191,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_admin_can_edit_the_allowed_profile_fields(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = $admin->modelProfile;
 
         Livewire::actingAs($admin)
@@ -214,7 +214,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_invalid_edit_keeps_previous_values_and_preserves_states(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = $admin->modelProfile;
         $profile->forceFill(['identity_status' => 'approved'])->save();
         app(ModelProfileModerationService::class)->approve($profile, $admin);
@@ -253,7 +253,7 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_edit_form_cannot_change_account_or_moderation_fields(): void
     {
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = $admin->modelProfile;
         $profile->forceFill(['identity_status' => 'approved'])->save();
         app(ModelProfileModerationService::class)->approve($profile, $admin);
@@ -302,8 +302,8 @@ class ModelProfileResourceTest extends TestCase
 
     public function test_regular_user_cannot_access_model_profile_edit(): void
     {
-        $owner = User::factory()->create();
-        $regularUser = User::factory()->create(['is_admin' => false]);
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $regularUser = User::factory()->withCompletedRegistration()->create(['is_admin' => false]);
 
         $this->actingAs($regularUser)
             ->get(ModelProfileResource::getUrl('edit', ['record' => $owner->modelProfile]))

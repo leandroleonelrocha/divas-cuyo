@@ -19,7 +19,7 @@ class ProfileLocationRegressionTest extends TestCase
         $oldLocality = $oldProvince->localities()->create(['name' => 'Anterior', 'slug' => 'anterior']);
         $newProvince = Province::factory()->create(['slug' => 'new-province']);
         $newLocality = $newProvince->localities()->create(['name' => 'Nueva', 'slug' => 'nueva']);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $this->seed(ServiceSeeder::class);
         $profile = $user->modelProfile;
         $profile->forceFill([

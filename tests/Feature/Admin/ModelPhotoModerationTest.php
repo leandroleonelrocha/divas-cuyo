@@ -4,7 +4,6 @@ namespace Tests\Feature\Admin;
 
 use App\Filament\Resources\ModelProfiles\ModelProfileResource;
 use App\Filament\Resources\ModelProfiles\Pages\ViewModelProfile;
-use Livewire\Livewire;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelPhotosRelationManager;
 use App\Models\ModelPhoto;
 use App\Models\User;
@@ -13,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class ModelPhotoModerationTest extends TestCase
@@ -28,9 +28,9 @@ class ModelPhotoModerationTest extends TestCase
     public function test_only_a_verified_admin_can_open_private_photo_variants(): void
     {
         [$owner, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
-        $regularUser = User::factory()->create(['is_admin' => false]);
-        $unverifiedAdmin = User::factory()->unverified()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $regularUser = User::factory()->withCompletedRegistration()->create(['is_admin' => false]);
+        $unverifiedAdmin = User::factory()->withCompletedRegistration()->unverified()->create(['is_admin' => true]);
         $version = $photo->latestVersion;
 
         $url = route('admin.model-photos.file', [$photo, $version, 'thumbnail']);
@@ -45,7 +45,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_admin_can_approve_pending_photo_and_audit_the_version(): void
     {
         [, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = $photo->modelProfile;
         $before = $profile->only(['identity_status', 'review_status', 'is_published']);
 
@@ -63,7 +63,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_reject_requires_reason_and_records_audit(): void
     {
         [, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
 
         $this->expectException(ValidationException::class);
         app(ModelPhotoModerationService::class)->reject($photo, $admin, '  ');
@@ -72,7 +72,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_rejection_records_reason_without_changing_profile_states(): void
     {
         [, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $profile = $photo->modelProfile;
         $before = $profile->only(['identity_status', 'review_status', 'is_published']);
 
@@ -89,7 +89,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_approved_replacement_shows_both_versions_and_promotes_only_after_approval(): void
     {
         [$owner, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         app(ModelPhotoModerationService::class)->approve($photo, $admin);
 
         $photo->refresh();
@@ -119,7 +119,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_rejecting_approved_replacement_keeps_the_current_version(): void
     {
         [$owner, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         app(ModelPhotoModerationService::class)->approve($photo, $admin);
         $photo->refresh();
         $currentId = $photo->current_version_id;
@@ -138,7 +138,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_moderation_action_is_not_available_for_a_stale_non_pending_photo(): void
     {
         [, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         app(ModelPhotoModerationService::class)->approve($photo, $admin);
 
         $this->expectException(ValidationException::class);
@@ -153,7 +153,7 @@ class ModelPhotoModerationTest extends TestCase
     public function test_verified_admin_without_model_profile_can_see_pending_photos(): void
     {
         [, $photo] = $this->uploadPhoto();
-        $admin = User::factory()->create(['is_admin' => true]);
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
         $admin->modelProfile()->delete();
         $this->assertFalse($admin->modelProfile()->exists());
         $this->actingAs($admin);
@@ -169,7 +169,7 @@ class ModelPhotoModerationTest extends TestCase
             ->assertTableActionVisible('approve', $photo)
             ->assertTableActionVisible('reject', $photo);
 
-        $this->actingAs(User::factory()->unverified()->create(['is_admin' => true]));
+        $this->actingAs(User::factory()->withCompletedRegistration()->unverified()->create(['is_admin' => true]));
         $this->assertFalse(ModelPhotosRelationManager::canViewForRecord($photo->modelProfile, ViewModelProfile::class));
     }
 
@@ -178,7 +178,7 @@ class ModelPhotoModerationTest extends TestCase
      */
     private function uploadPhoto(): array
     {
-        $owner = User::factory()->create();
+        $owner = User::factory()->withCompletedRegistration()->create();
         $this->actingAs($owner)->post(route('account.photos.store'), [
             'photo' => UploadedFile::fake()->image('photo.jpg', 1000, 1000),
         ])->assertRedirect();

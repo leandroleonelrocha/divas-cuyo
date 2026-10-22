@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class PublicModelVisibilityRuleTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     public static function invalidPrimary(): array

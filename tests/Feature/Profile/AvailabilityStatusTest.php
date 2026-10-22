@@ -14,7 +14,7 @@ class AvailabilityStatusTest extends TestCase
 
     public function test_model_can_save_available_status(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
             ...$this->validPayload(),
@@ -27,7 +27,7 @@ class AvailabilityStatusTest extends TestCase
     public function test_model_can_change_availability_without_changing_publication_or_review_states(): void
     {
         $this->seed(PublicationTypeSeeder::class);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $profile = $user->modelProfile;
         $publicationType = PublicationType::query()->where('slug', 'virtual')->firstOrFail();
         $profile->forceFill([
@@ -52,7 +52,7 @@ class AvailabilityStatusTest extends TestCase
 
     public function test_invalid_availability_status_is_rejected(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
             ...$this->validPayload(),

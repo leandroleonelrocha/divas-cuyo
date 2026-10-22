@@ -19,7 +19,7 @@ class PublicationTypeChangeTest extends TestCase
     {
         $this->seed(PublicationTypeSeeder::class);
         $this->seed(ServiceSeeder::class);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $virtual = PublicationType::query()->where('slug', 'virtual')->firstOrFail();
         $encounters = PublicationType::query()->where('slug', 'encounters')->firstOrFail();
         $profile = $user->modelProfile;
@@ -65,7 +65,7 @@ class PublicationTypeChangeTest extends TestCase
     public function test_noop_does_not_create_redundant_history(): void
     {
         $this->seed(PublicationTypeSeeder::class);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $virtual = PublicationType::query()->where('slug', 'virtual')->firstOrFail();
         $user->modelProfile->update(['publication_type_id' => $virtual->id]);
 
@@ -79,7 +79,7 @@ class PublicationTypeChangeTest extends TestCase
     public function test_virtual_to_encounters_preserves_virtual_services_without_auto_assigning_in_person(): void
     {
         $this->seed([PublicationTypeSeeder::class, ServiceSeeder::class]);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $virtual = PublicationType::query()->where('slug', 'virtual')->firstOrFail();
         $encounters = PublicationType::query()->where('slug', 'encounters')->firstOrFail();
         $virtualService = Service::query()->where('service_type', 'virtual')->firstOrFail();
@@ -101,7 +101,7 @@ class PublicationTypeChangeTest extends TestCase
     public function test_inactive_type_is_rejected_and_current_type_is_preserved(): void
     {
         $this->seed(PublicationTypeSeeder::class);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $virtual = PublicationType::query()->where('slug', 'virtual')->firstOrFail();
         $inactive = PublicationType::factory()->create(['is_active' => false]);
         $user->modelProfile->update(['publication_type_id' => $virtual->id]);
@@ -116,7 +116,7 @@ class PublicationTypeChangeTest extends TestCase
     public function test_generic_profile_update_cannot_change_publication_type(): void
     {
         $this->seed(PublicationTypeSeeder::class);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
         $virtual = PublicationType::query()->where('slug', 'virtual')->firstOrFail();
         $encounters = PublicationType::query()->where('slug', 'encounters')->firstOrFail();
         $user->modelProfile->update(['publication_type_id' => $virtual->id]);

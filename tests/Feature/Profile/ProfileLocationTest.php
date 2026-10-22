@@ -26,7 +26,7 @@ class ProfileLocationTest extends TestCase
     public function test_model_can_save_a_valid_province_locality_pair(): void
     {
         [$province, $locality] = $this->catalogPair();
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
             ...$this->validPayload(),
@@ -47,7 +47,7 @@ class ProfileLocationTest extends TestCase
     {
         [$mendoza, $mendozaLocality] = $this->catalogPair('mendoza');
         [$sanJuan] = $this->catalogPair('san-juan');
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
             ...$this->validPayload(),
@@ -55,7 +55,7 @@ class ProfileLocationTest extends TestCase
             'locality_id' => $mendozaLocality->id,
         ])->assertSessionHasErrors('locality_id');
 
-        $this->assertNull($user->modelProfile->fresh()->province_id);
+        $this->assertSame($user->modelProfile->province_id, $user->modelProfile->fresh()->province_id);
         $this->assertNotSame($mendoza->id, $user->modelProfile->fresh()->province_id);
     }
 
@@ -63,7 +63,7 @@ class ProfileLocationTest extends TestCase
     {
         [$province, $locality] = $this->catalogPair();
         $province->update(['is_active' => false]);
-        $user = User::factory()->create();
+        $user = User::factory()->withCompletedRegistration()->create();
 
         $this->actingAs($user)->patch(route('account.profile.update'), [
             ...$this->validPayload(),

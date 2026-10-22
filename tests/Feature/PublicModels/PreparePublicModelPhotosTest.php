@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class PreparePublicModelPhotosTest extends TestCase
 {
+    use \Tests\Support\AcceptsLegalDisclaimer;
+
     use PublicModelProfileFixtures;
 
     private function legacy()
