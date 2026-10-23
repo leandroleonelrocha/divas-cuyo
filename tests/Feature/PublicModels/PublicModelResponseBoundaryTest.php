@@ -6,13 +6,13 @@ use App\Models\Locality;
 use App\Models\Province;
 use App\ViewModels\PublicModelProfileViewModel;
 use Illuminate\Support\Facades\DB;
+use Tests\Support\AcceptsLegalDisclaimer;
 use Tests\Support\PublicModelProfileFixtures;
 use Tests\TestCase;
 
 class PublicModelResponseBoundaryTest extends TestCase
 {
-    use \Tests\Support\AcceptsLegalDisclaimer;
-
+    use AcceptsLegalDisclaimer;
     use PublicModelProfileFixtures;
 
     public function test_only_allowlisted_data_reaches_view_and_private_relations_are_not_queried(): void
@@ -26,7 +26,7 @@ class PublicModelResponseBoundaryTest extends TestCase
         DB::disableQueryLog();
         $response->assertViewHas('publicProfile', fn ($data) => $data instanceof PublicModelProfileViewModel);
         $data = $response->viewData('publicProfile');
-        $this->assertSame(['stageName', 'canonicalUrl', 'verifiedLabel', 'availabilityLabel', 'location', 'primaryPhoto', 'photos', 'characteristics', 'bio', 'publicationTypeLabel', 'serviceGroups', 'title', 'description', 'whatsappUrl', 'scheduleLabel', 'rates'], array_keys(get_object_vars($data)));
+        $this->assertSame(['stageName', 'canonicalUrl', 'verifiedLabel', 'availabilityLabel', 'location', 'primaryPhoto', 'photos', 'characteristics', 'bio', 'publicationTypeLabel', 'serviceGroups', 'title', 'description', 'whatsappUrl', 'scheduleLabel', 'rates', 'videos'], array_keys(get_object_vars($data)));
         foreach (['SECRET_FIRST', 'SECRET_LAST', '1981-11-23', 'SECRET_PHONE', 'SECRET_LEGACY', 'SECRET_CONTACT', 'SECRET_ADDRESS', $profile->user->email, 'user_id', 'model_profile_id', 'reviewed_by', 'rejection_reason', 'storage_path', 'identity_status', 'review_status', '-32.1234567', '-68.1234567'] as $secret) {
             $response->assertDontSee($secret, false);
             $this->assertStringNotContainsString($secret, json_encode($data));

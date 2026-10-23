@@ -16,6 +16,7 @@
         <nav class="account-nav" aria-label="Navegación privada">
             <a href="{{ route('account.dashboard') }}">Mi cuenta</a>
             <a href="{{ route('account.photos.index') }}">Mis fotos</a>
+            <a href="{{ route('account.videos.index') }}">Mis videos</a>
             <span class="account-profile-name">{{ $user->name }}</span>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

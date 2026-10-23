@@ -137,6 +137,20 @@
             </ul>
         </section>
 
+        @if ($publicProfile->videos !== [])
+            <section class="dv-videos" aria-labelledby="videos-title">
+                <h2 id="videos-title">Videos de {{ $publicProfile->stageName }}</h2>
+                <div class="dv-video-grid">
+                    @foreach ($publicProfile->videos as $video)
+                        <video controls playsinline preload="none" poster="{{ $video['poster'] }}" aria-label="Video {{ $loop->iteration }} de {{ $publicProfile->stageName }}">
+                            <source src="{{ $video['url'] }}" type="video/mp4">
+                            Tu navegador no permite reproducir este video.
+                        </video>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         <div class="artist-info-grid artist-panel" id="panel-info" role="tabpanel" aria-labelledby="tab-info" data-panel="info" hidden>
             @if ($publicProfile->bio !== null || $publicProfile->serviceGroups !== [] || $publicProfile->characteristics !== [])
                 <div class="artist-info-main">

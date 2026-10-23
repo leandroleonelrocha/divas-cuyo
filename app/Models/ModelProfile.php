@@ -149,6 +149,11 @@ class ModelProfile extends Model
         return $this->hasMany(ModelDocument::class);
     }
 
+    public function videos(): HasMany
+    {
+        return $this->hasMany(ModelVideo::class)->orderBy('position')->orderBy('id');
+    }
+
     public function photos(): HasMany
     {
         return $this->hasMany(ModelPhoto::class)->orderBy('position');

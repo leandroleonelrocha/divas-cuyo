@@ -85,6 +85,7 @@ class PublicModelProfileQuery
             default => null,
         };
         $rate = $this->rates($profile);
+
         return new PublicModelProfileViewModel(
             stageName: $profile->stage_name,
             canonicalUrl: route('public.models.show', ['slug' => $profile->slug]),
@@ -103,6 +104,12 @@ class PublicModelProfileQuery
             whatsappUrl: $whatsappUrl,
             scheduleLabel: $scheduleLabel,
             rates: $rate,
+            videos: $profile->videos()->where('processing_status', 'ready')->where('moderation_status', 'approved')
+                ->whereNotNull('watermarked_at')->whereNotNull('resource_id')->get(['public_token'])
+                ->map(fn ($video): array => [
+                    'url' => route('public.models.videos.file', [$video->public_token, 'video']),
+                    'poster' => route('public.models.videos.file', [$video->public_token, 'poster']),
+                ])->all(),
         );
     }
 

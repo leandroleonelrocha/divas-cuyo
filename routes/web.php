@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\LegalAccessController;
 use App\Http\Controllers\ModelPhotoController;
+use App\Http\Controllers\ModelVideoController;
 use App\Http\Controllers\PrivateIdentityDocumentController;
 use App\Http\Controllers\PublicModelPhotoController;
 use App\Http\Controllers\PublicModelProfileController;
@@ -123,3 +124,16 @@ Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(f
     Route::get('/cuenta/{user}/identidad/documentos/{document}/descargar', [PrivateIdentityDocumentController::class, 'download'])
         ->name('identity.documents.download');
 });
+
+Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(function (): void {
+    Route::get('/account/videos', [ModelVideoController::class, 'index'])->name('account.videos.index');
+    Route::post('/account/videos', [ModelVideoController::class, 'store'])->middleware('throttle:10,1')->name('account.videos.store');
+    Route::delete('/account/videos/{video}', [ModelVideoController::class, 'destroy'])->name('account.videos.destroy');
+    Route::post('/account/videos/{video}/retry', [ModelVideoController::class, 'retry'])->middleware('throttle:10,1')->name('account.videos.retry');
+});
+Route::get('/account/videos/{video}/file/{variant}', [ModelVideoController::class, 'file'])
+    ->middleware(['auth', 'verified', EnsureProfileIsComplete::class])->whereIn('variant', ['video', 'poster'])->name('account.videos.file');
+Route::get('/admin/private/model-videos/{video}/{variant}', [ModelVideoController::class, 'adminFile'])
+    ->middleware(['auth', 'verified'])->whereIn('variant', ['video', 'poster'])->name('admin.model-videos.file');
+Route::get('/model-videos/{token}/{variant}', [ModelVideoController::class, 'publicFile'])
+    ->middleware(RequireLegalAcceptance::class)->whereUuid('token')->whereIn('variant', ['video', 'poster'])->name('public.models.videos.file');

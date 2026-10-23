@@ -9,6 +9,7 @@ use App\Filament\Resources\ModelProfiles\RelationManagers\ModelPhotosRelationMan
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfileBiosRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfilePhysicalRevisionsRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfileServicesRelationManager;
+use App\Filament\Resources\ModelProfiles\RelationManagers\ModelVideosRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\PublicationTypeHistoryRelationManager;
 use App\Models\ModelProfile;
 use App\Services\AccountEnrollmentState;
@@ -381,6 +382,7 @@ class ModelProfileResource extends Resource
     {
         return [
             ModelPhotosRelationManager::class,
+            ModelVideosRelationManager::class,
             ModelProfilePhysicalRevisionsRelationManager::class,
             ModelProfileServicesRelationManager::class,
             ModelProfileBiosRelationManager::class,

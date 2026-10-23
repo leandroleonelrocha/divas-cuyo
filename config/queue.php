@@ -31,6 +31,15 @@ return [
 
     'connections' => [
 
+        'video_database' => [
+            'driver' => 'database',
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => 'jobs',
+            'queue' => 'videos',
+            'retry_after' => 960,
+            'after_commit' => true,
+        ],
+
         'sync' => [
             'driver' => 'sync',
         ],

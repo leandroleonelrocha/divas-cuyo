@@ -61,6 +61,12 @@ return [
             'report' => false,
         ],
 
+        'model_videos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/model-videos'),
+            'throw' => true,
+        ],
+
         'model_photos' => [
             'driver' => env('MODEL_PHOTOS_DRIVER', 'local'),
             'root' => env('MODEL_PHOTOS_ROOT', storage_path('app/private/model-photos')),

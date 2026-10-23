@@ -31,6 +31,7 @@
         <nav class="account-nav" aria-label="Navegación privada">
             <a href="{{ route('account.dashboard') }}" aria-current="page">Mi cuenta</a>
             <a href="{{ route('account.photos.index') }}">Mis fotos</a>
+            <a href="{{ route('account.videos.index') }}">Mis videos</a>
             <span class="account-profile-name">{{ $profile->name }}</span>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

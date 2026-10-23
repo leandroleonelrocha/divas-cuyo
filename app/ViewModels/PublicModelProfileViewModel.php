@@ -6,9 +6,9 @@ final readonly class PublicModelProfileViewModel
 {
     /**
      * @param  list<string>  $location
- * @param  array<string, string>  $characteristics  Formatted public values only; hidden age is omitted.
- * @param  array<string, list<string>>  $serviceGroups  Active compatible service names only.
- * @param  list<array{label:string, price:string}>  $rates  Published 30 min / 1 h rates; empty when set to consult.
+     * @param  array<string, string>  $characteristics  Formatted public values only; hidden age is omitted.
+     * @param  array<string, list<string>>  $serviceGroups  Active compatible service names only.
+     * @param  list<array{label:string, price:string}>  $rates  Published 30 min / 1 h rates; empty when set to consult.
      */
     public function __construct(
         public string $stageName,
@@ -27,5 +27,6 @@ final readonly class PublicModelProfileViewModel
         public ?string $whatsappUrl = null,
         public ?string $scheduleLabel = null,
         public array $rates = [],
+        public array $videos = [],
     ) {}
 }
