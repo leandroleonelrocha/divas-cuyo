@@ -1,13 +1,22 @@
                 <fieldset class="registration-modalities" aria-describedby="publication-price-note">
-                    <legend>Elegí tu modalidad de publicación</legend>
+                    <legend><span class="enrollment-section-number" aria-hidden="true">01</span> Elegí tu modalidad de publicación</legend>
                     <div class="registration-modality-options">
                     @forelse ($publicationTypes as $type)
                         <label class="registration-modality">
                             <input type="radio" name="publication_type_id" value="{{ $type->id }}" required
                                 @checked((string) old('publication_type_id', $profile?->publication_type_id) === (string) $type->id)>
                             <span>
-                                <strong>{{ $type->name }}</strong>
-                                <span>{{ $type->slug === 'virtual' ? 'Modelo virtual' : 'Modalidad presencial' }}</span>
+                                <span class="enrollment-modality-icon" aria-hidden="true">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                        @if ($type->slug === 'virtual')
+                                            <rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/>
+                                        @else
+                                            <path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>
+                                        @endif
+                                    </svg>
+                                </span>
+                                <strong class="enrollment-modality-name">{{ $type->name }}</strong>
+                                <span>{{ $type->slug === 'virtual' ? 'Conectá y ofrecé tus servicios de forma virtual.' : 'Publicá tu perfil para encuentros presenciales.' }}</span>
                                 <strong class="registration-modality-price">${{ number_format(config('publication.monthly_prices_ars.'.$type->slug), 0, ',', '.') }} ARS mensuales</strong>
                             </span>
                         </label>
@@ -19,25 +28,33 @@
                 </fieldset>
                 @error('publication_type_id')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 
+                <fieldset class="enrollment-information">
+                    <legend><span class="enrollment-section-number" aria-hidden="true">02</span> Completá tu información</legend>
+                    <div class="enrollment-fields-grid">
+                <div class="enrollment-field-group">
                 <label class="registration-field">Nombre público
                     <span class="registration-input-wrap">
-                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"/></svg>
-                        <input type="text" name="name" value="{{ old('name', $profile?->name) }}" required>
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
+                        <input type="text" name="name" placeholder="El nombre que verá tu público" value="{{ old('name', $profile?->name) }}" required>
                     </span>
                 </label>
                 @error('name')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
+                </div>
 
+                <div class="enrollment-field-group">
                 <label class="registration-field">WhatsApp
                     <span class="registration-input-wrap">
-                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.5 3h3l1.2 4-1.8 1.5a13.5 13.5 0 0 0 6.6 6.6l1.5-1.8 4 1.2v3c0 1.1-.9 2-2 2C10.7 19.5 4.5 13.3 4.5 5a2 2 0 0 1 2-2Z"/></svg>
-                        <input type="text" name="whatsapp" value="{{ old('whatsapp', $profile?->whatsapp) }}" required>
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z"/></svg>
+                        <input type="text" name="whatsapp" placeholder="Ej.: +54 9 261 123 4567" value="{{ old('whatsapp', $profile?->whatsapp) }}" required>
                     </span>
                 </label>
                 @error('whatsapp')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
+                </div>
 
-                <label class="registration-field">Ubicación · Provincia
+                <div class="enrollment-field-group">
+                <label class="registration-field">Provincia
                     <span class="registration-input-wrap">
-                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-6.1 7-12A7 7 0 0 0 5 10c0 5.9 7 12 7 12Zm0-9a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
                         <select name="province_id" id="province_id" required>
                             <option value="">Seleccioná una provincia</option>
                             @foreach ($provinces as $province)
@@ -47,10 +64,12 @@
                     </span>
                 </label>
                 @error('province_id')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
+                </div>
 
-                <label class="registration-field">Ubicación · Ciudad
+                <div class="enrollment-field-group">
+                <label class="registration-field">Ciudad <span class="enrollment-optional">(opcional)</span>
                     <span class="registration-input-wrap">
-                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 22s7-6.1 7-12A7 7 0 0 0 5 10c0 5.9 7 12 7 12Zm0-9a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18M5 21V7l7-4v18m0-11h7v11M8 8v1m0 3v1m0 3v1m7-3v1m0 3v1"/></svg>
                         <select name="locality_id" id="locality_id">
                             <option value="">Seleccioná una ciudad</option>
                             @foreach ($provinces as $province)
@@ -62,8 +81,17 @@
                     </span>
                 </label>
                 @error('locality_id')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
+                </div>
 
-                <p class="registration-publication-note">La documentación que presentes para verificar tu identidad y mayoría de edad será privada. Los datos destinados a tu perfil público serán visibles cuando este sea aprobado y publicado.</p>
+                    </div>
+                </fieldset>
+
+                <div class="enrollment-privacy">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4m-4 5v2"/></svg>
+                    <p class="registration-publication-note"><strong>Tu privacidad, primero.</strong> La documentación que presentes para verificar tu identidad y mayoría de edad será privada. Los datos destinados a tu perfil público serán visibles cuando este sea aprobado y publicado.</p>
+                </div>
+
+                <div class="enrollment-consents">
 
                 <label class="registration-consent">
                     <input type="checkbox" name="terms_accepted" value="1" required>
@@ -84,3 +112,5 @@
                 </label>
                 @error('confirm_in_person_removal')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
                 @endif
+
+                </div>

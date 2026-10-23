@@ -6,7 +6,7 @@
     <title>Perfil incompleto · Divas Cuyo</title>
     @vite('resources/css/styles.css')
 </head>
-<body class="account-page registration-enrollment">
+<body class="account-page registration-enrollment enrollment-page">
 <main class="account-shell account-incomplete" id="contenido-principal">
     <header class="account-header" aria-label="Navegación de cuenta">
         <a href="{{ url('/') }}" class="account-brand" aria-label="Divas Cuyo">
@@ -20,16 +20,18 @@
     </header>
 
     <section class="account-card account-incomplete-card" aria-labelledby="incomplete-title">
-        <div class="account-empty-icon" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" focusable="false"><path d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Zm0 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7Zm-1 3h2v5h-2V8Zm0 6h2v2h-2v-2Z"/></svg>
+        <div class="enrollment-welcome">
+            <span class="enrollment-verified">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/></svg>
+                Cuenta verificada
+            </span>
+            <h1 id="incomplete-title">Bienvenida a Divas Cuyo</h1>
+            <p>Elegí cómo querés presentarte y completá tus datos para habilitar tu panel.</p>
         </div>
-        <p class="account-eyebrow">Cuenta verificada</p>
-        <h1 id="incomplete-title">Bienvenida a Divas Cuyo</h1>
-        <p>Completá tus datos y elegí tu modalidad para habilitar las funciones de tu panel.</p>
         <form method="POST" action="{{ route('account.complete-profile') }}" class="registration-card">
             @csrf
             @include('account.partials.enrollment-fields')
-            <button type="submit" class="registration-submit" @disabled($publicationTypes->isEmpty())>Guardar y continuar</button>
+            <button type="submit" class="registration-submit" @disabled($publicationTypes->isEmpty())>Guardar y continuar <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
         </form>
     </section>
 </main>

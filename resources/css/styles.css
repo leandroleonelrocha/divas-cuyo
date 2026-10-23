@@ -1884,3 +1884,75 @@ textarea {
   font-weight: 700;
   text-decoration: underline;
 }
+
+/* Bienvenida y finalización del perfil: estilos acotados a esta pantalla. */
+.enrollment-page { background: #f7f7f8; padding-bottom: 40px; }
+.enrollment-page .account-incomplete { max-width: 960px; }
+.enrollment-page .account-header { min-height: 82px; margin-bottom: 28px; border-color: #e7e7eb; }
+.enrollment-page .account-brand { text-decoration: none; }
+.enrollment-page .account-logout { font-size: 13px; }
+.enrollment-page .account-incomplete-card { max-width: 840px; padding: 32px 40px; text-align: left; border-color: #e7e7eb; border-radius: 20px; box-shadow: 0 8px 32px #1f1f2406; }
+.enrollment-page .enrollment-welcome { padding-bottom: 26px; border-bottom: 1px solid #ededf0; }
+.enrollment-page .enrollment-verified { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; margin-bottom: 14px; border-radius: 30px; background: var(--color-red-soft); color: var(--color-red-dark); font-size: 12px; font-weight: 700; }
+.enrollment-page .enrollment-welcome h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 34px); line-height: 1.2; letter-spacing: -.035em; }
+.enrollment-page .enrollment-welcome p { max-width: none; margin: 0; font-size: 14px; line-height: 1.6; }
+.enrollment-page .account-incomplete-card .registration-card { max-width: none; margin: 24px 0 0; padding: 0; background: transparent; border-radius: 0; }
+.enrollment-page fieldset { min-width: 0; padding: 0; border: 0; }
+.enrollment-page fieldset legend { width: 100%; margin-bottom: 16px; padding: 0; color: var(--color-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
+.enrollment-page .enrollment-section-number { display: inline-block; margin-right: 8px; color: var(--color-red); font-size: 12px; font-weight: 700; vertical-align: 1px; }
+.enrollment-page .registration-modalities { margin: 0 0 24px; }
+.enrollment-page .registration-modality-options { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.enrollment-page .registration-modality { position: relative; margin: 0; padding: 18px; border: 1px solid #dedee4; border-radius: 12px; background: #fff; transition: border-color 150ms, background 150ms; }
+.enrollment-page .registration-modality:hover { border-color: #b8b8c1; }
+.enrollment-page .registration-modality:has(input:checked) { border-color: var(--color-red); background: #fff8f8; box-shadow: inset 0 0 0 1px var(--color-red); }
+.enrollment-page .registration-modality input { position: absolute; top: 19px; right: 18px; width: 18px; height: 18px; margin: 0; }
+.enrollment-page .registration-modality > span { width: 100%; gap: 6px; color: #62626e; font-size: 13px; line-height: 1.5; }
+.enrollment-page .enrollment-modality-icon { display: flex; width: 36px; height: 36px; align-items: center; justify-content: center; margin-bottom: 4px; border-radius: 10px; color: var(--color-red); background: var(--color-red-soft); }
+.enrollment-page .enrollment-modality-name { color: var(--color-ink); font-size: 16px; }
+.enrollment-page .registration-modality-price { margin-top: 6px; color: var(--color-red-dark); font-size: 15px; font-weight: 700; }
+.enrollment-page #publication-price-note { max-width: none; margin: 10px 0 0; color: #72727e; font-size: 12px; line-height: 1.5; }
+.enrollment-page .enrollment-information { margin: 0; }
+.enrollment-page .enrollment-fields-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+.enrollment-page .enrollment-field-group { min-width: 0; }
+.enrollment-page .registration-field { margin: 0; font-size: 13px; }
+.enrollment-page .enrollment-optional { color: #72727e; font-size: 12px; font-weight: 400; }
+.enrollment-page .registration-input-wrap { margin-top: 8px; }
+.enrollment-page .input-icon { position: absolute; top: 50%; left: 14px; transform: translateY(-50%); color: #84848f; pointer-events: none; }
+.enrollment-page .registration-input-wrap input,
+.enrollment-page .registration-input-wrap select { height: 46px; padding-left: 42px; padding-right: 12px; border-color: #dedee4; border-radius: 9px; font-family: inherit; font-size: 14px; }
+.enrollment-page .registration-input-wrap input::placeholder { color: #85858f; }
+.enrollment-page .registration-input-wrap :is(input, select):focus { border-color: var(--color-red); }
+.enrollment-page .enrollment-privacy { display: flex; align-items: flex-start; gap: 10px; margin: 22px 0 18px; padding: 13px 15px; background: #f6f6f8; border: 1px solid #ededf0; border-radius: 10px; }
+.enrollment-page .enrollment-privacy > svg { flex-shrink: 0; margin-top: 2px; color: #777783; }
+.enrollment-page .enrollment-privacy p { max-width: none; margin: 0; color: #686875; font-size: 12px; line-height: 1.6; }
+.enrollment-page .enrollment-privacy strong { color: #44444f; font-weight: 600; }
+.enrollment-page .enrollment-consents { display: grid; gap: 10px; }
+.enrollment-page .registration-consent { align-items: flex-start; gap: 10px; margin: 0; font-size: 12px; line-height: 1.6; cursor: pointer; }
+.enrollment-page .registration-consent input { width: 18px; height: 18px; margin: 1px 0; }
+.enrollment-page :is(.registration-consent input, .registration-submit, .account-logout, a):focus-visible { outline: 2px solid var(--color-red); outline-offset: 4px; }
+.enrollment-page .registration-error { max-width: none; margin: 8px 0; padding: 8px 10px; font-size: 12px; }
+.enrollment-page .registration-submit { margin-top: 24px; height: 48px; border-radius: 10px; font-family: inherit; font-weight: 700; box-shadow: 0 4px 12px #d719201a; }
+.enrollment-page .registration-submit:disabled { box-shadow: none; }
+@media (max-width: 700px) {
+  .enrollment-page .account-header { margin-bottom: 20px; min-height: 72px; }
+  .enrollment-page .account-incomplete-card { padding: 26px 24px; }
+  .enrollment-page .enrollment-fields-grid { gap: 16px; }
+  .enrollment-page .registration-input-wrap input,
+  .enrollment-page .registration-input-wrap select { font-size: 16px; }
+}
+@media (max-width: 540px) {
+  .enrollment-page { padding-inline: 12px; }
+  .enrollment-page .account-brand { gap: 6px; }
+  .enrollment-page .account-brand span { font-size: 14px; }
+  .enrollment-page .account-logo { width: 36px; height: 36px; }
+  .enrollment-page .account-incomplete-card { padding: 24px 18px; border-radius: 16px; }
+  .enrollment-page .enrollment-welcome { padding-bottom: 20px; }
+  .enrollment-page .registration-modality-options,
+  .enrollment-page .enrollment-fields-grid { grid-template-columns: 1fr; }
+  .enrollment-page .registration-modality { padding: 15px; }
+  .enrollment-page .registration-modality > span { grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; }
+  .enrollment-page .enrollment-modality-icon { grid-row: 1 / 4; margin: 0; }
+  .enrollment-page .registration-modality > span > :not(.enrollment-modality-icon) { grid-column: 2; }
+  .enrollment-page .enrollment-modality-name { padding-right: 25px; }
+  .enrollment-page .registration-modality-price { margin-top: 2px; }
+}
