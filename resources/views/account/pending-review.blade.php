@@ -18,7 +18,11 @@
     <section class="account-card account-incomplete-card" aria-labelledby="review-title">
         <h1 id="review-title">Tu perfil está en revisión</h1>
         <p role="status">Recibimos tus datos. Podrás acceder al panel cuando el administrador apruebe tu inscripción.</p>
-        <a href="{{ route('account.pending-review') }}" class="account-primary-action">Consultar estado</a>
+        <div class="account-review-status" role="status">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span>Pendiente de aprobación</span>
+        </div>
+        <p class="account-review-hint">Podés actualizar esta página para comprobar si tu inscripción ya fue aprobada.</p>
     </section>
 </main>
 </body>

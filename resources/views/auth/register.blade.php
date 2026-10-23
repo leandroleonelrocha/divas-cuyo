@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crear cuenta · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/form-submit-loading.js') }}" defer></script>
 </head>
 <body class="registration-page registration-enrollment">
     <header class="registration-header">
@@ -31,7 +32,7 @@
                 <p class="registration-existing"><a href="{{ route('login.show') }}">Ya tengo una cuenta</a></p>
             </div>
 
-            <form class="registration-card" method="POST" action="{{ route('register.store') }}">
+            <form class="registration-card" method="POST" action="{{ route('register.store') }}" data-submit-loading="Creando cuenta…">
                 @csrf
                 @if (session('error'))<p class="registration-feedback" role="alert">{{ session('error') }}</p>@endif
 

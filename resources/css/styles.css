@@ -1956,3 +1956,65 @@ textarea {
   .enrollment-page .enrollment-modality-name { padding-right: 25px; }
   .enrollment-page .registration-modality-price { margin-top: 2px; }
 }
+
+.registration-submit.is-submitting:disabled {
+  opacity: 1;
+  cursor: wait;
+  background: var(--color-red-dark);
+  transform: none;
+}
+.submit-loading-spinner {
+  display: inline-block;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, .4);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: submit-loading-spin .7s linear infinite;
+}
+.submit-loading-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@keyframes submit-loading-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .submit-loading-spinner { animation: none; }
+}
+
+.account-review-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 10px 16px;
+  color: var(--color-red-dark);
+  background: var(--color-red-soft);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.account-review-status svg { flex-shrink: 0; }
+.account-incomplete-card p.account-review-hint {
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Confirmaciones de acciones completadas; los errores conservan su estilo rojo. */
+.registration-feedback.feedback-success,
+.identity-feedback.feedback-success,
+.profile-feedback-success,
+.photos-feedback-success {
+  color: #14532d;
+  background: #dcfce7;
+  border-color: #86efac;
+}

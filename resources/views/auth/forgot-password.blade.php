@@ -31,7 +31,7 @@
 
             <form class="registration-card registration-recovery-card" method="POST" action="{{ route('password.email') }}">
                 @csrf
-                @if (session('status'))<p class="registration-feedback" role="status">{{ session('status') }}</p>@endif
+                @if (session('status'))<p class="registration-feedback feedback-success" role="status">{{ session('status') }}</p>@endif
 
                 <div class="registration-card-heading registration-card-heading-visible">
                     <h2>¿Olvidaste tu contraseña?</h2>

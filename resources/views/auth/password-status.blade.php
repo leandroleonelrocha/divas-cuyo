@@ -2,7 +2,7 @@
 
 <section class="auth-layout auth-layout--single">
     <div class="contact-form auth-card">
-        <p role="status">{{ session('status') }}</p>
+        <p class="registration-feedback feedback-success" role="status">{{ session('status') }}</p>
         <div class="auth-links">
             <a href="{{ route('login.show') }}">Iniciar sesión</a>
         </div>

@@ -47,7 +47,7 @@
         <p class="identity-status-line">Estado: <strong class="account-badge account-badge-{{ $identityState['class'] }}">{{ $identityState['label'] }}</strong></p>
     </section>
 
-    @if (session('status'))<p class="identity-feedback" role="status">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="identity-feedback feedback-success" role="status">{{ session('status') }}</p>@endif
     @if ($profile->identity_rejection_reason)
         <p class="identity-feedback identity-feedback-error" role="alert"><strong>Motivo del rechazo:</strong> {{ $profile->identity_rejection_reason }}</p>
     @endif

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Perfil incompleto · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/form-submit-loading.js') }}" defer></script>
 </head>
 <body class="account-page registration-enrollment enrollment-page">
 <main class="account-shell account-incomplete" id="contenido-principal">
@@ -28,7 +29,7 @@
             <h1 id="incomplete-title">Bienvenida a Divas Cuyo</h1>
             <p>Elegí cómo querés presentarte y completá tus datos para habilitar tu panel.</p>
         </div>
-        <form method="POST" action="{{ route('account.complete-profile') }}" class="registration-card">
+        <form method="POST" action="{{ route('account.complete-profile') }}" data-submit-loading="Guardando perfil…" class="registration-card">
             @csrf
             @include('account.partials.enrollment-fields')
             <button type="submit" class="registration-submit" @disabled($publicationTypes->isEmpty())>Guardar y continuar <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
