@@ -7,6 +7,7 @@ use App\Http\Requests\ModelPhotoReplaceRequest;
 use App\Http\Requests\ModelPhotoUploadRequest;
 use App\Models\ModelPhoto;
 use App\Models\ModelPhotoVersion;
+use App\Models\ModelProfile;
 use App\Services\ModelPhotoService;
 use App\Services\ModelPhotoStorage;
 use Illuminate\Http\Request;
@@ -29,7 +30,20 @@ class ModelPhotoController extends Controller
     {
         $profile = $request->user()->modelProfile()->firstOrFail();
         Gate::forUser($request->user())->authorize('create', [ModelPhoto::class, $profile]);
-        $service->uploadForAuthenticatedModel($request->user(), $request->file('photo'));
+        $photo = $service->uploadForAuthenticatedModel($request->user(), $request->file('photo'));
+
+        if ($request->expectsJson()) {
+            $count = $profile->photos()->count();
+
+            return response()->json([
+                'photo' => $photo->getKey(),
+                'count' => $count,
+                'limit' => (int) config('model-photos.max_photos'),
+                'index' => $count - 1,
+                'card' => $this->renderCard($profile, $photo, $count - 1),
+                'status' => 'La fotografía se cargó y quedó en revisión.',
+            ]);
+        }
 
         return to_route('account.photos.index')->with('status', 'La fotografía se cargó y quedó en revisión.');
     }
@@ -56,6 +70,19 @@ class ModelPhotoController extends Controller
         Gate::forUser($request->user())->authorize('replace', $photo);
         $service->replaceForAuthenticatedModel($request->user(), $photo, $request->file('photo'));
 
+        if ($request->expectsJson()) {
+            $profile = $request->user()->modelProfile()->firstOrFail();
+            $index = $profile->photos()->pluck('id')->search($photo->getKey()) ?: 0;
+
+            return response()->json([
+                'photo' => $photo->getKey(),
+                'count' => $profile->photos()->count(),
+                'limit' => (int) config('model-photos.max_photos'),
+                'card' => $this->renderCard($profile, $photo, (int) $index),
+                'status' => 'La nueva versión se cargó y quedó en revisión.',
+            ]);
+        }
+
         return to_route('account.photos.index')->with('status', 'La nueva versión se cargó y quedó en revisión.');
     }
 
@@ -64,7 +91,29 @@ class ModelPhotoController extends Controller
         Gate::forUser($request->user())->authorize('delete', $photo);
         $service->deleteForAuthenticatedModel($request->user(), $photo);
 
+        if ($request->expectsJson()) {
+            $profile = $request->user()->modelProfile()->firstOrFail();
+
+            return response()->json([
+                'photo' => $photo->getKey(),
+                'count' => $profile->photos()->count(),
+                'limit' => (int) config('model-photos.max_photos'),
+                'status' => 'La fotografía se eliminó correctamente.',
+            ]);
+        }
+
         return to_route('account.photos.index')->with('status', 'La fotografía se eliminó correctamente.');
+    }
+
+    private function renderCard(ModelProfile $profile, ModelPhoto $photo, int $index): string
+    {
+        $photo->load(['currentVersion', 'latestVersion']);
+
+        return view('account.photos.card', [
+            'profile' => $profile,
+            'photo' => $photo,
+            'index' => $index,
+        ])->render();
     }
 
     public function file(Request $request, ModelPhoto $photo, string $variant): StreamedResponse

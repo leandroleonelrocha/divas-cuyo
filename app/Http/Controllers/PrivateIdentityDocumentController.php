@@ -8,6 +8,7 @@ use App\Models\ModelDocument;
 use App\Models\User;
 use App\Services\IdentityDocumentService;
 use App\Services\PrivateIdentityDocumentStorage;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -26,15 +27,24 @@ class PrivateIdentityDocumentController extends Controller
         return view('identity.show', compact('user', 'profile'));
     }
 
-    public function store(IdentityDocumentUploadRequest $request, User $user, IdentityDocumentService $service): RedirectResponse
+    public function store(IdentityDocumentUploadRequest $request, User $user, IdentityDocumentService $service): RedirectResponse|JsonResponse
     {
         $profile = $user->modelProfile()->firstOrFail();
         Gate::authorize('create', [ModelDocument::class, $profile]);
 
         try {
-            $service->upload($profile, $request->string('type')->toString(), $request->file('document'));
+            $document = $service->upload($profile, $request->string('type')->toString(), $request->file('document'));
         } catch (LogicException $exception) {
-            return back()->withErrors(['document' => $exception->getMessage()]);
+            return $request->expectsJson()
+                ? response()->json(['message' => $exception->getMessage()], 422)
+                : back()->withErrors(['document' => $exception->getMessage()]);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'type' => $document->type,
+                'download_url' => route('identity.documents.download', [$user, $document]),
+            ]);
         }
 
         return to_route('identity.show', $user)->with('status', 'Documento cargado correctamente.');

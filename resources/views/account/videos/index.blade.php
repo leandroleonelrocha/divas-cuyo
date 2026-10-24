@@ -9,12 +9,20 @@
 </head>
 <body class="account-page photos-page">
 <main class="account-shell" id="contenido-principal">
-    <header class="account-header">
-        <a href="{{ route('account.dashboard') }}" class="account-brand">DIVAS CUYO</a>
+    <header class="account-header" aria-label="Navegación de mis videos">
+        <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
+            <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
+            <span>DIVAS CUYO</span>
+        </a>
         <nav class="account-nav" aria-label="Navegación privada">
             <a href="{{ route('account.dashboard') }}">Mi cuenta</a>
             <a href="{{ route('account.photos.index') }}">Mis fotos</a>
             <a href="{{ route('account.videos.index') }}" aria-current="page">Mis videos</a>
+            <span class="account-profile-name">{{ $profile->name }}</span>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="account-logout">Cerrar sesión</button>
+            </form>
         </nav>
     </header>
     <section class="photos-hero">
