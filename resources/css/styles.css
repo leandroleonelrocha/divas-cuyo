@@ -84,6 +84,11 @@ body {
 .account-hero p:not(.account-eyebrow), .account-incomplete p:not(.account-eyebrow) { margin: 0; color: var(--color-muted); font-size: 17px; }
 .account-card { margin-bottom: 20px; padding: 32px; background: var(--color-white); border: 1px solid rgba(217, 220, 225, .85); border-radius: 18px; box-shadow: 0 12px 32px rgba(31, 31, 36, .05); }
 .account-card h2 { margin: 0; color: var(--color-ink); font-size: 22px; line-height: 1.2; }
+.account-summary-list { display: grid; gap: 12px; margin: 18px 0 0; }
+.account-summary-list div { display: grid; grid-template-columns: minmax(150px, .35fr) minmax(0, 1fr); gap: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(217, 220, 225, .7); }
+.account-summary-list dt { color: var(--color-muted); font-size: 13px; font-weight: 600; }
+.account-summary-list dd { margin: 0; color: var(--color-ink); overflow-wrap: anywhere; }
+.account-help { margin-top: 18px; color: var(--color-muted); font-size: 13px; }
 .account-section-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
 .account-section-heading .account-kicker { margin-bottom: 7px; }
 .account-heading-note { color: var(--color-light); font-size: 13px; }

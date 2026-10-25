@@ -124,6 +124,16 @@ class ModelProfile extends Model
         return $this->belongsToMany(Service::class, 'model_profile_service')->withTimestamps();
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(PublicationPayment::class)->latest('expires_at');
+    }
+
+    public function currentPayment(): HasOne
+    {
+        return $this->hasOne(PublicationPayment::class)->latestOfMany('expires_at');
+    }
+
     public function bios(): HasMany
     {
         return $this->hasMany(ModelProfileBio::class)->latest();

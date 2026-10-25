@@ -33,6 +33,10 @@ class ModelProfileModerationService
                 throw new LogicException('Sólo se puede publicar un perfil aprobado y no publicado.');
             }
 
+            if (! app(PublicationPaymentService::class)->hasCurrentPayment($lockedProfile)) {
+                throw new LogicException('No se puede publicar el perfil sin un pago vigente.');
+            }
+
             $lockedProfile->forceFill(['is_published' => true])->save();
 
             return $profile->refresh();

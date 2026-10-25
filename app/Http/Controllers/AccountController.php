@@ -16,7 +16,7 @@ class AccountController extends Controller
 {
     public function dashboard(Request $request)
     {
-        $user = $request->user()->refresh()->load('modelProfile.province', 'modelProfile.locality', 'modelProfile.publicationType', 'modelProfile.currentBio');
+        $user = $request->user()->refresh()->load('modelProfile.province', 'modelProfile.locality', 'modelProfile.publicationType', 'modelProfile.currentBio', 'modelProfile.currentPayment');
         Gate::forUser($user)->authorize('view', $user);
 
         abort_unless($user->hasVerifiedEmail(), 403);
@@ -28,6 +28,7 @@ class AccountController extends Controller
         return view('account.dashboard', [
             'user' => $user,
             'profile' => $user->modelProfile,
+            'paymentInstructions' => \App\Models\PaymentInstruction::query()->active()->latest()->first(),
         ]);
     }
 

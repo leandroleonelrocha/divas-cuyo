@@ -27,6 +27,12 @@ class PublicModelProfileVisibility
             ->where('identity_status', 'approved')
             ->where('review_status', 'approved')
             ->where('is_published', true)
+            ->where(function (Builder $query): void {
+                $query->whereDoesntHave('payments')
+                    ->orWhereHas('payments', fn (Builder $payment): Builder => $payment
+                        ->whereDate('starts_at', '<=', today())
+                        ->whereDate('expires_at', '>=', today()));
+            })
             ->whereHas('user', fn (Builder $query) => $query->whereNotNull('email_verified_at'))
             ->whereHas('photos', fn (Builder $query) => $query
                 ->where('is_primary', true)

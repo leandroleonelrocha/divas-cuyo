@@ -9,7 +9,7 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        if (User::query()->where('email', 'admin@example.com')->exists()) {
+        if (User::query()->where('email', 'admin@divascuyo.com')->exists()) {
             return;
         }
 

@@ -9,6 +9,7 @@ use App\Filament\Resources\ModelProfiles\RelationManagers\ModelPhotosRelationMan
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfileBiosRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfilePhysicalRevisionsRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfileServicesRelationManager;
+use App\Filament\Resources\ModelProfiles\RelationManagers\PublicationPaymentsRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\ModelVideosRelationManager;
 use App\Filament\Resources\ModelProfiles\RelationManagers\PublicationTypeHistoryRelationManager;
 use App\Models\ModelProfile;
@@ -32,6 +33,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -385,6 +387,7 @@ class ModelProfileResource extends Resource
             ModelVideosRelationManager::class,
             ModelProfilePhysicalRevisionsRelationManager::class,
             ModelProfileServicesRelationManager::class,
+            PublicationPaymentsRelationManager::class,
             ModelProfileBiosRelationManager::class,
             PublicationTypeHistoryRelationManager::class,
         ];
@@ -445,6 +448,10 @@ class ModelProfileResource extends Resource
                     ->badge()
                     ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
                     ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
+                TextColumn::make('currentPayment.expires_at')
+                    ->label('Vencimiento')
+                    ->date('d/m/Y')
+                    ->placeholder('Sin pago'),
                 TextColumn::make('created_at')
                     ->label('Fecha de registro')
                     ->dateTime('d/m/Y H:i')
@@ -473,6 +480,16 @@ class ModelProfileResource extends Resource
                     ->trueLabel('Publicado')
                     ->falseLabel('No publicado')
                     ->placeholder('Todos'),
+                Filter::make('near_expiry')
+                    ->label('Próximas a vencer')
+                    ->query(function (Builder $query): Builder {
+                        return $query->whereHas('payments', fn (Builder $payment): Builder => $payment
+                            ->whereDate('expires_at', '>=', today())
+                            ->whereDate('expires_at', '<=', today()->addDays((int) config('publication.expiry_warning_days', 7))));
+                    }),
+                Filter::make('expired')
+                    ->label('Vencidas')
+                    ->query(fn (Builder $query): Builder => $query->whereHas('payments', fn (Builder $payment): Builder => $payment->whereDate('expires_at', '<', today()))),
             ])
             ->searchable(['name', 'whatsapp', 'location', 'user.email'])
             ->defaultSort('created_at', 'desc')
@@ -492,6 +509,22 @@ class ModelProfileResource extends Resource
     public static function moderationActions(): array
     {
         return [
+            Action::make('registerPayment')
+                ->label('Registrar pago')
+                ->color('warning')
+                ->icon(Heroicon::OutlinedBanknotes)
+                ->authorize('update')
+                ->form([
+                    TextInput::make('paid_at')->label('Fecha de pago')->required()->default(now()->toDateString()),
+                    TextInput::make('amount')->label('Importe')->numeric()->minValue(0.01)->required(),
+                    TextInput::make('period_days')->label('Período (días)')->integer()->minValue(1)->required()->default(30),
+                    TextInput::make('starts_at')->label('Inicio')->required()->default(now()->toDateString()),
+                    Textarea::make('internal_note')->label('Observación interna')->maxLength(5000),
+                ])
+                ->action(function (ModelProfile $record, array $data): void {
+                    app(\App\Services\PublicationPaymentService::class)->register($record, auth()->user(), $data);
+                })
+                ->successNotificationTitle('Pago registrado'),
             Action::make('requireProfileCompletion')
                 ->label('Solicitar completar perfil')
                 ->color('warning')
@@ -577,6 +610,7 @@ class ModelProfileResource extends Resource
                 ->authorize('publish')
                 ->visible(fn (ModelProfile $record): bool => $record->identity_status === 'approved'
                     && $record->review_status === 'approved'
+                    && app(\App\Services\PublicationPaymentService::class)->hasCurrentPayment($record)
                     && ! $record->is_published)
                 ->action(function (ModelProfile $record): void {
                     app(ModelProfileModerationService::class)->publish($record);

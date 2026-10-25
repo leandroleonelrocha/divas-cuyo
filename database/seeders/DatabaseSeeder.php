@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceSeeder::class);
         $this->call(AdminUserSeeder::class);
 
-        if (config('divas.seed_real_profiles')) {
+        //if (config('divas.seed_real_profiles')) {
             $this->call(PerfilesDivasCuyoSeeder::class);
-        }
+        //}
 
     }
 }

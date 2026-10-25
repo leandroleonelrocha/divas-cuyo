@@ -46,6 +46,31 @@
         <p>Este es el resumen de tu perfil y del estado de cada validación.</p>
     </section>
 
+    @if ($paymentInstructions || $profile->currentPayment)
+        <section class="account-card" aria-labelledby="payment-title">
+            <div class="account-section-heading">
+                <div>
+                    <p class="account-kicker">Publicación</p>
+                    <h2 id="payment-title">Instrucciones de pago</h2>
+                </div>
+            </div>
+            @if ($paymentInstructions)
+                <p>Para enviar tu comprobante, realizá la transferencia con los siguientes datos:</p>
+                <dl class="account-summary-list">
+                    @if ($paymentInstructions->alias)<div><dt>Alias</dt><dd>{{ $paymentInstructions->alias }}</dd></div>@endif
+                    @if ($paymentInstructions->transfer_details)<div><dt>Datos de transferencia</dt><dd>{{ $paymentInstructions->transfer_details }}</dd></div>@endif
+                    @if ($paymentInstructions->default_amount)<div><dt>Importe</dt><dd>$ {{ number_format((float) $paymentInstructions->default_amount, 2, ',', '.') }}</dd></div>@endif
+                    @if ($paymentInstructions->receipt_whatsapp)<div><dt>Enviar comprobante por WhatsApp</dt><dd>{{ $paymentInstructions->receipt_whatsapp }}</dd></div>@endif
+                </dl>
+            @else
+                <p>Las instrucciones de pago todavía no fueron configuradas.</p>
+            @endif
+            @if ($profile->currentPayment)
+                <p class="account-help">Publicación vigente hasta {{ $profile->currentPayment->expires_at->format('d/m/Y') }}.</p>
+            @endif
+        </section>
+    @endif
+
     <section class="account-card" aria-labelledby="status-title">
         <div class="account-section-heading">
             <div>

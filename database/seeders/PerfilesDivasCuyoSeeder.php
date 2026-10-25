@@ -23,13 +23,13 @@ class PerfilesDivasCuyoSeeder extends Seeder
 {
     private const SOURCE = 'seeders/data/perfiles_divas_cuyo.json';
 
-    private const TYPE_MAP = ['Creadora' => 'virtual', 'Escort' => 'encounters'];
+    private const TYPE_MAP = ['creadora' => 'virtual', 'escort' => 'encounters'];
 
     /** Nombres del JSON que corresponden a otro servicio existente. */
     private const SERVICE_ALIASES = [
-        'Video llamada' => 'videollamada',
-        'Streptease' => 'striptease',
-        'Masaje con final feliz' => 'masajes-con-final-feliz',
+        'video llamada' => 'videollamada',
+        'streptease' => 'striptease',
+        'masaje con final feliz' => 'masajes-con-final-feliz',
     ];
 
     /** @var array<string, int> */
@@ -54,7 +54,7 @@ class PerfilesDivasCuyoSeeder extends Seeder
     /** @param array<string, mixed> $row */
     private function seedRow(array $row): void
     {
-        $typeSlug = self::TYPE_MAP[trim((string) ($row['Tipo'] ?? ''))] ?? null;
+        $typeSlug = self::TYPE_MAP[strtolower(trim((string) ($row['Tipo'] ?? '')))] ?? null;
         if ($typeSlug === null) {
             $this->command?->warn('Tipo desconocido: '.($row['Nombre'] ?? '?'));
             return;
@@ -268,7 +268,7 @@ class PerfilesDivasCuyoSeeder extends Seeder
             if ($mark !== '✓') {
                 continue;
             }
-            $mapped = self::SERVICE_ALIASES[$name] ?? Str::slug($name);
+            $mapped = self::SERVICE_ALIASES[strtolower($name)] ?? Str::slug($name);
             $slugs[] = $mapped;
         }
 
