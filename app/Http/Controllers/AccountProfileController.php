@@ -49,6 +49,16 @@ class AccountProfileController extends Controller
             'privateDetails' => $profile->privateDetails,
             'pendingPhysicalRevision' => $profile->pendingPhysicalRevision,
             'provinces' => $provinces,
+        ]);
+    }
+
+    public function services(Request $request): View
+    {
+        $profile = $request->user()->modelProfile()->with('publicationType', 'services')->firstOrFail();
+
+        return view('account.services', [
+            'user' => $request->user(),
+            'profile' => $profile,
             'publicationTypes' => PublicationType::query()->active()->orderBy('name')->get(),
             'services' => Service::query()->active()->orderBy('sort_order')->orderBy('name')->get(),
         ]);
@@ -91,7 +101,7 @@ class AccountProfileController extends Controller
             (bool) $request->validated('confirm_in_person_removal', false),
         );
 
-        return to_route('account.profile.edit')->with('success', 'El tipo de publicación se actualizó correctamente.');
+        return to_route('account.services.edit')->with('success', 'El tipo de publicación se actualizó correctamente.');
     }
 
     public function updateServices(
@@ -103,7 +113,7 @@ class AccountProfileController extends Controller
             $request->validated('service_ids', []),
         );
 
-        return to_route('account.profile.edit')->with('success', 'Los servicios se actualizaron correctamente.');
+        return to_route('account.services.edit')->with('success', 'Los servicios se actualizaron correctamente.');
     }
 
     public function storeBio(

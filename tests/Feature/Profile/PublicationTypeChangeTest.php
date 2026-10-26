@@ -43,7 +43,7 @@ class PublicationTypeChangeTest extends TestCase
             'publication_type_id' => $virtual->id,
             'reason' => 'La modelo amplió su modalidad.',
             'confirm_in_person_removal' => true,
-        ])->assertRedirect(route('account.profile.edit'));
+        ])->assertRedirect(route('account.services.edit'));
 
         $profile->refresh();
         $this->assertSame($virtual->id, $profile->publication_type_id);
@@ -71,7 +71,7 @@ class PublicationTypeChangeTest extends TestCase
 
         $this->actingAs($user)->patch(route('account.profile.publication-type.update'), [
             'publication_type_id' => $virtual->id,
-        ])->assertRedirect(route('account.profile.edit'));
+        ])->assertRedirect(route('account.services.edit'));
 
         $this->assertSame(0, ModelProfilePublicationTypeHistory::query()->count());
     }
@@ -90,7 +90,7 @@ class PublicationTypeChangeTest extends TestCase
 
         $this->actingAs($user)->patch(route('account.profile.publication-type.update'), [
             'publication_type_id' => $encounters->id,
-        ])->assertRedirect(route('account.profile.edit'));
+        ])->assertRedirect(route('account.services.edit'));
 
         $profile->refresh();
         $this->assertSame($encounters->id, $profile->publication_type_id);

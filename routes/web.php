@@ -73,6 +73,7 @@ Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class.':onboardi
 Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(function (): void {
     Route::get('/account', [AccountController::class, 'dashboard'])->name('account.dashboard');
     Route::get('/account/profile', [AccountProfileController::class, 'edit'])->name('account.profile.edit');
+    Route::get('/account/services', [AccountProfileController::class, 'services'])->name('account.services.edit');
     Route::patch('/account/profile', [AccountProfileController::class, 'update'])->name('account.profile.update');
     Route::patch('/account/profile/publication-type', [AccountProfileController::class, 'changePublicationType'])
         ->name('account.profile.publication-type.update');

@@ -3,6 +3,8 @@
 namespace Tests\Feature\Account;
 
 use App\Models\User;
+use Database\Seeders\PublicationTypeSeeder;
+use Database\Seeders\ServiceSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,12 +21,32 @@ class ModelProfileAccountPanelTest extends TestCase
             ->assertOk()
             ->assertSee('Información privada')
             ->assertSee('Datos públicos')
-            ->assertSee('Tipo de publicación')
-            ->assertSee('Servicios')
             ->assertSee('Presentación')
             ->assertSee('Todavía no tenés una biografía aprobada.')
             ->assertSee('profile-fields')
-            ->assertSee('aria-labelledby', false);
+            ->assertSee('aria-labelledby', false)
+            ->assertDontSee('Guardar servicios')
+            ->assertDontSee('publication-type-form', false)
+            ->assertDontSee('#services', false);
+    }
+
+    public function test_services_page_renders_own_view_and_sidebar_state(): void
+    {
+        $this->seed([PublicationTypeSeeder::class, ServiceSeeder::class]);
+        $user = User::factory()->withCompletedRegistration()->create();
+
+        $this->actingAs($user)
+            ->get(route('account.services.edit'))
+            ->assertOk()
+            ->assertSee('Tipo de publicación')
+            ->assertSee('Actualizar tipo de publicación')
+            ->assertSee('Servicios ofrecidos')
+            ->assertSee('Guardar servicios')
+            ->assertSee('Servicios virtuales')
+            ->assertSee('publication-type-form', false)
+            ->assertSee('profile-service-group', false)
+            ->assertSee('<a class="is-active" href="'.route('account.services.edit').'"', false)
+            ->assertSee('Servicios y tipo de publicación');
     }
 
     public function test_profile_panel_reports_success_and_validation_errors(): void

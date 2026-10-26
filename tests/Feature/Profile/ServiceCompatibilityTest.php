@@ -21,7 +21,7 @@ class ServiceCompatibilityTest extends TestCase
 
         $this->actingAs($user)->patch(route('account.profile.services.update'), [
             'service_ids' => [$virtualService->id],
-        ])->assertRedirect(route('account.profile.edit'));
+        ])->assertRedirect(route('account.services.edit'));
 
         $this->assertTrue($user->modelProfile->services()->whereKey($virtualService)->exists());
         $this->assertSame('virtual', $virtual->slug);
@@ -50,7 +50,7 @@ class ServiceCompatibilityTest extends TestCase
 
         $this->actingAs($user)->patch(route('account.profile.services.update'), [
             'service_ids' => $services->modelKeys(),
-        ])->assertRedirect(route('account.profile.edit'));
+        ])->assertRedirect(route('account.services.edit'));
 
         $this->assertCount(2, $user->modelProfile->fresh()->services);
     }
@@ -74,7 +74,7 @@ class ServiceCompatibilityTest extends TestCase
         $this->actingAs($user)->patch(route('account.profile.services.update'), [
             'model_profile_id' => $other->modelProfile->id,
             'service_ids' => [$virtualService->id],
-        ])->assertRedirect(route('account.profile.edit'));
+        ])->assertRedirect(route('account.services.edit'));
 
         $this->assertTrue($user->modelProfile->services()->whereKey($virtualService)->exists());
         $this->assertCount(0, $other->modelProfile->services);

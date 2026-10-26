@@ -32,7 +32,7 @@
     <aside class="account-sidebar" aria-label="Navegación de mi cuenta">
         <a href="{{ route('account.dashboard') }}" class="account-brand"><img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo"><span>Divas<span>Cuyo</span></span></a>
         <nav class="account-sidebar-nav">
-            <a class="is-active" href="{{ route('account.dashboard') }}" aria-current="page"><span>⌂</span> Mi perfil</a><a href="{{ route('account.photos.index') }}"><span>▧</span> Mis fotos</a><a href="{{ route('account.videos.index') }}"><span>▣</span> Mis videos</a><a href="{{ route('account.profile.edit') }}#services"><span>◉</span> Servicios</a><a href="{{ route('account.profile.edit') }}#publication-type"><span>▣</span> Mis publicaciones</a><a href="{{ route('account.dashboard') }}#estadisticas"><span>▥</span> Estadísticas</a>
+            <a class="is-active" href="{{ route('account.dashboard') }}" aria-current="page"><span>⌂</span> Mi perfil</a><a href="{{ route('account.photos.index') }}"><span>▧</span> Mis fotos</a><a href="{{ route('account.videos.index') }}"><span>▣</span> Mis videos</a><a href="{{ route('account.services.edit') }}"><span>◉</span> Servicios y tipo de publicación</a><a href="{{ route('account.dashboard') }}#estadisticas"><span>▥</span> Estadísticas</a>
         </nav>
         <nav class="account-sidebar-bottom"><a href="{{ route('terms.show') }}"><span>?</span> Centro de ayuda</a><a href="{{ route('account.profile.edit') }}"><span>⚙</span> Configuración</a><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit"><span>↪</span> Cerrar sesión</button></form></nav>
     </aside>
