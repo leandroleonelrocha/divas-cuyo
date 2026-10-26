@@ -80,8 +80,18 @@ class PerfilesDivasCuyoSeeder extends Seeder
         $user->forceFill([
             'email_verified_at' => $user->email_verified_at ?? now(),
             'is_published' => true,
+            // Estos perfiles provienen de una base ya aprobada, no del onboarding.
+            'profile_completion_status' => 'active',
             'is_admin' => false,
         ])->save();
+
+        // La aprobación histórica incluye la aceptación de ambas políticas.
+        foreach (['terms', 'privacy'] as $policy) {
+            $user->policyAcceptances()->updateOrCreate(['policy' => $policy], [
+                'version' => config("policies.{$policy}_version"),
+                'accepted_at' => now(),
+            ]);
+        }
 
         $publicationType = PublicationType::query()->where('slug', $typeSlug)->firstOrFail();
         $profile = $user->modelProfile()->firstOrNew();

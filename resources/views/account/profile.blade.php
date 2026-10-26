@@ -8,7 +8,7 @@
 </head>
 <body class="account-page account-dashboard-page profile-page">
 <div class="account-app-shell">
-    @include('account.partials.sidebar', ['active' => request()->fragment() === 'services' ? 'services' : (request()->fragment() === 'publication-type' ? 'publications' : 'profile')])
+    @include('account.partials.sidebar', ['active' => request('section') === 'services' ? 'services' : (request('section') === 'publications' ? 'publications' : 'profile')])
     <main class="account-main" id="contenido-principal">
         <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->stage_name ?: $profile->name, 0, 1)) }}</span><strong>{{ $profile->stage_name ?: $profile->name }}</strong><span>⌄</span></header>
     <header class="account-header" aria-label="Navegación de mi perfil">
@@ -177,7 +177,7 @@
         </div>
     </form>
 
-    <section class="account-card" aria-labelledby="publication-type-title">
+    <section class="account-card" id="publication-type" aria-labelledby="publication-type-title">
         <div class="account-section-heading">
             <div>
                 <p class="account-kicker">Modalidad de publicación</p>
@@ -212,7 +212,7 @@
         <p class="profile-help">El cambio se registra en el historial y no crea otro perfil ni modifica tus fotos, identidad o publicación.</p>
     </section>
 
-    <section class="account-card" aria-labelledby="services-title">
+    <section class="account-card" id="services" aria-labelledby="services-title">
         <div class="account-section-heading">
             <div>
                 <p class="account-kicker">Servicios ofrecidos</p>

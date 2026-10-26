@@ -8,7 +8,7 @@
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/identity-documents.js') }}" defer></script>
 </head>
-<body class="account-page">
+<body class="account-page account-dashboard-page">
 @php
     $identityState = match ($profile->identity_status) {
         'pending' => ['label' => 'Pendiente de revisión', 'class' => 'pending'],
@@ -32,7 +32,10 @@
         ->values();
 @endphp
 
-<main class="account-shell" id="contenido-principal">
+<div class="account-app-shell">
+    @include('account.partials.sidebar', ['active' => 'profile'])
+    <main class="account-main" id="contenido-principal">
+        <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->name, 0, 1)) }}</span><strong>{{ $profile->name }}</strong><span>⌄</span></header>
     <header class="account-header" aria-label="Navegación de identidad">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
@@ -164,5 +167,6 @@
 
     <p class="identity-back-link"><a href="{{ route('account.show', $user) }}">Volver a mi perfil</a></p>
 </main>
+</div>
 </body>
 </html>

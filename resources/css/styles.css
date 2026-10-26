@@ -256,6 +256,7 @@ body {
 .account-dashboard-page { padding: 0; background: #f8f9fb; }
 .account-dashboard-page .account-app-shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; }
 .account-dashboard-page .account-sidebar { display: flex; position: sticky; top: 0; height: 100vh; flex-direction: column; padding: 28px 14px 22px; background: var(--color-white); border-right: 1px solid #e8eaf0; }
+.account-dashboard-page #services, .account-dashboard-page #publication-type { scroll-margin-top: 24px; }
 .account-dashboard-page .legacy-account-header, .account-dashboard-page .account-main > .account-header { display: none; }
 .account-dashboard-page .account-brand { gap: 8px; padding: 0 16px 34px; color: var(--color-red); letter-spacing: -.04em; font-family: Georgia, serif; font-size: 25px; font-weight: 700; text-decoration: none; }
 .account-dashboard-page .account-brand span span { color: var(--color-ink); font-weight: 400; }

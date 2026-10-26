@@ -6,9 +6,9 @@
         <a class="{{ ($active ?? '') === 'profile' ? 'is-active' : '' }}" href="{{ route('account.dashboard') }}"><span>⌂</span> Mi perfil</a>
         <a class="{{ ($active ?? '') === 'photos' ? 'is-active' : '' }}" href="{{ route('account.photos.index') }}"><span>▧</span> Mis fotos</a>
         <a class="{{ ($active ?? '') === 'videos' ? 'is-active' : '' }}" href="{{ route('account.videos.index') }}"><span>▣</span> Mis videos</a>
-        <a class="{{ ($active ?? '') === 'services' ? 'is-active' : '' }}" href="{{ route('account.profile.edit') }}#services"><span>◉</span> Servicios</a>
-        <a class="{{ ($active ?? '') === 'publications' ? 'is-active' : '' }}" href="{{ route('account.profile.edit') }}#publication-type"><span>▣</span> Mis publicaciones</a>
-        <a class="{{ ($active ?? '') === 'stats' ? 'is-active' : '' }}" href="{{ route('account.dashboard') }}#estadisticas"><span>▥</span> Estadísticas</a>
+        <a class="{{ ($active ?? '') === 'services' ? 'is-active' : '' }}" href="{{ route('account.profile.edit', ['section' => 'services']) }}#services"><span>◉</span> Servicios</a>
+        <a class="{{ ($active ?? '') === 'publications' ? 'is-active' : '' }}" href="{{ route('account.profile.edit', ['section' => 'publications']) }}#publication-type"><span>▣</span> Mis publicaciones</a>
+        {{-- <a class="{{ ($active ?? '') === 'stats' ? 'is-active' : '' }}" href="{{ route('account.dashboard') }}#estadisticas"><span>▥</span> Estadísticas</a> --}}
     </nav>
     <nav class="account-sidebar-bottom">
         <a href="{{ route('terms.show') }}"><span>?</span> Centro de ayuda</a>
