@@ -7,8 +7,11 @@
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/model-videos.js') }}" defer></script>
 </head>
-<body class="account-page photos-page">
-<main class="account-shell" id="contenido-principal">
+<body class="account-page account-dashboard-page photos-page">
+<div class="account-app-shell">
+    @include('account.partials.sidebar', ['active' => 'videos'])
+    <main class="account-main" id="contenido-principal">
+    <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->name, 0, 1)) }}</span><strong>{{ $profile->name }}</strong><span>⌄</span></header>
     <header class="account-header" aria-label="Navegación de mis videos">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
@@ -73,5 +76,6 @@
         </div>
     </section>
 </main>
+</div>
 </body>
 </html>

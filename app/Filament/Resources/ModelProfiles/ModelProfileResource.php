@@ -223,6 +223,24 @@ class ModelProfileResource extends Resource
                             TextEntry::make('reviewer.email')->label('Revisado por')->placeholder('Sin revisor'),
                         ]),
                 ]),
+            Section::make('Acciones pendientes')
+                ->icon(Heroicon::OutlinedClipboardDocumentCheck)
+                ->compact()
+                ->schema([
+                    TextEntry::make('pendingActions')
+                        ->label('Seguimiento')
+                        ->state(function (ModelProfile $record): string {
+                            $pending = [];
+                            if (! $record->user?->email_verified_at) $pending[] = 'Verificar email';
+                            if ($record->identity_status !== 'approved') $pending[] = 'Completar o revisar identidad';
+                            if ($record->review_status !== 'approved') $pending[] = 'Resolver revisión del perfil';
+                            if (! $record->is_published) $pending[] = 'Publicación inactiva';
+                            if ($record->payments()->whereDate('expires_at', '<', today())->exists()) $pending[] = 'Renovar pago vencido';
+
+                            return $pending === [] ? 'No hay acciones pendientes.' : implode(' · ', $pending);
+                        })
+                        ->color(fn (string $state): string => $state === 'No hay acciones pendientes.' ? 'success' : 'warning'),
+                ]),
         ];
     }
 
@@ -241,7 +259,6 @@ class ModelProfileResource extends Resource
                             ->icon(Heroicon::OutlinedIdentification)
                             ->schema([
                                 Section::make('Verificación de identidad')
-                                    ->columns(2)
                                     ->schema([
                                         TextEntry::make('identity_status')
                                             ->label('Estado de identidad')
@@ -251,8 +268,9 @@ class ModelProfileResource extends Resource
                                         TextEntry::make('identity_rejection_reason')
                                             ->label('Motivo de rechazo de identidad')
                                             ->placeholder('Sin motivo'),
-                                        ...static::identityDocumentEntries(),
                                     ]),
+                                Grid::make(['default' => 1, 'md' => 3])
+                                    ->schema(static::identityDocumentEntries()),
                             ]),
                         Tab::make('Datos privados')
                             ->icon(Heroicon::OutlinedLockClosed)
@@ -641,30 +659,33 @@ class ModelProfileResource extends Resource
         ];
     }
 
-    /**
-     * @return array<int, TextEntry>
-     */
+    /** @return array<int, Section> */
     private static function identityDocumentEntries(): array
     {
-        return collect(config('identity-documents.required_types'))->map(function (string $type): TextEntry {
-            return TextEntry::make("document_{$type}")
-                ->label(static::documentTypeLabel($type))
-                ->state(function (ModelProfile $record) use ($type): ?string {
-                    $document = $record->documents->firstWhere('type', $type);
+        return collect(config('identity-documents.required_types'))->map(function (string $type): Section {
+            return Section::make(static::documentTypeLabel($type))
+                ->icon(Heroicon::OutlinedDocument)
+                ->compact()
+                ->schema([
+                    TextEntry::make("document_{$type}")
+                        ->label('Archivo')
+                        ->state(function (ModelProfile $record) use ($type): ?string {
+                            $document = $record->documents->firstWhere('type', $type);
 
-                    return $document
-                        ? sprintf('%s · %s KB', $document->original_name ?: 'Archivo cargado', number_format($document->file_size / 1024, 1, ',', '.'))
-                        : null;
-                })
-                ->url(function (ModelProfile $record) use ($type): ?string {
-                    $document = $record->documents->firstWhere('type', $type);
+                            return $document
+                                ? sprintf('%s · %s KB', $document->original_name ?: 'Archivo cargado', number_format($document->file_size / 1024, 1, ',', '.'))
+                                : null;
+                        })
+                        ->url(function (ModelProfile $record) use ($type): ?string {
+                            $document = $record->documents->firstWhere('type', $type);
 
-                    return $document
-                        ? route('identity.documents.download', [$record->user, $document])
-                        : null;
-                })
-                ->openUrlInNewTab()
-                ->placeholder('No cargado');
+                            return $document
+                                ? route('identity.documents.download', [$record->user, $document])
+                                : null;
+                        })
+                        ->openUrlInNewTab()
+                        ->placeholder('Falta cargar este documento'),
+                ]);
         })->all();
     }
 

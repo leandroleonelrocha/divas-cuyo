@@ -9,6 +9,7 @@ use Filament\Resources\Pages\Enums\ContentTabPosition;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
+use App\Models\ModelProfile;
 
 class ViewModelProfile extends ViewRecord
 {
@@ -32,6 +33,24 @@ class ViewModelProfile extends ViewRecord
     public function getContentTabPosition(): ?ContentTabPosition
     {
         return ContentTabPosition::Before;
+    }
+
+    public function getHeading(): string|Htmlable
+    {
+        return (string) ($this->record->stage_name ?: $this->record->name ?: 'Perfil de modelo');
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        $email = $this->record->user?->email ?? 'Sin email';
+        $review = match ($this->record->review_status) {
+            'approved' => 'Aprobado',
+            'rejected' => 'Rechazado',
+            default => 'Pendiente',
+        };
+        $publication = $this->record->is_published ? 'Publicado' : 'No publicado';
+
+        return $email.' · Revisión: '.$review.' · Publicación: '.$publication;
     }
 
     protected function getHeaderActions(): array

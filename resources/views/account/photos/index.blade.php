@@ -8,13 +8,16 @@
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/model-photos.js') }}" defer></script>
 </head>
-<body class="account-page photos-page">
+<body class="account-page account-dashboard-page photos-page">
 @php
     $maxPhotos = (int) config('model-photos.max_photos');
     $isFull = $photos->count() >= $maxPhotos;
 @endphp
-<main class="account-shell" id="contenido-principal">
-    <header class="account-header" aria-label="Navegación de mis fotos">
+<div class="account-app-shell">
+    @include('account.partials.sidebar', ['active' => 'photos'])
+    <main class="account-main" id="contenido-principal">
+    <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->name, 0, 1)) }}</span><strong>{{ $profile->name }}</strong><span>⌄</span></header>
+    <header class="account-header legacy-account-header" aria-label="Navegación de mis fotos">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
             <span>DIVAS CUYO</span>
@@ -140,5 +143,6 @@
         </div>
     </section>
 </main>
+</div>
 </body>
 </html>
