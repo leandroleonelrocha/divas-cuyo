@@ -20,6 +20,7 @@
   } catch { const note = document.getElementById('storage-note'); if (note) note.hidden = false; }
   const normalize = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es');
   function updateCities() {
+    if (!province || !locality) return;
     locality.value = '';
     locality.disabled = !province.value;
     [...locality.options].slice(1).forEach(option => {
@@ -29,9 +30,13 @@
   }
   function render() {
     let count = 0;
-    const serviceMatch = service => serviceView === 'all' || (service || 'escort') === serviceView;
+    const provinceValue = province?.value || '';
+    const localityValue = locality?.value || '';
+    const searchValue = search?.value || '';
+    const serviceMatch = element => serviceView === 'all' ||
+      (element.dataset.categories || element.dataset.service || 'escort').split(' ').includes(serviceView);
     avatarCards.forEach(avatar => {
-      avatar.hidden = !serviceMatch(avatar.dataset.service);
+      avatar.hidden = !serviceMatch(avatar);
     });
     cards.forEach(card => {
       const saved = favorites.has(card.dataset.key);
@@ -40,15 +45,17 @@
         button.setAttribute('aria-pressed', String(saved));
         button.setAttribute('aria-label', `${saved ? 'Quitar a' : 'Guardar a'} ${card.dataset.name} ${saved ? 'de' : 'en'} favoritos`);
       }
-      card.hidden = !((!province.value || card.dataset.province === province.value) &&
-        (!locality.value || card.dataset.locality === locality.value) &&
-        serviceMatch(card.dataset.service) &&
-        normalize(card.dataset.name).includes(normalize(search.value.trim())) && (!onlyFavorites || saved));
+      card.hidden = !((!provinceValue || card.dataset.province === provinceValue) &&
+        (!localityValue || card.dataset.locality === localityValue) &&
+        serviceMatch(card) &&
+        normalize(card.dataset.name).includes(normalize(searchValue.trim())) && (!onlyFavorites || saved));
       if (!card.hidden) count++;
     });
     groups.forEach(group => {
-      const visible = [...group.querySelectorAll('.profile-card')].some(card => !card.hidden);
-      group.hidden = !visible;
+      const visible = [...group.querySelectorAll('.profile-card')].filter(card => !card.hidden).length;
+      group.hidden = visible === 0;
+      const counter = group.querySelector('.province-count');
+      if (counter) counter.textContent = `${visible} ${visible === 1 ? 'perfil' : 'perfiles'}`;
     });
     tabs.forEach(tab => {
       const active = tab.dataset.view === 'favorites' ? onlyFavorites : (!onlyFavorites && tab.dataset.view === serviceView);
@@ -63,11 +70,13 @@
     const virtualDisclaimer = document.getElementById('virtual-disclaimer');
     if (virtualDisclaimer) virtualDisclaimer.hidden = serviceView !== 'virtual';
     if (profilesTitle) {
-      const place = province.value ? province.selectedOptions[0].textContent : 'la región';
+      const place = provinceValue ? province.selectedOptions[0].textContent : 'la región';
       if (onlyFavorites) profilesTitle.textContent = 'Tus modelos favoritos';
       else if (serviceView === 'virtual') profilesTitle.textContent = `Modelos virtuales de ${place}`;
       else if (serviceView === 'escort') profilesTitle.textContent = `Escorts de ${place}`;
-      else profilesTitle.textContent = province.value ? `Modelos en ${place}` : 'Modelos de la región';
+      else if (serviceView === 'masajistas') profilesTitle.textContent = `Masajistas de ${place}`;
+      else if (serviceView === 'trans') profilesTitle.textContent = `Modelos trans de ${place}`;
+      else profilesTitle.textContent = provinceValue ? `Modelos en ${place}` : 'Modelos de la región';
     }
     const emptyState = document.getElementById('empty-state');
     if (emptyState) emptyState.hidden = count > 0;
@@ -75,16 +84,16 @@
       const emptyTitle = document.getElementById('empty-title');
       if (emptyTitle) emptyTitle.textContent = onlyFavorites ? 'Tu selección empieza acá' : 'No encontramos coincidencias';
       const emptyMessage = document.getElementById('empty-message');
-      if (emptyMessage) emptyMessage.textContent = onlyFavorites ? 'Guardá los portfolios que te inspiran con el corazón de cada perfil, o probá cambiar los filtros.' : 'Probá otra ciudad o buscá un nombre diferente.';
+      if (emptyMessage) emptyMessage.textContent = onlyFavorites ? 'Guardá los portfolios que te inspiran con el corazón de cada perfil, o probá cambiar los filtros.' : 'Probá otra categoría o restablecé los filtros.';
       const emptyCreate = document.getElementById('empty-create');
       if (emptyCreate) emptyCreate.hidden = true;
       const resetFilters = document.getElementById('reset-filters');
       if (resetFilters) resetFilters.hidden = false;
     }
   }
-  province.addEventListener('change', () => { updateCities(); render(); });
-  locality.addEventListener('change', render);
-  search.addEventListener('input', render);
+  province?.addEventListener('change', () => { updateCities(); render(); });
+  locality?.addEventListener('change', render);
+  search?.addEventListener('input', render);
   tabs.forEach(tab => tab.addEventListener('click', () => {
     if (tab.dataset.view === 'favorites') {
       onlyFavorites = true;
@@ -107,7 +116,9 @@
     });
   });
   document.getElementById('reset-filters')?.addEventListener('click', () => {
-    province.value = ''; search.value = ''; onlyFavorites = false; serviceView = 'all'; updateCities(); render();
+    if (province) province.value = '';
+    if (search) search.value = '';
+    onlyFavorites = false; serviceView = 'all'; updateCities(); render();
   });
   document.querySelector('.dc-front-star')?.addEventListener('click', event => {
     event.preventDefault(); onlyFavorites = true; render();
@@ -116,8 +127,8 @@
   if (onlyFavorites) document.getElementById('modelos').scrollIntoView();
   const params = new URLSearchParams(location.search);
   const requestedService = params.get('tipo');
-  if (requestedService === 'virtual' || requestedService === 'escort' || requestedService === 'all') serviceView = requestedService;
+  if (['all', 'escort', 'virtual', 'masajistas', 'trans'].includes(requestedService)) serviceView = requestedService;
   const requestedProvince = params.get('provincia');
-  if ([...province.options].some(option => option.value === requestedProvince)) province.value = requestedProvince;
+  if (province && [...province.options].some(option => option.value === requestedProvince)) province.value = requestedProvince;
   updateCities(); render();
 })();

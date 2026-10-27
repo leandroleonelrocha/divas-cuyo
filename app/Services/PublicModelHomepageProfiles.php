@@ -8,7 +8,7 @@ class PublicModelHomepageProfiles
 {
     public function __construct(private readonly PublicModelProfileVisibility $visibility) {}
 
-    /** @return list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, provinceName:string, locality:string, location:string, available:bool, service:string}> */
+    /** @return list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, provinceName:string, locality:string, location:string, available:bool, service:string, categories:list<string>}> */
     public function cards(?int $limit = 6): array
     {
         return $this->fetchCards($limit);
@@ -17,7 +17,7 @@ class PublicModelHomepageProfiles
     /**
      * Todas las modelos visibles agrupadas por provincia (ordenadas por nombre de provincia).
      *
-     * @return list<array{slug:string, name:string, profiles:list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, provinceName:string, locality:string, location:string, available:bool, service:string}>}>
+     * @return list<array{slug:string, name:string, profiles:list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, provinceName:string, locality:string, location:string, available:bool, service:string, categories:list<string>}>}>
      */
     public function groupedByProvince(): array
     {
@@ -40,11 +40,12 @@ class PublicModelHomepageProfiles
         return array_values($groups);
     }
 
-    /** @return list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, provinceName:string, locality:string, location:string, available:bool, service:string}> */
+    /** @return list<array{name:string, url:string, photoUrl:string, photoAlt:string, province:string, provinceName:string, locality:string, location:string, available:bool, service:string, categories:list<string>}> */
     private function fetchCards(?int $limit): array
     {
         $query = $this->visibility->candidates()
-            ->with(['province:id,name,slug', 'locality:id,name,slug', 'publicationType:id,slug,allows_in_person_services', 'currentApprovedPhotos' => fn (HasMany $photos) => $photos
+            ->addSelect('model_profiles.gender')
+            ->with(['services' => fn ($services) => $services->active(), 'province:id,name,slug', 'locality:id,name,slug', 'publicationType:id,slug,allows_in_person_services', 'currentApprovedPhotos' => fn (HasMany $photos) => $photos
                 ->select(['id', 'model_profile_id', 'current_version_id', 'is_primary'])
                 ->where('is_primary', true)
                 ->with('currentVersion:'.PublicModelPhotoService::VERSION_COLUMNS),
@@ -69,6 +70,17 @@ class PublicModelHomepageProfiles
                 continue;
             }
 
+            $service = ($profile->publicationType?->allows_in_person_services ?? true) ? 'escort' : 'virtual';
+            $categories = [$service];
+            if ($service === 'escort' && $profile->services->contains(
+                fn ($service) => str_starts_with($service->slug, 'masaje-') || str_starts_with($service->slug, 'masajes-')
+            )) {
+                $categories[] = 'masajistas';
+            }
+            if ($profile->gender === 'trans') {
+                $categories[] = 'trans';
+            }
+
             $cards[] = [
                 'name' => $profile->stage_name,
                 'url' => route('public.models.show', ['slug' => $profile->slug]),
@@ -79,7 +91,8 @@ class PublicModelHomepageProfiles
                 'locality' => $profile->locality?->slug ?? '',
                 'location' => $profile->locality?->name ?? $profile->province?->name ?? 'Argentina',
                 'available' => $profile->availability_status === 'available',
-                'service' => ($profile->publicationType?->allows_in_person_services ?? true) ? 'escort' : 'virtual',
+                'service' => $service,
+                'categories' => $categories,
             ];
         }
 

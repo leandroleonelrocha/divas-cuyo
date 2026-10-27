@@ -70,7 +70,7 @@
         <div class="spotlight-heading"><h2 id="spotlight-title">Destacadas hoy</h2><p>Conocé a las divas más activas de la región.</p></div>
         <div class="avatar-scroller" aria-label="Perfiles destacados" tabindex="0">
           @foreach ($publicProfiles as $profile)
-            <a class="avatar-card" href="{{ $profile['url'] }}" data-service="{{ $profile['service'] ?? 'escort' }}">
+            <a class="avatar-card" href="{{ $profile['url'] }}" data-service="{{ $profile['service'] ?? 'escort' }}" data-categories="{{ implode(' ', $profile['categories'] ?? [$profile['service'] ?? 'escort']) }}">
               <span class="avatar-ring"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="88" height="88"></span>
               <strong>{{ $profile['name'] }}</strong><span>{{ $profile['location'] }}</span>
             </a>
@@ -95,7 +95,7 @@
             <h3 class="province-title"><span aria-hidden="true">⌖</span> {{ $group['name'] }} <span class="province-count">{{ count($group['profiles']) }} {{ count($group['profiles']) === 1 ? 'perfil' : 'perfiles' }}</span></h3>
             <div class="card-grid">
               @foreach ($group['profiles'] as $profile)
-                <article class="profile-card" data-name="{{ $profile['name'] }}" data-province="{{ $profile['province'] }}" data-locality="{{ $profile['locality'] }}" data-service="{{ $profile['service'] ?? 'escort' }}" data-key="{{ $profile['url'] }}" data-order="{{ $loop->index }}">
+                <article class="profile-card" data-name="{{ $profile['name'] }}" data-province="{{ $profile['province'] }}" data-locality="{{ $profile['locality'] }}" data-service="{{ $profile['service'] ?? 'escort' }}" data-categories="{{ implode(' ', $profile['categories'] ?? [$profile['service'] ?? 'escort']) }}" data-key="{{ $profile['url'] }}" data-order="{{ $loop->index }}">
                   <a class="profile-photo" href="{{ $profile['url'] }}" aria-label="Ver portfolio de {{ $profile['name'] }}"><img src="{{ $profile['photoUrl'] }}" alt="{{ $profile['photoAlt'] }}" loading="lazy" width="360" height="480"></a>
                   {{-- <span class="profile-label {{ ($profile['available'] ?? true) ? 'is-available' : 'is-unavailable' }}">{{ ($profile['available'] ?? true) ? 'DISPONIBLE' : 'NO DISPONIBLE' }}</span> --}}
                   <div class="profile-info"><a href="{{ $profile['url'] }}"><h3>{{ $profile['name'] }} <svg class="verified-icon" viewBox="0 0 24 24" width="17" height="17" role="img" aria-label="Perfil verificado"><circle cx="12" cy="12" r="10" fill="var(--red)"/><path d="M8 12.5l2.7 2.7L16.5 9" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></h3></a><p><span aria-hidden="true">⌖</span> {{ $profile['location'] }}</p>@php($service = $profile['service'] ?? 'escort')<span class="service-badge {{ $service === 'virtual' ? 'is-virtual' : 'is-escort' }}">{{ $service === 'virtual' ? 'VIRTUAL' : 'ESCORT' }}</span></div>
