@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CompleteProfileRequest;
+use App\Models\PaymentInstruction;
 use App\Models\Province;
 use App\Models\PublicationType;
 use App\Models\User;
@@ -28,7 +29,11 @@ class AccountController extends Controller
         return view('account.dashboard', [
             'user' => $user,
             'profile' => $user->modelProfile,
-            'paymentInstructions' => \App\Models\PaymentInstruction::query()->active()->latest()->first(),
+            'paymentInstructions' => PaymentInstruction::query()
+                ->active()
+                ->where(fn ($query) => $query->whereNotNull('alias')->orWhereNotNull('transfer_details')->orWhereNotNull('receipt_whatsapp'))
+                ->latest()
+                ->first(),
         ]);
     }
 

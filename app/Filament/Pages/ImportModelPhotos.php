@@ -19,6 +19,9 @@ class ImportModelPhotos extends Page
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
 
+    // Link oculto del sidebar por pedido: comentar esta línea para volver a mostrarlo.
+    protected static bool $shouldRegisterNavigation = false;
+
     protected string $view = 'filament.pages.import-model-photos';
 
     public $file;
@@ -85,6 +88,7 @@ class ImportModelPhotos extends Page
         abort_unless(static::canAccess(), 403);
         if ($this->batch === null || $this->preview === []) {
             $this->addError('file', 'Primero analizá un ZIP.');
+
             return;
         }
 
@@ -92,6 +96,7 @@ class ImportModelPhotos extends Page
         if (! is_dir($dir)) {
             $this->addError('file', 'El lote expiró. Volvé a subir el ZIP.');
             $this->cleanupBatch();
+
             return;
         }
 

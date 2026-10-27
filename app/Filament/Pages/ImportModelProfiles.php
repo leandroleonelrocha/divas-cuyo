@@ -19,6 +19,9 @@ class ImportModelProfiles extends Page
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-arrow-up-tray';
 
+    // Link oculto del sidebar por pedido: comentar esta línea para volver a mostrarlo.
+    protected static bool $shouldRegisterNavigation = false;
+
     protected string $view = 'filament.pages.import-model-profiles';
 
     public $file;

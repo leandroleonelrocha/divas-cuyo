@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ModelProfiles;
 
+use App\Services\PublicationPaymentStatus;
+
 use App\Filament\Resources\ModelProfiles\Pages\EditModelProfile;
 use App\Filament\Resources\ModelProfiles\Pages\ListModelProfiles;
 use App\Filament\Resources\ModelProfiles\Pages\ViewModelProfile;
@@ -76,9 +78,12 @@ class ModelProfileResource extends Resource
     private static function pendingReviewCount(): int
     {
         return ModelProfile::query()
+            ->whereDoesntHave('user', fn (Builder $query): Builder => $query->where('is_admin', true))
             ->where(fn (Builder $query): Builder => $query
                 ->where('review_status', 'pending')
-                ->orWhere('identity_status', 'pending'))
+                ->orWhere('identity_status', 'pending')
+                ->orWhereHas('photos.latestVersion', fn (Builder $version): Builder => $version->where('status', 'pending'))
+                ->orWhereHas('bios', fn (Builder $bio): Builder => $bio->where('status', 'pending')))
             ->count();
     }
 
@@ -227,6 +232,12 @@ class ModelProfileResource extends Resource
                 ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                 ->compact()
                 ->schema([
+                    TextEntry::make('payment_status')
+                        ->label('Estado del pago')
+                        ->state(fn (ModelProfile $record): string => app(PublicationPaymentStatus::class)->summary($record)['status'])
+                        ->formatStateUsing(fn (string $state): string => PublicationPaymentStatus::LABELS[$state])
+                        ->badge()
+                        ->color(fn (string $state): string => PublicationPaymentStatus::color($state)),
                     TextEntry::make('pendingActions')
                         ->label('Seguimiento')
                         ->state(function (ModelProfile $record): string {
@@ -235,7 +246,7 @@ class ModelProfileResource extends Resource
                             if ($record->identity_status !== 'approved') $pending[] = 'Completar o revisar identidad';
                             if ($record->review_status !== 'approved') $pending[] = 'Resolver revisión del perfil';
                             if (! $record->is_published) $pending[] = 'Publicación inactiva';
-                            if ($record->payments()->whereDate('expires_at', '<', today())->exists()) $pending[] = 'Renovar pago vencido';
+                            if (app(PublicationPaymentStatus::class)->summary($record)['status'] === 'expired') $pending[] = 'Renovar pago vencido';
 
                             return $pending === [] ? 'No hay acciones pendientes.' : implode(' · ', $pending);
                         })
@@ -385,6 +396,10 @@ class ModelProfileResource extends Resource
     {
         return parent::getEloquentQuery()
             ->whereDoesntHave('user', fn (Builder $query): Builder => $query->where('is_admin', true))
+            ->withCount([
+                'photos as pending_photos_count' => fn (Builder $photos): Builder => $photos->whereHas('latestVersion', fn (Builder $version): Builder => $version->where('status', 'pending')),
+                'bios as pending_bios_count' => fn (Builder $bios): Builder => $bios->where('status', 'pending'),
+            ])
             ->with([
                 'user:id,email,email_verified_at,profile_completion_status',
                 'reviewer:id,email',
@@ -395,6 +410,7 @@ class ModelProfileResource extends Resource
                 'publicationType',
                 'services',
                 'currentBio',
+                'payments',
             ]);
     }
 
@@ -419,6 +435,24 @@ class ModelProfileResource extends Resource
                     ->label('Nombre público')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('pending_photos_count')
+                    ->label('Fotos por aprobar')
+                    ->badge()
+                    ->formatStateUsing(fn ($state): string => (int) $state > 0 ? $state.((int) $state === 1 ? ' pendiente' : ' pendientes') : 'Sin pendientes')
+                    ->color(fn ($state): string => (int) $state > 0 ? 'warning' : 'gray')
+                    ->sortable()
+                    ->url(fn (ModelProfile $record): ?string => $record->pending_photos_count > 0
+                        ? static::getUrl('view', ['record' => $record, 'relation' => array_search(ModelPhotosRelationManager::class, static::getRelations(), true)]) : null)
+                    ->tooltip('Abrir fotografías para revisar las cargas o reemplazos pendientes'),
+                TextColumn::make('pending_bios_count')
+                    ->label('Biografías por aprobar')
+                    ->badge()
+                    ->formatStateUsing(fn ($state): string => (int) $state > 0 ? $state.((int) $state === 1 ? ' pendiente' : ' pendientes') : 'Sin pendientes')
+                    ->color(fn ($state): string => (int) $state > 0 ? 'warning' : 'gray')
+                    ->sortable()
+                    ->url(fn (ModelProfile $record): ?string => $record->pending_bios_count > 0
+                        ? static::getUrl('view', ['record' => $record, 'relation' => array_search(ModelProfileBiosRelationManager::class, static::getRelations(), true)]) : null)
+                    ->tooltip('Abrir biografías para revisar los textos pendientes'),
                 TextColumn::make('user.email')
                     ->label('Email')
                     ->searchable()
@@ -449,7 +483,7 @@ class ModelProfileResource extends Resource
                     ->label('Inscripción')->badge()
                     ->formatStateUsing(fn (?string $state): string => AccountEnrollmentState::labels()[$state] ?? 'Inscripción habilitada'),
                 TextColumn::make('review_status')
-                    ->label('Revisión')
+                    ->label('Revisión del perfil')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'approved' => 'Aprobado',
@@ -466,8 +500,16 @@ class ModelProfileResource extends Resource
                     ->badge()
                     ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
                     ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
-                TextColumn::make('currentPayment.expires_at')
-                    ->label('Vencimiento')
+                TextColumn::make('payment_status')
+                    ->label('Estado del pago')
+                    ->state(fn (ModelProfile $record): string => app(PublicationPaymentStatus::class)->summary($record)['status'])
+                    ->formatStateUsing(fn (string $state): string => PublicationPaymentStatus::LABELS[$state])
+                    ->badge()
+                    ->color(fn (string $state): string => PublicationPaymentStatus::color($state))
+                    ->tooltip('Estado de cobertura al día de hoy. Programada: el pago todavía no comenzó.'),
+                TextColumn::make('payment_expires_at')
+                    ->label('Vencimiento del pago')
+                    ->state(fn (ModelProfile $record) => app(PublicationPaymentStatus::class)->summary($record)['expires_at'])
                     ->date('d/m/Y')
                     ->placeholder('Sin pago'),
                 TextColumn::make('created_at')
@@ -498,16 +540,16 @@ class ModelProfileResource extends Resource
                     ->trueLabel('Publicado')
                     ->falseLabel('No publicado')
                     ->placeholder('Todos'),
+                SelectFilter::make('payment_status')
+                    ->label('Estado del pago')
+                    ->options(PublicationPaymentStatus::LABELS)
+                    ->query(fn (Builder $query, array $data): Builder => app(PublicationPaymentStatus::class)->filter($query, $data['value'] ?? '')),
                 Filter::make('near_expiry')
                     ->label('Próximas a vencer')
-                    ->query(function (Builder $query): Builder {
-                        return $query->whereHas('payments', fn (Builder $payment): Builder => $payment
-                            ->whereDate('expires_at', '>=', today())
-                            ->whereDate('expires_at', '<=', today()->addDays((int) config('publication.expiry_warning_days', 7))));
-                    }),
+                    ->query(fn (Builder $query): Builder => app(PublicationPaymentStatus::class)->filter($query, 'near_expiry')),
                 Filter::make('expired')
                     ->label('Vencidas')
-                    ->query(fn (Builder $query): Builder => $query->whereHas('payments', fn (Builder $payment): Builder => $payment->whereDate('expires_at', '<', today()))),
+                    ->query(fn (Builder $query): Builder => app(PublicationPaymentStatus::class)->filter($query, 'expired')),
             ])
             ->searchable(['name', 'whatsapp', 'location', 'user.email'])
             ->defaultSort('created_at', 'desc')

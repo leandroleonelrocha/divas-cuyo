@@ -51,7 +51,76 @@
         </section>
         <div class="dashboard-columns">
             <section class="dashboard-panel"><h2>Próximos pasos</h2><p class="dashboard-panel-intro">Completá estos pasos para publicar tu perfil.</p><ul class="dashboard-checklist">@foreach($nextSteps as $step)<li class="{{ $step['done'] ? 'is-done' : '' }}"><a href="{{ $step['href'] }}"><span class="check-circle">{{ $step['done'] ? '✓' : '' }}</span><span>{{ $step['label'] }}</span><b>›</b></a></li>@endforeach</ul></section>
-            @if($paymentInstructions || $profile->currentPayment)<section class="dashboard-panel dashboard-payment-panel" id="instrucciones-pago"><h2>Instrucciones de pago</h2><p class="dashboard-panel-intro">Para enviar tu comprobante, realizá la transferencia con estos datos:</p><div class="payment-instruction-layout"><div class="payment-alias-card">@if($paymentInstructions?->alias)<small>Alias</small><strong>{{ $paymentInstructions->alias }}</strong><button type="button" class="copy-alias" data-copy="{{ $paymentInstructions->alias }}">Copiar</button>@endif @if($profile->currentPayment)<p>Publicación vigente hasta {{ $profile->currentPayment->expires_at->format('d/m/Y') }}.</p>@endif</div><div class="payment-important"><strong>ⓘ Importante</strong><p>Una vez realizada la transferencia, enviá el comprobante por WhatsApp para que podamos validarlo.</p>@if($paymentInstructions?->receipt_whatsapp)<a href="https://wa.me/{{ preg_replace('/[^0-9]/','',$paymentInstructions->receipt_whatsapp) }}" target="_blank" rel="noopener">Contactar por WhatsApp <span>→</span></a>@endif</div></div>@if($paymentInstructions?->transfer_details || $paymentInstructions?->default_amount)<div class="payment-details">@if($paymentInstructions->transfer_details)<span><b>Datos de transferencia</b>{{ $paymentInstructions->transfer_details }}</span>@endif @if($paymentInstructions->default_amount)<span><b>Importe de referencia</b>$ {{ number_format((float)$paymentInstructions->default_amount,2,',','.') }}</span>@endif</div>@endif @if($profile->payments->isNotEmpty())<div class="payment-history"><h3>Historial de pagos</h3><div class="payment-table-wrap"><table><thead><tr><th>Fecha</th><th>Período</th><th>Importe</th><th>Vencimiento</th><th>Estado</th></tr></thead><tbody>@foreach($profile->payments as $payment)<tr><td>{{ $payment->paid_at->format('d/m/Y') }}</td><td>{{ $payment->period_days }} días</td><td>$ {{ number_format((float)$payment->amount,2,',','.') }}</td><td>{{ $payment->expires_at->format('d/m/Y') }}</td><td><span class="account-badge {{ $payment->expires_at->isPast() ? 'account-badge-rejected' : 'account-badge-success' }}">{{ $payment->expires_at->isPast() ? 'Vencido' : 'Vigente' }}</span></td></tr>@endforeach</tbody></table></div></div>@endif</section>@endif
+            <section class="dashboard-panel dashboard-payment-panel" id="instrucciones-pago">
+                <h2>Instrucciones de pago</h2>
+                <p class="dashboard-panel-intro">Para publicar tu perfil, realizá la transferencia con estos datos y envianos el comprobante.</p>
+                @if ($paymentInstructions)
+                    <div class="payment-instruction-layout">
+                        <div class="payment-alias-card">
+                            @if ($paymentInstructions->alias)
+                                <small>Alias</small>
+                                <strong>{{ $paymentInstructions->alias }}</strong>
+                                <button type="button" class="copy-alias" data-copy="{{ $paymentInstructions->alias }}">Copiar</button>
+                            @endif
+                            @if ($profile->currentPayment)
+                                <p>Publicación vigente hasta {{ $profile->currentPayment->expires_at->format('d/m/Y') }}.</p>
+                            @endif
+                        </div>
+                        <div class="payment-important">
+                            <strong>ⓘ Importante</strong>
+                            <p>Una vez realizada la transferencia, enviá el comprobante por WhatsApp para que podamos validarlo.</p>
+                            @if ($paymentInstructions->receipt_whatsapp)
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $paymentInstructions->receipt_whatsapp) }}" target="_blank" rel="noopener">Contactar por WhatsApp <span>→</span></a>
+                            @endif
+                        </div>
+                    </div>
+                    @if ($paymentInstructions->transfer_details || $paymentInstructions->default_amount || $paymentInstructions->default_amount_virtual)
+                        <div class="payment-details">
+                            @if ($paymentInstructions->transfer_details)
+                                <span><b>Datos de transferencia</b>{{ $paymentInstructions->transfer_details }}</span>
+                            @endif
+                            @if ($paymentInstructions->default_amount)
+                                <span><b>Importe publicación</b>$ {{ number_format((float) $paymentInstructions->default_amount, 2, ',', '.') }}</span>
+                            @endif
+                            @if ($paymentInstructions->default_amount_virtual)
+                                <span><b>Importe virtual</b>$ {{ number_format((float) $paymentInstructions->default_amount_virtual, 2, ',', '.') }}</span>
+                            @endif
+                        </div>
+                    @endif
+                @else
+                    <div class="payment-empty-state">
+                        <strong>Las instrucciones de pago todavía no están disponibles.</strong>
+                        <p>Escribinos al soporte y te pasamos los datos para abonar la publicación de tu perfil.</p>
+                        @if ($profile->currentPayment)
+                            <p>Tu publicación está vigente hasta el {{ $profile->currentPayment->expires_at->format('d/m/Y') }}.</p>
+                        @endif
+                        <a href="{{ route('terms.show') }}">Contactar soporte <span>→</span></a>
+                    </div>
+                @endif
+                @if ($profile->payments->isNotEmpty())
+                    <div class="payment-history">
+                        <h3>Historial de pagos</h3>
+                        <div class="payment-table-wrap">
+                            <table>
+                                <thead>
+                                    <tr><th>Fecha</th><th>Período</th><th>Importe</th><th>Vencimiento</th><th>Estado</th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($profile->payments as $payment)
+                                        <tr>
+                                            <td>{{ $payment->paid_at->format('d/m/Y') }}</td>
+                                            <td>{{ $payment->period_days }} días</td>
+                                            <td>$ {{ number_format((float) $payment->amount, 2, ',', '.') }}</td>
+                                            <td>{{ $payment->expires_at->format('d/m/Y') }}</td>
+                                            <td><span class="account-badge {{ $payment->expires_at->isPast() ? 'account-badge-rejected' : 'account-badge-success' }}">{{ $payment->expires_at->isPast() ? 'Vencido' : 'Vigente' }}</span></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
+            </section>
         </div>
         <section class="dashboard-support"><span class="support-icon">♧</span><div><h2>¿Necesitás ayuda?</h2><p>Si tenés alguna duda o problema, nuestro equipo te acompaña.</p></div><a href="{{ route('terms.show') }}">Contactar soporte <span>›</span></a></section>
     </main>

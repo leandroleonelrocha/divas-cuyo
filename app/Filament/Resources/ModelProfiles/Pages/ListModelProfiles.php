@@ -35,11 +35,21 @@ class ListModelProfiles extends ListRecords
     {
         return [
             'all' => Tab::make('Todas'),
-            'pending_review' => Tab::make('Pendientes de revisión')
+            'pending_review' => Tab::make('Perfiles pendientes')
                 ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->where('review_status', 'pending')))
                 ->badgeColor('warning')
                 ->badgeTooltip('Modelos esperando aprobación del perfil')
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('review_status', 'pending')),
+            'pending_photos' => Tab::make('Fotos pendientes')
+                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->whereHas('photos.latestVersion', fn (Builder $query): Builder => $query->where('status', 'pending'))))
+                ->badgeColor('warning')
+                ->badgeTooltip('Cantidad de modelos con fotos por aprobar')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas('photos.latestVersion', fn (Builder $version): Builder => $version->where('status', 'pending'))),
+            'pending_bios' => Tab::make('Biografías pendientes')
+                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->whereHas('bios', fn (Builder $query): Builder => $query->where('status', 'pending'))))
+                ->badgeColor('warning')
+                ->badgeTooltip('Cantidad de modelos con biografías por aprobar')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas('bios', fn (Builder $bio): Builder => $bio->where('status', 'pending'))),
             'pending_identity' => Tab::make('Identidad pendiente')
                 ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->where('identity_status', 'pending')))
                 ->badgeColor('warning')
@@ -54,7 +64,7 @@ class ListModelProfiles extends ListRecords
 
     private function tabBadge(Builder $query): ?string
     {
-        $count = $query->count();
+        $count = $query->whereDoesntHave('user', fn (Builder $user): Builder => $user->where('is_admin', true))->count();
 
         return $count > 0 ? (string) $count : null;
     }

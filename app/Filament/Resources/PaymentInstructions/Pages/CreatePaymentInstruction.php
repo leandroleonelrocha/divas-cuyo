@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreatePaymentInstruction extends CreateRecord
 {
     protected static string $resource = PaymentInstructionResource::class;
+
+    protected static bool $canCreateAnother = false;
 }
