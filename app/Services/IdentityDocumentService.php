@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ModelNotificationType;
 use App\Models\ModelDocument;
 use App\Models\ModelProfile;
 use App\Models\User;
@@ -156,6 +157,12 @@ class IdentityDocumentService
                 'identity_reviewed_by' => $reviewer->getKey(),
                 'identity_rejection_reason' => $status === 'rejected' ? $reason : null,
             ])->save();
+
+            app(ModelNotificationService::class)->record(
+                $locked,
+                $status === 'approved' ? ModelNotificationType::IdentityApproved : ModelNotificationType::IdentityRejected,
+                $reason,
+            );
 
             return $profile->refresh();
         });

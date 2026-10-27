@@ -10,7 +10,7 @@
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'profile'])
     <main class="account-main" id="contenido-principal">
-        <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}</span><strong>{{ $user->name }}</strong><span>⌄</span></header>
+        @include('account.partials.topbar', ['label' => $user->name])
     <header class="account-header" aria-label="Navegación de mi perfil">
         <a href="{{ url('/') }}" class="account-brand" aria-label="Divas Cuyo">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">

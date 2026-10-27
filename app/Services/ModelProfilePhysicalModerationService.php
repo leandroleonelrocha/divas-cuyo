@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ModelNotificationType;
 use App\Models\ModelProfile;
 use App\Models\ModelProfilePhysicalRevision;
 use App\Models\User;
@@ -49,6 +50,8 @@ class ModelProfilePhysicalModerationService
                 'rejection_reason' => null,
             ])->save();
 
+            app(ModelNotificationService::class)->record($profile, ModelNotificationType::PhysicalApproved);
+
             return $lockedRevision->refresh();
         });
     }
@@ -71,6 +74,8 @@ class ModelProfilePhysicalModerationService
                 'reviewed_by' => $reviewer->getKey(),
                 'rejection_reason' => $reason,
             ])->save();
+
+            app(ModelNotificationService::class)->record($lockedRevision->modelProfile, ModelNotificationType::PhysicalRejected, $reason);
 
             return $lockedRevision->refresh();
         });

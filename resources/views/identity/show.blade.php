@@ -6,6 +6,7 @@
     <title>Validación de identidad · Divas Cuyo</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
     <script src="{{ asset('js/identity-documents.js') }}" defer></script>
 </head>
 <body class="account-page account-dashboard-page">
@@ -35,7 +36,7 @@
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'profile'])
     <main class="account-main" id="contenido-principal">
-        <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->name, 0, 1)) }}</span><strong>{{ $profile->name }}</strong><span>⌄</span></header>
+        @include('account.partials.topbar', ['label' => $profile->name])
     <header class="account-header" aria-label="Navegación de identidad">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
@@ -60,7 +61,9 @@
         <p class="identity-status-line">Estado: <strong class="account-badge account-badge-{{ $identityState['class'] }}">{{ $identityState['label'] }}</strong></p>
     </section>
 
-    @if (session('status'))<p class="identity-feedback feedback-success" role="status">{{ session('status') }}</p>@endif
+    @if (session('status'))
+        <x-notify type="success" variant="toast" :message="session('status')" />
+    @endif
     @if ($profile->identity_rejection_reason)
         <p class="identity-feedback identity-feedback-error" role="alert"><strong>Motivo del rechazo:</strong> {{ $profile->identity_rejection_reason }}</p>
     @endif

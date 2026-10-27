@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\AccountNotificationsComposer;
 use App\Models\ModelDocument;
 use App\Models\ModelPhoto;
 use App\Models\ModelProfile;
@@ -21,6 +22,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        View::composer('account.partials.topbar', AccountNotificationsComposer::class);
+
         ResetPassword::toMailUsing(function (object $notifiable, string $token): MailMessage {
             $minutes = config('auth.passwords.'.config('auth.defaults.passwords').'.expire');
 

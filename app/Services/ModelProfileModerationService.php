@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ModelNotificationType;
 use App\Models\ModelProfile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -80,6 +81,11 @@ class ModelProfileModerationService
                 'reviewed_at' => now(),
                 'reviewed_by' => $reviewer->getKey(),
             ])->save();
+
+            app(ModelNotificationService::class)->record(
+                $lockedProfile,
+                $status === 'approved' ? ModelNotificationType::ProfileApproved : ModelNotificationType::ProfileRejected,
+            );
 
             return $profile->refresh();
         });

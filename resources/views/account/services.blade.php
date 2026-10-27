@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Servicios y tipo de publicación · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
 </head>
 <body class="account-page account-dashboard-page profile-page services-page">
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'services'])
     <main class="account-main" id="contenido-principal">
-        <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->stage_name ?: $profile->name, 0, 1)) }}</span><strong>{{ $profile->stage_name ?: $profile->name }}</strong><span>⌄</span></header>
+        @include('account.partials.topbar', ['label' => $profile->stage_name ?: $profile->name])
     <header class="account-header" aria-label="Navegación de mi cuenta">
         <a href="{{ url('/') }}" class="account-brand" aria-label="Divas Cuyo">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
@@ -35,18 +36,17 @@
     </section>
 
     @if (session('success'))
-        <div class="profile-feedback profile-feedback-success" role="status">{{ session('success') }}</div>
+        <x-notify type="success" variant="toast" :message="session('success')" />
     @endif
 
     @if ($errors->any())
-        <div class="profile-feedback profile-feedback-error" role="alert">
-            <strong>Revisá la información indicada.</strong>
+        <x-notify type="error" title="Revisá la información indicada.">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-        </div>
+        </x-notify>
     @endif
 
     <section class="account-card" id="publication-type" aria-labelledby="publication-type-title">

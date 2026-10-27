@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Verificación · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
 </head>
 <body class="registration-page">
     <header class="registration-header">
@@ -24,8 +25,8 @@
     <main class="registration-main">
         <section class="registration-layout">
             <div class="registration-branding">
-                @if (session('status'))<p class="registration-feedback feedback-success" role="status">{{ session('status') }}</p>@endif
-                @if (session('error'))<p class="registration-feedback" role="alert">{{ session('error') }}</p>@endif
+                @if (session('status'))<x-notify type="success" :message="session('status')" />@endif
+                @if (session('error'))<x-notify type="error" :message="session('error')" />@endif
                 <h1>Verificá tu correo electrónico</h1>
                 <h2>Ya casi terminamos</h2>
                 <p class="registration-description">Te enviamos las instrucciones{{ $email ? ' a '.$email : '' }}. El enlace es válido durante 24 horas.</p>

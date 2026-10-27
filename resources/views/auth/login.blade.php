@@ -6,6 +6,7 @@
     <title>Ingresar · Divas Cuyo</title>
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/form-submit-loading.js') }}" defer></script>
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
 </head>
 <body class="registration-page">
     <header class="registration-header">
@@ -33,7 +34,13 @@
 
             <form class="registration-card registration-login-card" method="POST" action="{{ route('login.store') }}" data-submit-loading="Ingresando…">
                 @csrf
-                @if (session('status'))<p class="registration-feedback feedback-success" role="status">{{ session('status') }}</p>@endif
+                @if (session('status'))
+                    @if (str_contains(session('status'), 'correo fue verificado'))
+                        <x-notify type="success" title="¡Correo verificado!" message="Tu cuenta está lista. Ya podés iniciar sesión" />
+                    @else
+                        <x-notify type="success" :message="session('status')" />
+                    @endif
+                @endif
 
                 <label class="registration-field">Correo electrónico
                     <span class="registration-input-wrap">

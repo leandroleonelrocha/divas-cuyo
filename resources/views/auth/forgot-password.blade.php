@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Recuperar contraseña · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
 </head>
 <body class="registration-page">
     <header class="registration-header">
@@ -31,7 +32,7 @@
 
             <form class="registration-card registration-recovery-card" method="POST" action="{{ route('password.email') }}">
                 @csrf
-                @if (session('status'))<p class="registration-feedback feedback-success" role="status">{{ session('status') }}</p>@endif
+                @if (session('status'))<x-notify type="success" :message="session('status')" />@endif
 
                 <div class="registration-card-heading registration-card-heading-visible">
                     <h2>¿Olvidaste tu contraseña?</h2>

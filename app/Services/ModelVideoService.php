@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ModelNotificationType;
 use App\Jobs\DeleteModelVideoFiles;
 use App\Jobs\ProcessModelVideo;
 use App\Models\ModelProfile;
@@ -92,6 +93,12 @@ class ModelVideoService
                 'moderation_status' => $status, 'rejection_reason' => $status === 'rejected' ? trim($reason) : null,
                 'reviewed_by' => $reviewer->id, 'reviewed_at' => now(),
             ]);
+
+            app(ModelNotificationService::class)->record(
+                $current->modelProfile,
+                $status === 'approved' ? ModelNotificationType::VideoApproved : ModelNotificationType::VideoRejected,
+                $reason,
+            );
         });
     }
 }

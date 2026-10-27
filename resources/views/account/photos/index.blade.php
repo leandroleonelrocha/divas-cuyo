@@ -6,6 +6,7 @@
     <title>Mis fotos · Divas Cuyo</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
     <script src="{{ asset('js/model-photos.js') }}" defer></script>
 </head>
 <body class="account-page account-dashboard-page photos-page">
@@ -16,7 +17,7 @@
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'photos'])
     <main class="account-main" id="contenido-principal">
-    <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->name, 0, 1)) }}</span><strong>{{ $profile->name }}</strong><span>⌄</span></header>
+    @include('account.partials.topbar', ['label' => $profile->name])
     <header class="account-header legacy-account-header" aria-label="Navegación de mis fotos">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
@@ -47,18 +48,17 @@
     </section>
 
     @if (session('status'))
-        <p class="photos-feedback photos-feedback-success" role="status">{{ session('status') }}</p>
+        <x-notify type="success" variant="toast" :message="session('status')" />
     @endif
 
     @if ($errors->any())
-        <div class="photos-feedback photos-feedback-error" role="alert">
-            <strong>No pudimos cargar la fotografía.</strong>
+        <x-notify type="error" title="No pudimos cargar la fotografía.">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-        </div>
+        </x-notify>
     @endif
 
     <section class="photos-layout" aria-label="Galería y carga de fotografías">

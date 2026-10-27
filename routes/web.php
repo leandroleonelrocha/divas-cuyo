@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AccountNotificationController;
 use App\Http\Controllers\AccountProfileController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
@@ -73,6 +74,8 @@ Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class.':onboardi
 Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(function (): void {
     Route::get('/account', [AccountController::class, 'dashboard'])->name('account.dashboard');
     Route::get('/account/profile', [AccountProfileController::class, 'edit'])->name('account.profile.edit');
+    Route::post('/account/notifications/read', [AccountNotificationController::class, 'markAllRead'])
+        ->name('account.notifications.read');
     Route::get('/account/services', [AccountProfileController::class, 'services'])->name('account.services.edit');
     Route::patch('/account/profile', [AccountProfileController::class, 'update'])->name('account.profile.update');
     Route::patch('/account/profile/publication-type', [AccountProfileController::class, 'changePublicationType'])

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ModelNotificationType;
 use App\Models\ModelProfile;
 use App\Models\ModelProfileBio;
 use App\Models\User;
@@ -87,6 +88,8 @@ class ModelProfileBioModerationService
             ])->save();
             $profile->forceFill(['current_bio_id' => $lockedBio->getKey()])->save();
 
+            app(ModelNotificationService::class)->record($profile, ModelNotificationType::BioApproved);
+
             return $lockedBio->refresh();
         });
     }
@@ -110,6 +113,8 @@ class ModelProfileBioModerationService
                 'reviewed_by' => $admin->getKey(),
                 'rejection_reason' => $reason,
             ])->save();
+
+            app(ModelNotificationService::class)->record($lockedBio->modelProfile, ModelNotificationType::BioRejected, $reason);
 
             return $lockedBio->refresh();
         });

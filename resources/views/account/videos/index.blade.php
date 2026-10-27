@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mis videos · Divas Cuyo</title>
     @vite('resources/css/styles.css')
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
     <script src="{{ asset('js/model-videos.js') }}" defer></script>
 </head>
 <body class="account-page account-dashboard-page photos-page">
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'videos'])
     <main class="account-main" id="contenido-principal">
-    <header class="account-dashboard-topbar"><span class="account-notification">♧</span><span class="account-avatar">{{ mb_strtoupper(mb_substr($profile->name, 0, 1)) }}</span><strong>{{ $profile->name }}</strong><span>⌄</span></header>
+    @include('account.partials.topbar', ['label' => $profile->name])
     <header class="account-header" aria-label="Navegación de mis videos">
         <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi cuenta">
             <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo">
@@ -32,9 +33,11 @@
         <div><h1>Mis videos</h1><p>Los videos llevan marca de agua y pasan por revisión antes de mostrarse en tu perfil público.</p></div>
         <div class="photos-counter"><strong>{{ $videos->count() }} / {{ config('model-videos.max_videos') }}</strong><span>videos cargados</span></div>
     </section>
-    @if(session('status'))<p class="photos-feedback photos-feedback-success" role="status">{{ session('status') }}</p>@endif
-    @if($errors->any())
-        <div class="photos-feedback photos-feedback-error" role="alert">@foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
+    @if (session('status'))
+        <x-notify type="success" variant="toast" :message="session('status')" />
+    @endif
+    @if ($errors->any())
+        <x-notify type="error">@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach</x-notify>
     @endif
     <section class="account-card">
         <h2>Subir video</h2>
