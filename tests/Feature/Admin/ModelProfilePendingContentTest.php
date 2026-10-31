@@ -54,12 +54,8 @@ class ModelProfilePendingContentTest extends TestCase
 
         $list = Livewire::test(ListModelProfiles::class)
             ->assertCanSeeTableRecords([$pending, $clear])
-            ->assertSee('Fotos por aprobar')->assertSee('Biografías por aprobar');
-        foreach ([ModelPhotosRelationManager::class, ModelProfileBiosRelationManager::class] as $manager) {
-            $list->assertSee(ModelProfileResource::getUrl('view', [
-                'record' => $pending, 'relation' => array_search($manager, ModelProfileResource::getRelations(), true),
-            ]));
-        }
+            ->assertSee('Revisión')->assertSee('Pendiente')->assertSee('Ver detalle');
+        $list->assertSee(ModelProfileResource::getUrl('view', ['record' => $pending]));
         $list->set('activeTab', 'pending_photos')->assertCanSeeTableRecords([$pending])->assertCanNotSeeTableRecords([$clear]);
         $list->set('activeTab', 'pending_bios')->assertCanSeeTableRecords([$pending])->assertCanNotSeeTableRecords([$clear]);
         $pending->bios()->update(['status' => 'approved']);

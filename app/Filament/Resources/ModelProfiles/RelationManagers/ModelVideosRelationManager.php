@@ -12,13 +12,15 @@ use Filament\Tables\Table;
 
 class ModelVideosRelationManager extends RelationManager
 {
+    protected static bool $isLazy = false;
+
     protected static string $relationship = 'videos';
 
     protected static ?string $title = 'Videos';
 
     public function table(Table $table): Table
     {
-        return $table->columns([
+        return $table->extraAttributes(['id' => 'review-ModelVideosRelationManager'])->columns([
             TextColumn::make('original_name')->label('Archivo')->limit(50),
             TextColumn::make('preview')->label('Vista previa')->state(fn (ModelVideo $record): string => $record->ready()
                 ? '<video controls playsinline preload="none" style="width:240px;max-height:300px" poster="'.e(route('admin.model-videos.file', [$record, 'poster'])).'" src="'.e(route('admin.model-videos.file', [$record, 'video'])).'"></video>'

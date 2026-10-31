@@ -26,7 +26,14 @@ class AccountController extends Controller
             return to_route('account.incomplete-profile');
         }
 
+        $profile = $user->modelProfile;
+        $managementReady = $profile->identity_status === 'approved'
+            && $profile->review_status === 'approved'
+            && $profile->currentBio?->status === 'approved'
+            && $profile->currentApprovedPhotos()->where('is_primary', true)->exists();
+
         return view('account.dashboard', [
+            'managementReady' => $managementReady,
             'user' => $user,
             'profile' => $user->modelProfile,
             'paymentInstructions' => PaymentInstruction::query()

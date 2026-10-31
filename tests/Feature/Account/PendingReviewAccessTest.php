@@ -26,7 +26,7 @@ class PendingReviewAccessTest extends TestCase
         }
         $this->postJson(route('account.complete-profile'), ['profile_completion_status' => 'active'])
             ->assertForbidden()->assertJsonPath('redirect_url', route('account.pending-review'));
-        $this->get(route('account.pending-review'))->assertOk()->assertSee('Tu perfil está en revisión');
+        $this->get(route('account.pending-review'))->assertOk()->assertSee('Tu inscripción está en revisión');
         $this->withCookie(config('legal.cookie'), app(\App\Services\LegalAccess::class)->cookie('accepted')->getValue());
         $this->get(route('terms.show'))->assertOk();
         $this->assertSame('pending_review', $user->fresh()->profile_completion_status);

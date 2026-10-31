@@ -9,7 +9,7 @@
     <script src="{{ asset('js/notifications.js') }}" defer></script>
     <script src="{{ asset('js/identity-documents.js') }}" defer></script>
 </head>
-<body class="account-page account-dashboard-page">
+<body class="account-mobile-navigation account-page account-dashboard-page">
 @php
     $identityState = match ($profile->identity_status) {
         'pending' => ['label' => 'Pendiente de revisión', 'class' => 'pending'],
@@ -44,8 +44,10 @@
         </a>
         <nav class="account-nav" aria-label="Navegación privada">
             <a href="{{ route('account.dashboard') }}">Mi cuenta</a>
+            @if ($profile->identity_status === 'approved' && $profile->review_status === 'approved')
             <a href="{{ route('account.photos.index') }}">Mis fotos</a>
             <a href="{{ route('account.videos.index') }}">Mis videos</a>
+            @endif
             <span class="account-profile-name">{{ $user->name }}</span>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -57,14 +59,20 @@
     <section class="account-hero" aria-labelledby="identity-title">
         <p class="account-eyebrow">Seguridad del perfil</p>
         <h1 id="identity-title">Validación de identidad</h1>
-        <p>Completá la documentación para validar tu identidad y mayoría de edad. Al elegir una imagen se sube automáticamente.</p>
+        @if ($profile->identity_status === 'pending')
+            <p>Recibimos tu documentación. No necesitás hacer nada más mientras la administración revisa tu identidad.</p>
+        @elseif ($profile->identity_status === 'approved')
+            <p>Tu identidad está aprobada. Podés continuar completando tu perfil desde el panel.</p>
+        @else
+            <p>Completá la documentación para validar tu identidad y mayoría de edad. Al elegir una imagen se sube automáticamente.</p>
+        @endif
         <p class="identity-status-line">Estado: <strong class="account-badge account-badge-{{ $identityState['class'] }}">{{ $identityState['label'] }}</strong></p>
     </section>
 
     @if (session('status'))
         <x-notify type="success" variant="toast" :message="session('status')" />
     @endif
-    @if ($profile->identity_rejection_reason)
+    @if ($profile->identity_status === 'rejected' && $profile->identity_rejection_reason)
         <p class="identity-feedback identity-feedback-error" role="alert"><strong>Motivo del rechazo:</strong> {{ $profile->identity_rejection_reason }}</p>
     @endif
 

@@ -22,7 +22,7 @@ class EnrollmentRules
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'whatsapp' => ['required', 'string', 'max:50'],
+            'whatsapp' => ['required', 'string', 'max:50', ...($selecting ? ['regex:/^[0-9]+$/D'] : [])],
             'province_id' => ['required', 'integer', $province],
             'locality_id' => ['nullable', 'integer', $locality, new LocalityBelongsToProvince($provinceId, $selecting)],
             'publication_type_id' => ['required', 'integer', $type],
@@ -36,6 +36,7 @@ class EnrollmentRules
         return [
             'name.required' => 'Ingresá tu nombre público.',
             'whatsapp.required' => 'Ingresá tu WhatsApp.',
+            'whatsapp.regex' => 'El WhatsApp debe contener solo números, sin espacios, signos ni letras.',
             'province_id.required' => 'Elegí una provincia.',
             'province_id.exists' => 'La provincia seleccionada no está disponible.',
             'locality_id.exists' => 'La ciudad seleccionada no está disponible.',

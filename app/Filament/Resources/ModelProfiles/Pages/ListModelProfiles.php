@@ -35,37 +35,23 @@ class ListModelProfiles extends ListRecords
     {
         return [
             'all' => Tab::make('Todas'),
-            'pending_review' => Tab::make('Perfiles pendientes')
-                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->where('review_status', 'pending')))
-                ->badgeColor('warning')
-                ->badgeTooltip('Modelos esperando aprobación del perfil')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('review_status', 'pending')),
-            'pending_photos' => Tab::make('Fotos pendientes')
-                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->whereHas('photos.latestVersion', fn (Builder $query): Builder => $query->where('status', 'pending'))))
-                ->badgeColor('warning')
-                ->badgeTooltip('Cantidad de modelos con fotos por aprobar')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas('photos.latestVersion', fn (Builder $version): Builder => $version->where('status', 'pending'))),
-            'pending_bios' => Tab::make('Biografías pendientes')
-                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->whereHas('bios', fn (Builder $query): Builder => $query->where('status', 'pending'))))
-                ->badgeColor('warning')
-                ->badgeTooltip('Cantidad de modelos con biografías por aprobar')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas('bios', fn (Builder $bio): Builder => $bio->where('status', 'pending'))),
-            'pending_identity' => Tab::make('Identidad pendiente')
-                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->where('identity_status', 'pending')))
-                ->badgeColor('warning')
-                ->badgeTooltip('Modelos con documentación por verificar')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('identity_status', 'pending')),
+            'pending' => Tab::make('Pendientes')
+                ->badgeTooltip('Inscripciones, identidades enviadas y contenido listo para moderar. No incluye perfiles incompletos.')
+                ->modifyQueryUsing(fn (Builder $query) => \App\Filament\Resources\ModelProfiles\ModelReviewQueue::filter($query, 'pending')),
             'published' => Tab::make('Publicadas')
-                ->badge(fn (): ?string => $this->tabBadge(ModelProfile::query()->where('is_published', true)))
-                ->badgeColor('success')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('is_published', true)),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('is_published', true)),
+            'unpublished' => Tab::make('No publicadas')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('is_published', false)),
         ];
     }
 
-    private function tabBadge(Builder $query): ?string
+    // Preserve existing dashboard links without adding visible tabs.
+    protected function modifyQueryWithActiveTab(Builder $query, bool $isResolvingRecord = false): Builder
     {
-        $count = $query->whereDoesntHave('user', fn (Builder $user): Builder => $user->where('is_admin', true))->count();
+        if (in_array($this->activeTab, ['pending_enrollment', 'pending_identity', 'pending_content', 'pending_photos', 'pending_bios', 'pending_review'], true)) {
+            return \App\Filament\Resources\ModelProfiles\ModelReviewQueue::filter($query, $this->activeTab);
+        }
 
-        return $count > 0 ? (string) $count : null;
+        return parent::modifyQueryWithActiveTab($query, $isResolvingRecord);
     }
 }

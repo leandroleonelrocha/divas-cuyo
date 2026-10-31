@@ -1,4 +1,10 @@
 <header class="account-dashboard-topbar">
+        <a class="dashboard-mobile-logo" href="{{ route('account.dashboard') }}" aria-label="Divas Cuyo, inicio">
+            <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="Divas Cuyo">
+        </a>
+        <button class="dashboard-mobile-toggle" type="button" aria-label="Abrir menú" aria-controls="dashboard-mobile-menu" aria-expanded="false" aria-haspopup="dialog">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
     <div class="account-notif" data-notif data-read-url="{{ route('account.notifications.read') }}" data-csrf="{{ csrf_token() }}">
         <button type="button" class="account-notif-toggle" data-notif-toggle aria-haspopup="dialog" aria-expanded="false" aria-label="Notificaciones{{ $unreadNotifications > 0 ? ' ('.$unreadNotifications.' sin leer)' : '' }}">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -144,3 +150,9 @@
     });
 })();
 </script>
+
+<dialog class="dashboard-mobile-menu" id="dashboard-mobile-menu" aria-label="Menú de mi cuenta">
+    <button type="button" class="mobile-menu-close" aria-label="Cerrar menú">✕</button>
+    <div data-mobile-menu-content></div>
+</dialog>
+<script src="{{ asset('js/dashboard-mobile.js') }}?v={{ filemtime(public_path('js/dashboard-mobile.js')) }}" defer></script>

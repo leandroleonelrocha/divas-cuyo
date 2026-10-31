@@ -107,11 +107,15 @@ class AccountProfileController extends Controller
     public function updateServices(
         ModelProfileServicesUpdateRequest $request,
         PublicationTypeChangeService $service,
-    ): RedirectResponse {
+    ): RedirectResponse|\Illuminate\Http\JsonResponse {
         $service->syncServices(
             $request->user()->modelProfile,
             $request->validated('service_ids', []),
         );
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Guardado']);
+        }
 
         return to_route('account.services.edit')->with('success', 'Los servicios se actualizaron correctamente.');
     }

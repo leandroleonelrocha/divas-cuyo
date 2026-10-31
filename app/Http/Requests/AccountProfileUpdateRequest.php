@@ -18,6 +18,13 @@ class AccountProfileUpdateRequest extends FormRequest
         return $user?->hasVerifiedEmail() === true && $user->modelProfile()->exists();
     }
 
+    public function messages(): array
+    {
+        return [
+            'private_phone.regex' => 'El teléfono privado debe contener solo números, sin espacios, signos ni letras.',
+        ];
+    }
+
     public function rules(): array
     {
         return [
@@ -27,7 +34,7 @@ class AccountProfileUpdateRequest extends FormRequest
             'real_height_cm' => ['nullable', 'integer', 'between:80,250'],
             'real_weight_kg' => ['nullable', 'numeric', 'between:20,400'],
             'real_measurements' => ['nullable', 'string', 'max:100'],
-            'private_phone' => ['nullable', 'string', 'max:50'],
+            'private_phone' => ['nullable', 'string', 'max:50', 'regex:/^[0-9]+$/D'],
             'slug' => ['prohibited'],
             'stage_name' => ['required', 'string', 'max:100'],
             'public_age' => ['nullable', 'integer', 'between:18,120', new ValidPublicAge($this->input('birth_date'))],

@@ -7,9 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/notifications.js') }}" defer></script>
-    <script src="{{ asset('js/model-photos.js') }}" defer></script>
+    <script src="{{ asset('js/model-photos.js') }}?v={{ filemtime(public_path('js/model-photos.js')) }}" defer></script>
 </head>
-<body class="account-page account-dashboard-page photos-page">
+<body class="account-mobile-navigation account-page account-dashboard-page photos-page">
 @php
     $maxPhotos = (int) config('model-photos.max_photos');
     $isFull = $photos->count() >= $maxPhotos;
@@ -93,45 +93,26 @@
                 data-photos-input
             >
 
-            @if ($photos->isEmpty())
-                <div class="photos-dropzone" data-photos-dropzone>
-                    <span class="photos-dropzone-icon" aria-hidden="true">
-                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <path d="M17 8l-5-5-5 5"/>
-                            <path d="M12 3v12"/>
-                        </svg>
-                    </span>
-                    <h3>Todavía no cargaste fotos</h3>
-                    <p>Arrastrá tus imágenes acá o elegilas desde tu dispositivo. Se cargan automáticamente y pasan por revisión.</p>
-                    <label class="account-primary-action photos-pick" for="photos-file-input">Agregar fotografías <span aria-hidden="true">+</span></label>
-                    <p class="photos-upload-help">JPEG, PNG o WebP · hasta 10 MB · se redimensiona automáticamente</p>
-                </div>
-            @endif
-
             <div class="photos-upload-queue" data-photos-queue aria-live="polite" hidden></div>
 
             <form class="photos-order-form" id="photos-order-form" method="POST" action="{{ route('account.photos.order') }}">
                 @csrf
                 @method('PATCH')
                 <div id="photo-order-inputs" aria-hidden="true"></div>
-                <div class="photos-order-toolbar">
-                    <p>Usá las flechas para definir el orden de tu galería.</p>
-                    <button class="account-secondary-action" type="submit">Guardar orden</button>
-                </div>
             </form>
 
+            <p class="profile-help">Arrastrá desde el botón ↕ para ordenar o usá las opciones del menú ⋯. El orden se guarda automáticamente.</p>
+            <button type="button" data-order-retry hidden>Reintentar guardar orden</button>
             <div class="photos-grid" id="photo-order-list" data-photos-grid aria-label="Orden de tus fotografías">
                 @foreach ($photos as $photo)
                     @include('account.photos.card', ['photo' => $photo, 'profile' => $profile, 'index' => $loop->index])
                 @endforeach
 
-                <article class="photo-add-card" data-photos-add>
+                <button type="button" class="photo-add-card" data-photos-add onclick="document.getElementById('photos-file-input').click()">
                     <span class="photo-add-icon" aria-hidden="true">+</span>
-                    <h3>Agregar más fotos</h3>
-                    <p>Elegí varias imágenes o arrastralas acá. Se cargan automáticamente.</p>
-                    <label class="account-primary-action photos-pick" for="photos-file-input">Agregar fotografías <span aria-hidden="true">+</span></label>
-                </article>
+                    <strong>Agregar fotos</strong>
+                    <span>JPEG, PNG o WebP · hasta 10 MB</span>
+                </button>
             </div>
 
             <p class="photos-limit-message" data-photos-limit>Alcanzaste el máximo de {{ $maxPhotos }} fotografías.</p>
@@ -144,5 +125,9 @@
     </section>
 </main>
 </div>
+<dialog id="account-photo-viewer" class="account-photo-viewer" aria-label="Fotografía ampliada">
+    <button type="button" data-viewer-close aria-label="Cerrar fotografía">✕</button>
+    <img alt="Fotografía ampliada">
+</dialog>
 </body>
 </html>

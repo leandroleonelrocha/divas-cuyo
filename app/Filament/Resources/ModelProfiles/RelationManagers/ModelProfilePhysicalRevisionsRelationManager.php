@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModelProfilePhysicalRevisionsRelationManager extends RelationManager
 {
+    protected static bool $isLazy = false;
+
     protected static string $relationship = 'physicalRevisions';
 
     protected static ?string $title = 'Cambios físicos';
@@ -46,7 +48,7 @@ class ModelProfilePhysicalRevisionsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+        return $table->extraAttributes(['id' => 'review-ModelProfilePhysicalRevisionsRelationManager'])
             ->heading('Revisiones de características físicas')
             ->columns([
                 TextColumn::make('created_at')

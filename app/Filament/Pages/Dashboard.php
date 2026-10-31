@@ -13,7 +13,7 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
-        return [ModelProfileStats::class];
+        return [\App\Filament\Widgets\PendingEnrollments::class, \App\Filament\Widgets\PendingIdentities::class, \App\Filament\Widgets\PendingContent::class, ModelProfileStats::class];
     }
 
     protected function getHeaderActions(): array

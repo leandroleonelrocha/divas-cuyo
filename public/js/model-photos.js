@@ -289,6 +289,37 @@
         });
     }
 
+    const updatePrimary = (id) => {
+        grid.querySelectorAll('[data-photo-card]').forEach(card => {
+            const primary = String(card.dataset.photoId) === String(id);
+            card.querySelector('.photo-primary-badge')?.remove();
+            if (primary) {
+                const badge = document.createElement('span');
+                badge.className = 'photo-primary-badge';
+                badge.textContent = 'Principal';
+                card.querySelector('.photo-card-body').append(badge);
+            }
+            const form = card.querySelector('.photo-primary-form');
+            if (form) form.hidden = primary;
+        });
+    };
+    grid.addEventListener('submit', async event => {
+        const form = event.target.closest('.photo-primary-form');
+        if (!form) return;
+        event.preventDefault();
+        const button = form.querySelector('button');
+        button.disabled = true;
+        showSuccess('Actualizando foto principal…');
+        try {
+            const payload = await fetch(form.action, {
+                method: 'POST', headers: { Accept: 'application/json', 'X-CSRF-TOKEN': token }
+            }).then(response => parseJsonResponse(response, 'No pudimos cambiar la foto principal.'));
+            updatePrimary(payload.primary_id);
+            showSuccess(payload.status);
+        } catch (error) { showError(error.message); }
+        finally { button.disabled = false; }
+    });
+
     if (grid) {
         grid.addEventListener('change', (event) => {
             const replaceInput = event.target.closest('[data-replace-input]');
@@ -359,14 +390,12 @@
             }).then((response) => parseJsonResponse(response, 'No pudimos eliminar la fotografía.'))
                 .then((payload) => {
                     card.remove();
+                    updatePrimary(payload.primary_id);
                     state.count = parseInt(payload.count, 10) || Math.max(0, state.count - 1);
                     syncState();
                     syncOrder();
                     showSuccess(payload.status || 'La fotografía se eliminó correctamente.');
-                    if (state.empty) {
-                        // La zona de carga vacía sólo existe en el HTML inicial: recargamos para restaurarla.
-                        window.setTimeout(() => window.location.reload(), 700);
-                    }
+
                 }).catch((error) => {
                     card.classList.remove('is-busy');
                     showError(error.message || 'No pudimos eliminar la fotografía.');
@@ -406,11 +435,80 @@
             if (button.dataset.orderMove === 'up') orderList.insertBefore(card, sibling);
             else orderList.insertBefore(sibling, card);
             syncOrder();
+            saveOrder();
         });
 
-        orderForm.addEventListener('submit', syncOrder);
+        orderForm.addEventListener('submit', event => { event.preventDefault(); saveOrder(); });
     }
 
+    let savingOrder = false;
+    let dirtyOrder = false;
+    const retryOrder = panel.querySelector('[data-order-retry]');
+    async function saveOrder() {
+        dirtyOrder = true;
+        if (savingOrder) return;
+        savingOrder = true;
+        retryOrder.hidden = true;
+        while (dirtyOrder) {
+            dirtyOrder = false;
+            showSuccess('Guardando orden…');
+            try {
+                const ids = [...grid.querySelectorAll('[data-photo-id]')].map(card => card.dataset.photoId);
+                await fetch(orderForm.action, {
+                    method: 'PATCH',
+                    headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token },
+                    body: JSON.stringify({ photo_ids: ids })
+                }).then(response => parseJsonResponse(response, 'No pudimos guardar el orden.'));
+                showSuccess('Orden guardado');
+            } catch (error) {
+                dirtyOrder = true;
+                showError(error.message);
+                retryOrder.hidden = false;
+                break;
+            }
+        }
+        savingOrder = false;
+    }
+    retryOrder.addEventListener('click', saveOrder);
+    window.addEventListener('beforeunload', event => {
+        if (dirtyOrder || savingOrder || uploading) { event.preventDefault(); event.returnValue = ''; }
+    });
+    let dragging = null;
+
+    grid.addEventListener('pointerdown', event => {
+        const handle = event.target.closest('[data-photo-drag]');
+        if (!handle || event.button !== 0) return;
+        dragging = handle.closest('[data-photo-card]');
+
+        handle.setPointerCapture(event.pointerId);
+        dragging.classList.add('is-dragging');
+    });
+    grid.addEventListener('pointermove', event => {
+        if (!dragging) return;
+        const target = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-photo-card]');
+        if (!target || target === dragging || target.parentElement !== grid) return;
+        const cards = [...grid.querySelectorAll('[data-photo-card]')];
+        if (cards.indexOf(target) > cards.indexOf(dragging)) target.after(dragging);
+        else target.before(dragging);
+        syncOrder();
+    });
+    const finishDrag = () => {
+        if (!dragging) return;
+        dragging.classList.remove('is-dragging');
+        dragging = null;
+
+        saveOrder();
+    };
+    grid.addEventListener('pointerup', finishDrag);
+    grid.addEventListener('pointercancel', finishDrag);
+    const viewer = document.getElementById('account-photo-viewer');
+    grid.addEventListener('click', event => {
+        const preview = event.target.closest('[data-photo-view]');
+        if (!preview) return;
+        viewer.querySelector('img').src = preview.dataset.photoView;
+        viewer.showModal();
+    });
+    viewer.querySelector('[data-viewer-close]').addEventListener('click', () => viewer.close());
     syncState();
     syncOrder();
 })();

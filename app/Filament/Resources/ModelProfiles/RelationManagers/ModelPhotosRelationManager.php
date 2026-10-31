@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModelPhotosRelationManager extends RelationManager
 {
+    protected static bool $isLazy = false;
+
     protected static string $relationship = 'photos';
 
     protected static ?string $title = 'Fotografías';
@@ -50,7 +52,7 @@ class ModelPhotosRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+        return $table->extraAttributes(['id' => 'review-ModelPhotosRelationManager'])
             ->heading('Fotografías de la modelo')
             ->description('Las variantes mostradas pasan por autorización privada y no exponen rutas físicas.')
             ->modifyQueryUsing(fn (Builder $query): Builder => $query->with(['currentVersion', 'latestVersion']))
@@ -58,6 +60,8 @@ class ModelPhotosRelationManager extends RelationManager
                 TextColumn::make('preview')
                     ->label('Vista')
                     ->state(fn (ModelPhoto $record): string => $this->previewState($record))
+                    ->action($this->galleryAction('previewGallery'))
+                    ->tooltip('Ampliar y recorrer fotografías')
                     ->html(),
                 TextColumn::make('position')
                     ->label('Posición')
@@ -75,6 +79,7 @@ class ModelPhotosRelationManager extends RelationManager
                 TextColumn::make('versions_summary')
                     ->label('Versiones')
                     ->state(fn (ModelPhoto $record): string => $this->versionSummary($record))
+                    ->action($this->galleryAction('versionsGallery'))
                     ->html(),
                 TextColumn::make('latestVersion.created_at')
                     ->label('Cargada')
@@ -91,7 +96,7 @@ class ModelPhotosRelationManager extends RelationManager
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalHeading('Aprobar fotografía')
-                    ->modalDescription('La versión pendiente pasará a ser la versión vigente. La foto no se marcará como principal automáticamente.')
+                    ->modalDescription('La versión pendiente pasará a ser la versión vigente. Si todavía no hay una foto principal, se elegirá automáticamente. La modelo podrá cambiarla después.')
                     ->modalSubmitActionLabel('Aprobar fotografía')
                     ->visible(fn (ModelPhoto $record): bool => $this->isPending($record))
                     ->authorize(fn (ModelPhoto $record): bool => auth()->user()?->can('approve', $record) ?? false)
@@ -121,6 +126,38 @@ class ModelPhotosRelationManager extends RelationManager
             ])
             ->emptyStateHeading('No hay fotografías cargadas')
             ->emptyStateDescription('Las fotografías aparecerán aquí cuando la modelo las cargue desde su cuenta.');
+    }
+
+    private function galleryAction(string $name): Action
+    {
+        return Action::make($name)
+            ->label('Ampliar fotografías')
+            ->modalHeading('Fotografías de la modelo')
+            ->modalWidth('5xl')
+            ->modalSubmitAction(false)
+            ->modalCancelActionLabel('Cerrar')
+            ->modalContent(function (ModelPhoto $record) {
+                $photos = $this->getOwnerRecord()->photos()
+                    ->with(['latestVersion', 'currentVersion'])
+                    ->orderBy('position')->orderBy('id')->get();
+                $images = [];
+                $initialIndex = 0;
+                foreach ($photos as $photo) {
+                    foreach (collect([$photo->latestVersion, $photo->currentVersion])->filter()->unique('id') as $version) {
+                        if ($photo->is($record) && $version->is($photo->latestVersion ?? $photo->currentVersion)) {
+                            $initialIndex = count($images);
+                        }
+                        $images[] = [
+                            'url' => route('admin.model-photos.file', [
+                                'photo' => $photo, 'version' => $version, 'variant' => 'processed',
+                            ]),
+                            'label' => 'Foto '.$photo->position.' · '.$this->statusLabel($version->status),
+                        ];
+                    }
+                }
+
+                return view('filament.model-photo-gallery', compact('images', 'initialIndex'));
+            });
     }
 
     private function isPending(ModelPhoto $photo): bool

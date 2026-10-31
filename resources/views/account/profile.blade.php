@@ -7,7 +7,7 @@
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/notifications.js') }}" defer></script>
 </head>
-<body class="account-page account-dashboard-page profile-page">
+<body class="account-mobile-navigation account-page account-dashboard-page profile-page">
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'profile'])
     <main class="account-main" id="contenido-principal">
@@ -52,6 +52,7 @@
     <form method="POST" action="{{ route('account.profile.update') }}" class="profile-form">
         @csrf
         @method('PATCH')
+        <p class="profile-help">Los campos marcados con * son obligatorios. Los demás son opcionales, salvo que se indique lo contrario.</p>
 
         <section class="account-card" aria-labelledby="private-details-title">
             <div class="account-section-heading">
@@ -66,13 +67,13 @@
                 <p class="profile-help">Edad real calculada: <strong>{{ $privateDetails->realAge() }} años</strong></p>
             @endif
             <div class="profile-fields">
-                <label>Nombre real <input name="real_first_name" value="{{ old('real_first_name', $privateDetails?->real_first_name) }}" required></label>
-                <label>Apellido real <input name="real_last_name" value="{{ old('real_last_name', $privateDetails?->real_last_name) }}" required></label>
-                <label>Fecha de nacimiento <input type="date" name="birth_date" value="{{ old('birth_date', $privateDetails?->birth_date?->format('Y-m-d')) }}" required></label>
+                <label><span>Nombre real <x-account.required-field /></span> <input name="real_first_name" value="{{ old('real_first_name', $privateDetails?->real_first_name) }}" required></label>
+                <label><span>Apellido real <x-account.required-field /></span> <input name="real_last_name" value="{{ old('real_last_name', $privateDetails?->real_last_name) }}" required></label>
+                <label><span>Fecha de nacimiento <x-account.required-field /></span> <input type="date" name="birth_date" value="{{ old('birth_date', $privateDetails?->birth_date?->format('Y-m-d')) }}" required></label>
                 <label>Altura real (cm) <input type="number" name="real_height_cm" min="80" max="250" value="{{ old('real_height_cm', $privateDetails?->real_height_cm) }}"></label>
                 <label>Peso real (kg) <input type="number" step="0.01" name="real_weight_kg" min="20" max="400" value="{{ old('real_weight_kg', $privateDetails?->real_weight_kg) }}"></label>
                 <label>Medidas reales <input name="real_measurements" value="{{ old('real_measurements', $privateDetails?->real_measurements) }}"></label>
-                <label>Teléfono privado <input name="private_phone" value="{{ old('private_phone', $privateDetails?->private_phone) }}"></label>
+                <label>Teléfono privado <input type="tel" inputmode="numeric" pattern="[0-9]+" maxlength="50" title="Ingresá solo números, sin espacios ni signos." placeholder="Ej.: 5492611234567" name="private_phone" value="{{ old('private_phone', $privateDetails?->private_phone) }}"></label>
             </div>
         </section>
 
@@ -85,11 +86,12 @@
                 <span class="account-heading-note">Lo que puede mostrarse en tu perfil</span>
             </div>
             <div class="profile-fields">
-                <label>Nombre laboral o artístico <input name="stage_name" value="{{ old('stage_name', $profile->stage_name ?: $profile->name) }}" required></label>
-                <label>Nacionalidad/origen <input name="nationality" value="{{ old('nationality', $profile->nationality) }}" required></label>
+                <label><span>Nombre laboral o artístico <x-account.required-field /></span> <input name="stage_name" value="{{ old('stage_name', $profile->stage_name ?: $profile->name) }}" required></label>
+                <label><span>Nacionalidad/origen <x-account.required-field /></span> <input name="nationality" value="{{ old('nationality', $profile->nationality) }}" required></label>
                 <label>Edad pública <input type="number" name="public_age" min="18" max="120" value="{{ old('public_age', $profile->public_age) }}"></label>
+                <input type="hidden" name="show_age" value="0">
                 <label class="profile-checkbox"><input type="checkbox" name="show_age" value="1" @checked(old('show_age', $profile->show_age))> Mostrar mi edad públicamente</label>
-                <label>Disponibilidad
+                <label><span>Disponibilidad <x-account.required-field /></span>
                     <select name="availability_status" required>
                         <option value="available" @selected(old('availability_status', $profile->availability_status) === 'available')>Disponible</option>
                         <option value="unavailable" @selected(old('availability_status', $profile->availability_status) === 'unavailable')>No disponible</option>
@@ -118,6 +120,7 @@
                 </label>
                 <fieldset class="profile-rate-group" id="rate-group">
                     <legend>Precios</legend>
+                    <p class="profile-help">Los precios son opcionales. Si ingresás un importe, debés indicar su moneda.</p>
                     <label>Mostrar precios
                         <select name="rate_visibility" id="rate_visibility">
                             <option value="consult" @selected(old('rate_visibility', $profile->rate_visibility ?? 'consult') === 'consult')>Consultar</option>

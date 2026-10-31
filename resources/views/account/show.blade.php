@@ -6,7 +6,7 @@
     <title>Mi perfil · Divas Cuyo</title>
     @vite('resources/css/styles.css')
 </head>
-<body class="account-page account-dashboard-page">
+<body class="account-mobile-navigation account-page account-dashboard-page">
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'profile'])
     <main class="account-main" id="contenido-principal">

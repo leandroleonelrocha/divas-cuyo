@@ -57,7 +57,26 @@ class ModelPhotoModerationTest extends TestCase
         $this->assertSame($admin->id, $version->reviewed_by);
         $this->assertNotNull($version->reviewed_at);
         $this->assertNull($version->rejection_reason);
+        $this->assertTrue($photo->is_primary);
         $this->assertSame($before, $profile->fresh()->only(['identity_status', 'review_status', 'is_published']));
+    }
+
+    public function test_approving_another_photo_preserves_primary_and_owner_can_change_it(): void
+    {
+        [$owner, $first] = $this->uploadPhoto();
+        $admin = User::factory()->withCompletedRegistration()->create(['is_admin' => true]);
+        $service = app(ModelPhotoModerationService::class);
+        $service->approve($first, $admin);
+        $this->actingAs($owner)->post(route('account.photos.store'), [
+            'photo' => UploadedFile::fake()->image('second.jpg', 1000, 1000),
+        ])->assertRedirect();
+        $second = $owner->modelProfile->photos()->whereKeyNot($first->id)->firstOrFail();
+        $service->approve($second, $admin);
+        $this->assertTrue($first->fresh()->is_primary);
+        $this->assertFalse($second->fresh()->is_primary);
+        $this->actingAs($owner)->post(route('account.photos.primary', $second))->assertRedirect();
+        $this->assertFalse($first->fresh()->is_primary);
+        $this->assertTrue($second->fresh()->is_primary);
     }
 
     public function test_reject_requires_reason_and_records_audit(): void
@@ -112,7 +131,7 @@ class ModelPhotoModerationTest extends TestCase
 
         $photo->refresh();
         $this->assertSame($pendingVersion->id, $photo->current_version_id);
-        $this->assertFalse($photo->is_primary);
+        $this->assertTrue($photo->is_primary);
         $this->assertDatabaseMissing('model_photo_versions', ['id' => $oldVersion->id]);
     }
 
@@ -160,7 +179,7 @@ class ModelPhotoModerationTest extends TestCase
 
         $this->assertTrue(ModelPhotosRelationManager::canViewForRecord($photo->modelProfile, ViewModelProfile::class));
         $this->get(ModelProfileResource::getUrl('view', ['record' => $photo->modelProfile]))
-            ->assertOk()->assertSee('Fotografías');
+            ->assertOk()->assertSee('Contenido');
 
         Livewire::test(ModelPhotosRelationManager::class, [
             'ownerRecord' => $photo->modelProfile,

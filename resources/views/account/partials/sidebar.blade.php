@@ -1,13 +1,33 @@
+@php
+    $preparingProfile = auth()->user()?->modelProfile?->identity_status !== 'approved'
+        || auth()->user()?->modelProfile?->review_status !== 'approved';
+    $menuActive = match (true) {
+        request()->routeIs('account.dashboard') => request('section') === 'payments' ? 'payments' : 'home',
+        request()->routeIs('account.profile.edit') => 'data',
+        request()->routeIs('identity.*') => 'identity',
+        request()->routeIs('account.photos.*') => 'photos',
+        request()->routeIs('account.videos.*') => 'videos',
+        request()->routeIs('account.services.*') => 'services',
+        default => '',
+    };
+@endphp
 <aside class="account-sidebar" aria-label="Navegación de mi cuenta">
     <a href="{{ route('account.dashboard') }}" class="account-brand" aria-label="Divas Cuyo, Mi perfil">
         <img src="{{ asset('images/logo-divas-cuyo.webp') }}" alt="" class="account-logo"><span>Divas<span>Cuyo</span></span>
     </a>
     <nav class="account-sidebar-nav">
-        <a class="{{ ($active ?? '') === 'profile' ? 'is-active' : '' }}" href="{{ route('account.dashboard') }}"><span>⌂</span> Mi perfil</a>
-        <a class="{{ ($active ?? '') === 'photos' ? 'is-active' : '' }}" href="{{ route('account.photos.index') }}"><span>▧</span> Mis fotos</a>
-        <a class="{{ ($active ?? '') === 'videos' ? 'is-active' : '' }}" href="{{ route('account.videos.index') }}"><span>▣</span> Mis videos</a>
-        <a class="{{ ($active ?? '') === 'services' ? 'is-active' : '' }}" href="{{ route('account.services.edit') }}"><span>◉</span> Servicios y tipo de publicación</a>
+        <a class="{{ $menuActive === 'home' ? 'is-active' : '' }}" @if ($menuActive === 'home') aria-current="page" @endif href="{{ route('account.dashboard') }}"><span>⌂</span> Inicio</a>
+        @if (! $preparingProfile)
+        <a class="{{ $menuActive === 'photos' ? 'is-active' : '' }}" @if ($menuActive === 'photos') aria-current="page" @endif href="{{ route('account.photos.index') }}"><span>▧</span> Mis fotos</a>
+        <a class="{{ $menuActive === 'videos' ? 'is-active' : '' }}" @if ($menuActive === 'videos') aria-current="page" @endif href="{{ route('account.videos.index') }}"><span>▣</span> Mis videos</a>
+        <a class="{{ $menuActive === 'services' ? 'is-active' : '' }}" @if ($menuActive === 'services') aria-current="page" @endif href="{{ route('account.services.edit') }}"><span>◉</span> Mis servicios</a>
         {{-- <a class="{{ ($active ?? '') === 'stats' ? 'is-active' : '' }}" href="{{ route('account.dashboard') }}#estadisticas"><span>▥</span> Estadísticas</a> --}}
+        @endif
+        <a class="{{ $menuActive === 'data' ? 'is-active' : '' }}" @if ($menuActive === 'data') aria-current="page" @endif href="{{ route('account.profile.edit') }}"><span>✎</span> Mis datos</a>
+        <a class="{{ $menuActive === 'identity' ? 'is-active' : '' }}" @if ($menuActive === 'identity') aria-current="page" @endif href="{{ route('identity.show', auth()->user()) }}"><span>♢</span> Mi identidad</a>
+        @if ($managementReady ?? false)
+            <a class="{{ $menuActive === 'payments' ? 'is-active' : '' }}" @if ($menuActive === 'payments') aria-current="page" @endif href="{{ route('account.dashboard', ['section' => 'payments']) }}"><span>▤</span> Mis pagos</a>
+        @endif
     </nav>
     <nav class="account-sidebar-bottom">
         <a href="{{ route('terms.show') }}"><span>?</span> Centro de ayuda</a>

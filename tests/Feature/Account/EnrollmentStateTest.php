@@ -17,6 +17,7 @@ class EnrollmentStateTest extends TestCase
         $admin = User::factory()->create(['is_admin' => true]);
         $owner = User::factory()->withCompletedRegistration()->create();
         $profile = $owner->modelProfile;
+        $profile->forceFill(['identity_status' => 'approved', 'review_status' => 'approved'])->save();
         Livewire::actingAs($admin)->test(ListModelProfiles::class)
             ->callTableAction('requireProfileCompletion', $profile)->assertHasNoErrors();
         $this->assertSame('profile_incomplete', $owner->fresh()->profile_completion_status);
@@ -42,10 +43,46 @@ class EnrollmentStateTest extends TestCase
         ])->assertRedirect(route('account.pending-review'));
         $this->assertSame('pending_review', $owner->fresh()->profile_completion_status);
         $this->get(route('account.dashboard'))->assertRedirect(route('account.pending-review'));
-        $this->get(route('account.pending-review'))->assertOk()->assertSee('Tu perfil está en revisión');
+        $this->get(route('account.pending-review'))->assertOk()->assertSee('Tu inscripción está en revisión');
         Livewire::actingAs($admin)->test(ListModelProfiles::class)
             ->callTableAction('finishEnrollmentReview', $profile)->assertHasNoErrors();
         $this->assertSame('active', $owner->fresh()->profile_completion_status);
+    }
+
+    public function test_actions_follow_enrollment_state_in_list_and_detail(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $profile = $owner->modelProfile;
+        $profile->forceFill(['identity_status' => 'pending', 'review_status' => 'pending', 'is_published' => false])->save();
+
+        foreach ([AccountEnrollmentState::INCOMPLETE, AccountEnrollmentState::PENDING] as $state) {
+            $owner->forceFill(['profile_completion_status' => $state])->save();
+            $list = Livewire::actingAs($admin)->test(ListModelProfiles::class);
+            $detail = Livewire::actingAs($admin)->test(
+                \App\Filament\Resources\ModelProfiles\Pages\ViewModelProfile::class,
+                ['record' => $profile->getRouteKey()]
+            );
+            foreach (['registerPayment', 'reject', 'approveIdentity', 'rejectIdentity', 'publish'] as $action) {
+                $list->assertTableActionHidden($action, $profile);
+                $detail->assertActionHidden($action);
+            }
+            if ($state === AccountEnrollmentState::PENDING) {
+                $list->assertTableActionVisible('finishEnrollmentReview', $profile);
+                $detail->assertActionVisible('finishEnrollmentReview');
+            } else {
+                $list->assertTableActionHidden('finishEnrollmentReview', $profile);
+            }
+        }
+
+        $owner->forceFill(['profile_completion_status' => AccountEnrollmentState::ACTIVE])->save();
+        Livewire::actingAs($admin)->test(ListModelProfiles::class)
+            ->assertTableActionHidden('registerPayment', $profile)
+            ->assertTableActionHidden('requireProfileCompletion', $profile)
+            ->assertTableActionHidden('reject', $profile)
+            ->assertTableActionVisible('approveIdentity', $profile)
+            ->assertTableActionDoesNotExist('approve')
+            ->assertTableActionHidden('finishEnrollmentReview', $profile);
     }
 
     public function test_invalid_submission_does_not_clear_the_forced_state(): void

@@ -33,7 +33,6 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -280,8 +279,7 @@ class ModelProfileResource extends Resource
                                             ->label('Motivo de rechazo de identidad')
                                             ->placeholder('Sin motivo'),
                                     ]),
-                                Grid::make(['default' => 1, 'md' => 3])
-                                    ->schema(static::identityDocumentEntries()),
+                                \Filament\Schemas\Components\View::make('filament.model-identity-gallery'),
                             ]),
                         Tab::make('Datos privados')
                             ->icon(Heroicon::OutlinedLockClosed)
@@ -398,6 +396,8 @@ class ModelProfileResource extends Resource
             ->whereDoesntHave('user', fn (Builder $query): Builder => $query->where('is_admin', true))
             ->withCount([
                 'photos as pending_photos_count' => fn (Builder $photos): Builder => $photos->whereHas('latestVersion', fn (Builder $version): Builder => $version->where('status', 'pending')),
+                'videos as pending_videos_count' => fn (Builder $videos) => $videos->where('moderation_status', 'pending')->where('processing_status', 'ready')->whereNotNull('watermarked_at')->whereNotNull('resource_id'),
+                'pendingPhysicalRevision as pending_physical_count',
                 'bios as pending_bios_count' => fn (Builder $bios): Builder => $bios->where('status', 'pending'),
             ])
             ->with([
@@ -431,93 +431,44 @@ class ModelProfileResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('Nombre público')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('pending_photos_count')
-                    ->label('Fotos por aprobar')
-                    ->badge()
-                    ->formatStateUsing(fn ($state): string => (int) $state > 0 ? $state.((int) $state === 1 ? ' pendiente' : ' pendientes') : 'Sin pendientes')
-                    ->color(fn ($state): string => (int) $state > 0 ? 'warning' : 'gray')
+                TextColumn::make('stage_name')
+                    ->label('Modelo')
+                    ->state(fn (ModelProfile $record) => $record->stage_name ?: $record->name)
+                    ->searchable(['stage_name', 'name'])
                     ->sortable()
-                    ->url(fn (ModelProfile $record): ?string => $record->pending_photos_count > 0
-                        ? static::getUrl('view', ['record' => $record, 'relation' => array_search(ModelPhotosRelationManager::class, static::getRelations(), true)]) : null)
-                    ->tooltip('Abrir fotografías para revisar las cargas o reemplazos pendientes'),
-                TextColumn::make('pending_bios_count')
-                    ->label('Biografías por aprobar')
+                    ->limit(28)
+                    ->url(fn (ModelProfile $record) => static::getUrl('view', ['record' => $record])),
+                TextColumn::make('review_summary')
+                    ->label('Revisión')
+                    ->state(fn (ModelProfile $record) => count(ModelReviewQueue::labels($record)) ? 'Pendiente' : 'Sin tareas')
                     ->badge()
-                    ->formatStateUsing(fn ($state): string => (int) $state > 0 ? $state.((int) $state === 1 ? ' pendiente' : ' pendientes') : 'Sin pendientes')
-                    ->color(fn ($state): string => (int) $state > 0 ? 'warning' : 'gray')
-                    ->sortable()
-                    ->url(fn (ModelProfile $record): ?string => $record->pending_bios_count > 0
-                        ? static::getUrl('view', ['record' => $record, 'relation' => array_search(ModelProfileBiosRelationManager::class, static::getRelations(), true)]) : null)
-                    ->tooltip('Abrir biografías para revisar los textos pendientes'),
-                TextColumn::make('user.email')
-                    ->label('Email')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('whatsapp')
-                    ->label('WhatsApp')
-                    ->searchable(),
-                TextColumn::make('location')
-                    ->label('Ubicación')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('province.name')
-                    ->label('Provincia')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('locality.name')
-                    ->label('Localidad')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('publicationType.name')
-                    ->label('Tipo de publicación')
-                    ->searchable()
-                    ->sortable(),
-                IconColumn::make('user.email_verified_at')
-                    ->label('Email verificado')
-                    ->boolean(),
-                TextColumn::make('user.profile_completion_status')
-                    ->label('Inscripción')->badge()
-                    ->formatStateUsing(fn (?string $state): string => AccountEnrollmentState::labels()[$state] ?? 'Inscripción habilitada'),
-                TextColumn::make('review_status')
-                    ->label('Revisión del perfil')
-                    ->badge()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'approved' => 'Aprobado',
-                        'rejected' => 'Rechazado',
-                        default => 'Pendiente',
-                    })
-                    ->color(fn (string $state): string => match ($state) {
-                        'approved' => 'success',
-                        'rejected' => 'danger',
-                        default => 'warning',
-                    }),
+                    ->color(fn (string $state) => $state === 'Pendiente' ? 'warning' : 'gray')
+                    ->tooltip(fn (ModelProfile $record) => implode(' · ', ModelReviewQueue::labels($record)) ?: 'No hay tareas administrativas pendientes'),
                 TextColumn::make('is_published')
                     ->label('Publicación')
                     ->badge()
                     ->formatStateUsing(fn (bool $state): string => $state ? 'Publicado' : 'No publicado')
                     ->color(fn (bool $state): string => $state ? 'success' : 'gray'),
                 TextColumn::make('payment_status')
-                    ->label('Estado del pago')
+                    ->label('Pago')
                     ->state(fn (ModelProfile $record): string => app(PublicationPaymentStatus::class)->summary($record)['status'])
                     ->formatStateUsing(fn (string $state): string => PublicationPaymentStatus::LABELS[$state])
                     ->badge()
                     ->color(fn (string $state): string => PublicationPaymentStatus::color($state))
                     ->tooltip('Estado de cobertura al día de hoy. Programada: el pago todavía no comenzó.'),
-                TextColumn::make('payment_expires_at')
-                    ->label('Vencimiento del pago')
-                    ->state(fn (ModelProfile $record) => app(PublicationPaymentStatus::class)->summary($record)['expires_at'])
-                    ->date('d/m/Y')
-                    ->placeholder('Sin pago'),
-                TextColumn::make('created_at')
-                    ->label('Fecha de registro')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('moderation')
+                    ->label('Tarea de revisión')
+                    ->options(['pending_enrollment' => 'Inscripciones por habilitar', 'pending_identity' => 'Identidad pendiente',
+                        'pending_content' => 'Contenido por revisar', 'pending_photos' => 'Fotos pendientes', 'pending_bios' => 'Biografías pendientes'])
+                    ->query(fn (Builder $query, array $data) => ModelReviewQueue::filter($query, $data['value'] ?? '')),
+                SelectFilter::make('enrollment')->label('Inscripción')
+                    ->options(AccountEnrollmentState::labels())
+                    ->query(fn (Builder $query, array $data) => empty($data['value']) ? $query : $query->whereHas('user', fn (Builder $user) => $user->where('profile_completion_status', $data['value']))),
+                SelectFilter::make('identity_status')->label('Identidad')
+                    ->options(['incomplete' => 'Incompleta', 'pending' => 'Pendiente', 'approved' => 'Aprobada', 'rejected' => 'Rechazada']),
+
                 TernaryFilter::make('email_verified')
                     ->label('Email verificado')
                     ->trueLabel('Verificado')
@@ -556,9 +507,12 @@ class ModelProfileResource extends Resource
             ->emptyStateHeading('No hay modelos registradas')
             ->emptyStateDescription('Las modelos aparecerán aquí cuando completen el registro público.')
             ->recordActions([
-                EditAction::make()
-                    ->label('Editar'),
-                ...static::moderationActions(),
+                \Filament\Actions\ViewAction::make()->label('Ver detalle')
+                    ->url(fn (ModelProfile $record) => static::getUrl('view', ['record' => $record])),
+                \Filament\Actions\ActionGroup::make([
+                    EditAction::make()->label('Editar'),
+                    ...static::moderationActions(),
+                ])->label('Más acciones')->icon('heroicon-o-ellipsis-vertical')->iconButton(),
             ])
             ->recordUrl(fn (ModelProfile $record): string => static::getUrl('view', ['record' => $record]));
     }
@@ -570,6 +524,9 @@ class ModelProfileResource extends Resource
     {
         return [
             Action::make('registerPayment')
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::ACTIVE
+                    && $record->identity_status === 'approved'
+                    && $record->review_status === 'approved')
                 ->label('Registrar pago')
                 ->color('warning')
                 ->icon(Heroicon::OutlinedBanknotes)
@@ -591,52 +548,47 @@ class ModelProfileResource extends Resource
                 ->requiresConfirmation()
                 ->modalDescription('La cuenta deberá completar el formulario de inscripción antes de volver a utilizar el panel.')
                 ->authorize('update')
-                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status !== AccountEnrollmentState::INCOMPLETE)
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::PENDING
+                    || ($record->user?->profile_completion_status === AccountEnrollmentState::ACTIVE
+                        && $record->identity_status === 'approved' && $record->review_status === 'approved'))
                 ->action(fn (ModelProfile $record) => app(AccountEnrollmentState::class)->requireCompletion($record->user, auth()->user()))
                 ->successNotificationTitle('Se solicitó completar el perfil'),
             Action::make('finishEnrollmentReview')
-                ->label('Finalizar revisión de inscripción')
+                ->label('Habilitar acceso al panel')
+                ->color('success')
                 ->requiresConfirmation()
+                ->modalHeading('Habilitar acceso al panel')
+                ->modalDescription('Permite completar el perfil; no lo publica en el sitio.')
+                ->modalSubmitActionLabel('Habilitar acceso al panel')
                 ->authorize('update')
                 ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::PENDING)
                 ->action(fn (ModelProfile $record) => app(AccountEnrollmentState::class)->finishReview($record->user, auth()->user()))
-                ->successNotificationTitle('Inscripción revisada'),
-            Action::make('approve')
-                ->label('Aprobar')
-                ->color('success')
-                ->requiresConfirmation()
-                ->modalHeading('Aprobar perfil')
-                ->modalDescription('El perfil quedará aprobado, pero no se publicará automáticamente.')
-                ->modalSubmitActionLabel('Aprobar perfil')
-                ->authorize('approve')
-                ->visible(fn (ModelProfile $record): bool => $record->identity_status === 'approved'
-                    && in_array($record->review_status, ['pending', 'rejected'], true))
-                ->action(function (ModelProfile $record): void {
-                    app(ModelProfileModerationService::class)->approve($record, auth()->user());
-                })
-                ->successNotificationTitle('Perfil aprobado'),
+                ->successNotificationTitle('Acceso al panel habilitado'),
             Action::make('reject')
-                ->label('Rechazar')
+                ->label('Rechazar perfil')
                 ->color('danger')
                 ->requiresConfirmation()
                 ->modalHeading('Rechazar perfil')
                 ->modalDescription('El perfil quedará rechazado y se retirará de la publicación.')
                 ->modalSubmitActionLabel('Rechazar perfil')
                 ->authorize('reject')
-                ->visible(fn (ModelProfile $record): bool => in_array($record->review_status, ['pending', 'approved'], true))
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::ACTIVE
+                    && $record->identity_status === 'approved'
+                    && in_array($record->review_status, ['pending', 'approved'], true))
                 ->action(function (ModelProfile $record): void {
                     app(ModelProfileModerationService::class)->reject($record, auth()->user());
                 })
                 ->successNotificationTitle('Perfil rechazado'),
             Action::make('approveIdentity')
-                ->label('Aprobar identidad')
+                ->label('Validar identidad y datos')
                 ->color('success')
                 ->requiresConfirmation()
-                ->modalHeading('Aprobar identidad')
-                ->modalDescription('La documentación quedará aprobada. Esto no aprobará ni publicará el perfil automáticamente.')
-                ->modalSubmitActionLabel('Aprobar identidad')
+                ->modalHeading('Validar identidad y datos')
+                ->modalDescription('La identidad quedará aprobada y el perfil se validará cuando sus datos estén completos. No se publicará automáticamente.')
+                ->modalSubmitActionLabel('Validar identidad y datos')
                 ->authorize('approveIdentity')
-                ->visible(fn (ModelProfile $record): bool => $record->identity_status === 'pending')
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::ACTIVE
+                    && $record->identity_status === 'pending')
                 ->action(function (ModelProfile $record): void {
                     app(IdentityDocumentService::class)->approveIdentity($record, auth()->user());
                 })
@@ -655,7 +607,8 @@ class ModelProfileResource extends Resource
                         ->maxLength(5000),
                 ])
                 ->authorize('rejectIdentity')
-                ->visible(fn (ModelProfile $record): bool => $record->identity_status === 'pending')
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::ACTIVE
+                    && $record->identity_status === 'pending')
                 ->action(function (ModelProfile $record, array $data): void {
                     app(IdentityDocumentService::class)->rejectIdentity($record, auth()->user(), $data['reason']);
                 })
@@ -668,9 +621,10 @@ class ModelProfileResource extends Resource
                 ->modalDescription('El perfil aprobado quedará visible en las superficies públicas previstas.')
                 ->modalSubmitActionLabel('Publicar perfil')
                 ->authorize('publish')
-                ->visible(fn (ModelProfile $record): bool => $record->identity_status === 'approved'
+                ->visible(fn (ModelProfile $record): bool => $record->user?->profile_completion_status === AccountEnrollmentState::ACTIVE
+                    && $record->identity_status === 'approved'
                     && $record->review_status === 'approved'
-                    && app(\App\Services\PublicationPaymentService::class)->hasCurrentPayment($record)
+                    && $record->payments->contains(fn ($payment) => $payment->starts_at->toDateString() <= today()->toDateString() && $payment->expires_at->toDateString() >= today()->toDateString())
                     && ! $record->is_published)
                 ->action(function (ModelProfile $record): void {
                     app(ModelProfileModerationService::class)->publish($record);

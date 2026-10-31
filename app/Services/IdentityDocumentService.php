@@ -158,6 +158,10 @@ class IdentityDocumentService
                 'identity_rejection_reason' => $status === 'rejected' ? $reason : null,
             ])->save();
 
+            if ($status === 'approved') {
+                app(ProfileApprovalFromIdentity::class)->sync($locked);
+            }
+
             app(ModelNotificationService::class)->record(
                 $locked,
                 $status === 'approved' ? ModelNotificationType::IdentityApproved : ModelNotificationType::IdentityRejected,

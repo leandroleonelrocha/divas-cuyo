@@ -54,6 +54,10 @@ class ModelPhotoController extends Controller
         Gate::forUser($request->user())->authorize('reorder', [ModelPhoto::class, $profile]);
         $service->reorderForAuthenticatedModel($request->user(), $request->validated('photo_ids'));
 
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'Orden guardado']);
+        }
+
         return to_route('account.photos.index')->with('status', 'El orden de tus fotografías se actualizó.');
     }
 
@@ -61,6 +65,13 @@ class ModelPhotoController extends Controller
     {
         Gate::forUser($request->user())->authorize('setPrimary', $photo);
         $service->setPrimaryForAuthenticatedModel($request->user(), $photo);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'primary_id' => $photo->getKey(),
+                'status' => 'La fotografía seleccionada ahora es la principal.',
+            ]);
+        }
 
         return to_route('account.photos.index')->with('status', 'La fotografía seleccionada ahora es la principal.');
     }
@@ -98,6 +109,7 @@ class ModelPhotoController extends Controller
                 'photo' => $photo->getKey(),
                 'count' => $profile->photos()->count(),
                 'limit' => (int) config('model-photos.max_photos'),
+                'primary_id' => $profile->photos()->where('is_primary', true)->value('id'),
                 'status' => 'La fotografía se eliminó correctamente.',
             ]);
         }

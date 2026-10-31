@@ -16,10 +16,10 @@ class ModelPhotoReorderTest extends TestCase
         $photos = collect(range(0, 2))->map(fn (int $position) => $this->createPhoto($user->modelProfile, $position));
 
         $this->actingAs($user)
-            ->patch(route('account.photos.order'), [
+            ->patchJson(route('account.photos.order'), [
                 'photo_ids' => $photos->reverse()->pluck('id')->values()->all(),
             ])
-            ->assertRedirect(route('account.photos.index'));
+            ->assertOk()->assertJson(['status' => 'Orden guardado']);
 
         $this->assertSame(
             $photos->reverse()->pluck('id')->values()->all(),

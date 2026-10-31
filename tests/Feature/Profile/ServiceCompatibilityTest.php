@@ -14,6 +14,18 @@ class ServiceCompatibilityTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_autosave_can_select_and_clear_services(): void
+    {
+        [$user] = $this->profileWithCatalog('virtual');
+        $service = Service::query()->where('service_type', 'virtual')->firstOrFail();
+        $this->actingAs($user)->patchJson(route('account.profile.services.update'), [
+            'service_ids' => [$service->id],
+        ])->assertOk()->assertJson(['message' => 'Guardado']);
+        $this->assertTrue($user->modelProfile->services()->whereKey($service)->exists());
+        $this->patchJson(route('account.profile.services.update'), ['service_ids' => []])->assertOk();
+        $this->assertCount(0, $user->modelProfile->fresh()->services);
+    }
+
     public function test_virtual_profile_accepts_virtual_service(): void
     {
         [$user, $virtual, $inPerson] = $this->profileWithCatalog('virtual');

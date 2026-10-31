@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModelProfileBiosRelationManager extends RelationManager
 {
+    protected static bool $isLazy = false;
+
     protected static string $relationship = 'bios';
 
     protected static ?string $title = 'Biografías';
@@ -46,7 +48,7 @@ class ModelProfileBiosRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        return $table
+        return $table->extraAttributes(['id' => 'review-ModelProfileBiosRelationManager'])
             ->heading('Versiones de biografía')
             ->columns([
                 TextColumn::make('content')

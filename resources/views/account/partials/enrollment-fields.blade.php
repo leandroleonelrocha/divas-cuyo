@@ -1,5 +1,6 @@
+<p class="registration-publication-note">Los campos marcados con * son obligatorios.</p>
                 <fieldset class="registration-modalities" aria-describedby="publication-price-note">
-                    <legend><span class="enrollment-section-number" aria-hidden="true">01</span> Elegí tu modalidad de publicación</legend>
+                    <legend><span class="enrollment-section-number" aria-hidden="true">01</span> Elegí tu modalidad de publicación <x-account.required-field /></legend>
                     <div class="registration-modality-options">
                     @forelse ($publicationTypes as $type)
                         <label class="registration-modality">
@@ -32,7 +33,7 @@
                     <legend><span class="enrollment-section-number" aria-hidden="true">02</span> Completá tu información</legend>
                     <div class="enrollment-fields-grid">
                 <div class="enrollment-field-group">
-                <label class="registration-field">Nombre público
+                <label class="registration-field"><span>Nombre público <x-account.required-field /></span>
                     <span class="registration-input-wrap">
                         <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
                         <input type="text" name="name" placeholder="El nombre que verá tu público" value="{{ old('name', $profile?->name) }}" required>
@@ -42,17 +43,17 @@
                 </div>
 
                 <div class="enrollment-field-group">
-                <label class="registration-field">WhatsApp
+                <label class="registration-field"><span>WhatsApp <x-account.required-field /></span>
                     <span class="registration-input-wrap">
                         <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z"/></svg>
-                        <input type="text" name="whatsapp" placeholder="Ej.: +54 9 261 123 4567" value="{{ old('whatsapp', $profile?->whatsapp) }}" required>
+                        <input type="tel" inputmode="numeric" pattern="[0-9]+" maxlength="50" title="Ingresá solo números, sin espacios ni signos." name="whatsapp" placeholder="Ej.: 5492611234567" value="{{ old('whatsapp', $profile?->whatsapp) }}" required>
                     </span>
                 </label>
                 @error('whatsapp')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="enrollment-field-group">
-                <label class="registration-field">Provincia
+                <label class="registration-field"><span>Provincia <x-account.required-field /></span>
                     <span class="registration-input-wrap">
                         <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
                         <select name="province_id" id="province_id" required>
@@ -95,13 +96,13 @@
 
                 <label class="registration-consent">
                     <input type="checkbox" name="terms_accepted" value="1" required>
-                    <span>Leí y acepto los <a href="{{ route('terms.show') }}" target="_blank" rel="noopener">términos y condiciones de permanencia y uso de imagen de Divas Cuyo</a>.</span>
+                    <span>Leí y acepto los <a href="{{ route('terms.show') }}" target="_blank" rel="noopener">términos y condiciones de permanencia y uso de imagen de Divas Cuyo</a>. <x-account.required-field /></span>
                 </label>
                 @error('terms_accepted')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 
                 <label class="registration-consent">
                     <input type="checkbox" name="privacy_accepted" value="1" required>
-                    <span>Acepto la <a href="{{ route('privacy.show') }}" target="_blank" rel="noopener">política de privacidad</a>.</span>
+                    <span>Acepto la <a href="{{ route('privacy.show') }}" target="_blank" rel="noopener">política de privacidad</a>. <x-account.required-field /></span>
                 </label>
                 @error('privacy_accepted')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 

@@ -18,7 +18,7 @@ class EnsureProfileIsComplete
             $message = 'Completá tu perfil antes de continuar.';
             if ($user->profile_completion_status === AccountEnrollmentState::PENDING) {
                 $destination = 'account.pending-review';
-                $message = 'Tu perfil está en revisión. Esperá la aprobación para acceder al panel.';
+                $message = 'Tu inscripción está en revisión. Esperá que la administración habilite tu acceso al panel.';
             } elseif ($mode !== 'onboarding' && ($user->profile_completion_status !== AccountEnrollmentState::ACTIVE
                 || ! app(ProfileCompletionService::class)->isComplete($user))) {
                 $destination = 'account.incomplete-profile';

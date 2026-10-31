@@ -13,13 +13,13 @@
     $position = $index + 1;
 @endphp
 <article class="photo-card" data-photo-id="{{ $photo->id }}" data-photo-card>
-    <div class="photo-preview">
+    <button type="button" class="photo-preview" data-photo-view="{{ route('account.photos.file', [$photo, 'processed']) }}" aria-label="Ampliar fotografía {{ $position }}">
         @if ($version)
             <img src="{{ route('account.photos.file', [$photo, 'thumbnail']) }}" alt="Fotografía {{ $position }} de {{ $profile->name }}" loading="lazy">
         @else
             <span aria-hidden="true">Sin vista previa</span>
         @endif
-    </div>
+    </button>
     <div class="photo-card-body">
         <div class="photo-card-heading">
             <span class="photo-position" data-photo-position>Foto {{ $position }}</span>
@@ -28,8 +28,11 @@
 
         @if ($photo->is_primary)
             <span class="photo-primary-badge">Principal</span>
-        @elseif ($hasApprovedCurrent)
-            <form class="photo-primary-form" method="POST" action="{{ route('account.photos.primary', $photo) }}">
+        @endif
+        <div class="photo-tools"><button type="button" data-photo-drag aria-label="Arrastrar para ordenar fotografía">↕</button>
+        <details class="photo-options"><summary aria-label="Opciones de fotografía {{ $position }}">⋯</summary><div class="photo-options-panel">
+        @if ($hasApprovedCurrent)
+            <form class="photo-primary-form" @if ($photo->is_primary) hidden @endif method="POST" action="{{ route('account.photos.primary', $photo) }}">
                 @csrf
                 <button class="photo-primary-action" type="submit">Usar como principal</button>
             </form>
@@ -44,10 +47,10 @@
         @endif
 
         <div class="photo-card-actions">
-            <a class="photo-action photo-action-view" href="{{ route('account.photos.file', [$photo, 'processed']) }}" target="_blank" rel="noopener">Ver</a>
+
             <form class="photo-replace-form" method="POST" action="{{ route('account.photos.replace', $photo) }}" enctype="multipart/form-data" data-replace-form>
                 @csrf
-                <label class="photo-action photo-action-replace" for="replace-photo-{{ $photo->id }}">Reemplazar</label>
+                <button type="button" class="photo-action photo-action-replace" onclick="this.form.querySelector('[data-replace-input]').click()">Reemplazar</button>
                 <input id="replace-photo-{{ $photo->id }}" class="photo-file-input" type="file" name="photo" accept="image/jpeg,image/png,image/webp" data-replace-input>
             </form>
             <form class="photo-delete-form" method="POST" action="{{ route('account.photos.destroy', $photo) }}" data-delete-form>
@@ -61,5 +64,6 @@
             <button class="photo-order-button" type="button" data-order-move="up" aria-label="Mover foto hacia arriba">↑</button>
             <button class="photo-order-button" type="button" data-order-move="down" aria-label="Mover foto hacia abajo">↓</button>
         </div>
+        </div></details></div>
     </div>
 </article>

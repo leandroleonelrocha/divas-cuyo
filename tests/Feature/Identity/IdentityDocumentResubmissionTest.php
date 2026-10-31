@@ -37,6 +37,12 @@ class IdentityDocumentResubmissionTest extends TestCase
         $this->actingAs($user)->post(route('identity.submit', $user))
             ->assertRedirect(route('identity.show', $user));
 
+        $this->get(route('identity.show', $user))
+            ->assertOk()
+            ->assertSee('Pendiente de revisión')
+            ->assertDontSee('Motivo del rechazo:')
+            ->assertDontSee('Falta claridad en el frente.');
+
         $profile = $user->modelProfile->fresh();
         $this->assertSame('pending', $profile->identity_status);
         $this->assertSame('Falta claridad en el frente.', $profile->identity_rejection_reason);

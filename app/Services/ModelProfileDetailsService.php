@@ -93,6 +93,8 @@ class ModelProfileDetailsService
                 $this->identityDocuments->resetForProfileDataChange($lockedProfile);
             }
 
+            app(ProfileApprovalFromIdentity::class)->sync($lockedProfile);
+
             return $lockedProfile->refresh();
         }, 3);
     }

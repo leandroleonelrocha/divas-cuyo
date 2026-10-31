@@ -8,7 +8,7 @@
     <script src="{{ asset('js/notifications.js') }}" defer></script>
     <script src="{{ asset('js/model-videos.js') }}" defer></script>
 </head>
-<body class="account-page account-dashboard-page photos-page">
+<body class="account-mobile-navigation account-page account-dashboard-page photos-page">
 <div class="account-app-shell">
     @include('account.partials.sidebar', ['active' => 'videos'])
     <main class="account-main" id="contenido-principal">

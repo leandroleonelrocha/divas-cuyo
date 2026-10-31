@@ -69,7 +69,11 @@ class PrivateIdentityDocumentController extends Controller
         abort_unless($document->modelProfile?->user_id === $user->getKey(), 404);
         abort_unless(app(PrivateIdentityDocumentStorage::class)->isSafePath($document->storage_path), 404);
 
-        return Storage::disk(config('identity-documents.disk'))->download(
+        $inline = $request->boolean('preview') && in_array($document->mime_type, [
+            'image/jpeg', 'image/png', 'image/webp', 'application/pdf',
+        ], true);
+
+        return Storage::disk(config('identity-documents.disk'))->response(
             $document->storage_path,
             $this->downloadName($document),
             [
@@ -78,6 +82,7 @@ class PrivateIdentityDocumentController extends Controller
                 'Pragma' => 'no-cache',
                 'X-Content-Type-Options' => 'nosniff',
             ],
+            $inline ? 'inline' : 'attachment',
         );
     }
 

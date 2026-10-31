@@ -257,6 +257,8 @@ class ModelPhotoService
     {
         $oldPaths = [];
         $result = DB::transaction(function () use ($version, &$oldPaths): ModelPhoto {
+            $profileId = ModelPhoto::query()->findOrFail($version->model_photo_id)->model_profile_id;
+            $profile = ModelProfile::query()->lockForUpdate()->findOrFail($profileId);
             $lockedVersion = ModelPhotoVersion::query()->lockForUpdate()->findOrFail($version->getKey());
             $lockedPhoto = ModelPhoto::query()
                 ->lockForUpdate()
@@ -286,7 +288,10 @@ class ModelPhotoService
                 $currentVersion->delete();
             }
 
-            $lockedPhoto->forceFill(['current_version_id' => $lockedVersion->getKey()])->save();
+            $lockedPhoto->forceFill([
+                'current_version_id' => $lockedVersion->getKey(),
+                'is_primary' => $lockedPhoto->is_primary || ! $profile->photos()->where('is_primary', true)->exists(),
+            ])->save();
 
             return $lockedPhoto->fresh(['currentVersion', 'latestVersion']);
         });
