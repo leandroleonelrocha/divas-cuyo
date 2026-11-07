@@ -190,8 +190,9 @@
         });
     });
 
+    let confirmationAccepted = false;
     if (submitForm && submitButton) {
-        submitForm.addEventListener('submit', (event) => {
+        submitForm.addEventListener('submit', async (event) => {
             const missing = missingLabels();
             if (missing.length) {
                 event.preventDefault();
@@ -208,11 +209,18 @@
                 return;
             }
 
-            const confirmed = window.confirm(
-                '¿Enviar la documentación a revisión? Ya no vas a poder modificar los documentos hasta que el equipo la revise.'
-            );
-            if (!confirmed) {
+            if (!confirmationAccepted) {
                 event.preventDefault();
+                const confirmed = await window.accountConfirm({
+                    title: '¿Enviar documentación?',
+                    message: 'Una vez enviada, no podrás modificar los documentos hasta que el equipo termine la revisión.',
+                    confirmLabel: 'Enviar a revisión'
+                });
+                if (confirmed) {
+                    confirmationAccepted = true;
+                    submitForm.requestSubmit(submitButton);
+                    confirmationAccepted = false;
+                }
                 return;
             }
 

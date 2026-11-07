@@ -48,6 +48,24 @@ class ModelVideoTest extends TestCase
         return $video->fresh();
     }
 
+    public function test_admin_can_open_video_gallery_only_for_processed_videos(): void
+    {
+        $owner = User::factory()->withCompletedRegistration()->create();
+        $ready = $this->ready($this->video($owner));
+        $pending = $this->video($owner);
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($admin);
+        \Livewire\Livewire::test(\App\Filament\Resources\ModelProfiles\RelationManagers\ModelVideosRelationManager::class, [
+            'ownerRecord' => $owner->modelProfile,
+            'pageClass' => \App\Filament\Resources\ModelProfiles\Pages\ViewModelProfile::class,
+        ])->assertTableActionVisible('watchVideo', $ready)
+            ->assertTableActionHidden('watchVideo', $pending)
+            ->mountTableAction('watchVideo', $ready)
+            ->assertSet('mountedActions.0.name', 'watchVideo')
+            ->assertDontSee($ready->original_path);
+        $this->actingAs($owner)->get(route('admin.model-videos.file', [$ready, 'video']))->assertForbidden();
+    }
+
     public function test_upload_uses_authenticated_profile_and_enforces_quota(): void
     {
         $owner = User::factory()->withCompletedRegistration()->create();

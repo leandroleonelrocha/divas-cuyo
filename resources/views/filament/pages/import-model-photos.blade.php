@@ -5,7 +5,13 @@
             Si el ZIP trae fotos sueltas sin carpetas, se usa el <strong>nombre del ZIP</strong> (ej. <code>zaira.zip</code>).
             Imágenes JPG/PNG/WebP, hasta 100 MB por ZIP. Se respeta el máximo de 5 fotos por perfil.
         </p>
-        <form wire:submit="analyze" class="space-y-4">
+        <form wire:submit="analyze" class="space-y-4"
+            x-data="{ uploading: false, progress: 0, uploadError: '' }"
+            x-on:livewire-upload-start="uploading = true; progress = 0; uploadError = ''"
+            x-on:livewire-upload-progress="progress = $event.detail.progress"
+            x-on:livewire-upload-finish="uploading = false"
+            x-on:livewire-upload-cancel="uploading = false"
+            x-on:livewire-upload-error="uploading = false; uploadError = 'No se pudo subir el ZIP. Revisá la conexión y los límites de carga del servidor (PHP y servidor web). Máximo permitido: 100 MB.'">
             <div>
                 <span class="block text-sm font-medium">Archivo ZIP</span>
                 <div style="display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap;">
@@ -16,9 +22,10 @@
                     style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" />
                 <p style="margin-top:8px;font-size:12px;opacity:.6;">ZIP con una subcarpeta por ID o slug, hasta 100 MB.</p>
                 @error('file') <p role="alert" class="mt-2 text-sm text-danger-600">{{ $message }}</p> @enderror
-                <p wire:loading wire:target="file" role="status" class="mt-2 text-sm">Subiendo archivo…</p>
+                <p x-show="uploading" x-cloak role="status" class="mt-2 text-sm" x-text="'Subiendo archivo… ' + progress + '%'"></p>
+                <p x-show="uploadError" x-cloak role="alert" class="mt-2 text-sm text-danger-600" x-text="uploadError"></p>
             </div>
-            <x-filament::button type="submit" wire:loading.attr="disabled" wire:target="file,analyze">
+            <x-filament::button type="submit" x-bind:disabled="uploading" wire:loading.attr="disabled" wire:target="file,analyze">
                 Analizar ZIP
             </x-filament::button>
             <span wire:loading wire:target="analyze" role="status">Analizando…</span>

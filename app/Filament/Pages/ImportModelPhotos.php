@@ -129,7 +129,8 @@ class ImportModelPhotos extends Page
         // carpetas, se sube un nivel. Si solo trae imágenes, se conserva.
         $entries = array_values(array_filter(
             glob($dir.DIRECTORY_SEPARATOR.'*') ?: [],
-            fn (string $path): bool => ! str_starts_with(basename($path), '.'),
+            fn (string $path): bool => ! str_starts_with(basename($path), '.')
+                && strcasecmp(basename($path), '__MACOSX') !== 0,
         ));
         if (count($entries) === 1 && is_dir($entries[0]) && $this->hasSubdirs($entries[0])) {
             foreach (glob($entries[0].DIRECTORY_SEPARATOR.'*') ?: [] as $path) {
@@ -156,7 +157,7 @@ class ImportModelPhotos extends Page
     private function hasSubdirs(string $dir): bool
     {
         foreach (glob($dir.DIRECTORY_SEPARATOR.'*') ?: [] as $path) {
-            if (is_dir($path) && ! str_starts_with(basename($path), '.')) {
+            if (is_dir($path) && ! str_starts_with(basename($path), '.') && strcasecmp(basename($path), '__MACOSX') !== 0) {
                 return true;
             }
         }

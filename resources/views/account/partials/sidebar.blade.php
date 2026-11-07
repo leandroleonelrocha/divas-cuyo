@@ -7,6 +7,7 @@
         request()->routeIs('identity.*') => 'identity',
         request()->routeIs('account.photos.*') => 'photos',
         request()->routeIs('account.videos.*') => 'videos',
+        request()->routeIs('account.statistics') => 'stats',
         request()->routeIs('account.services.*') => 'services',
         default => '',
     };
@@ -21,7 +22,7 @@
         <a class="{{ $menuActive === 'photos' ? 'is-active' : '' }}" @if ($menuActive === 'photos') aria-current="page" @endif href="{{ route('account.photos.index') }}"><span>▧</span> Mis fotos</a>
         <a class="{{ $menuActive === 'videos' ? 'is-active' : '' }}" @if ($menuActive === 'videos') aria-current="page" @endif href="{{ route('account.videos.index') }}"><span>▣</span> Mis videos</a>
         <a class="{{ $menuActive === 'services' ? 'is-active' : '' }}" @if ($menuActive === 'services') aria-current="page" @endif href="{{ route('account.services.edit') }}"><span>◉</span> Mis servicios</a>
-        {{-- <a class="{{ ($active ?? '') === 'stats' ? 'is-active' : '' }}" href="{{ route('account.dashboard') }}#estadisticas"><span>▥</span> Estadísticas</a> --}}
+        <a class="{{ $menuActive === 'stats' ? 'is-active' : '' }}" @if ($menuActive === 'stats') aria-current="page" @endif href="{{ route('account.statistics') }}"><span aria-hidden="true">▥</span> Mis estadísticas</a>
         @endif
         <a class="{{ $menuActive === 'data' ? 'is-active' : '' }}" @if ($menuActive === 'data') aria-current="page" @endif href="{{ route('account.profile.edit') }}"><span>✎</span> Mis datos</a>
         <a class="{{ $menuActive === 'identity' ? 'is-active' : '' }}" @if ($menuActive === 'identity') aria-current="page" @endif href="{{ route('identity.show', auth()->user()) }}"><span>♢</span> Mi identidad</a>

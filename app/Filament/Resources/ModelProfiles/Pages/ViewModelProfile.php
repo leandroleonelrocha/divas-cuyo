@@ -15,6 +15,49 @@ class ViewModelProfile extends ViewRecord
 {
     protected static string $resource = ModelProfileResource::class;
 
+    public string $statisticsPeriod = '30';
+
+    #[\Livewire\Attributes\Locked]
+    public array $pendingApprovalItems = [];
+
+    #[\Livewire\Attributes\Locked]
+    public array $pendingApprovalResults = [];
+
+    public function approvePendingAction(): \Filament\Actions\Action
+    {
+        return \Filament\Actions\Action::make('approvePending')
+            ->label('Aprobar pendientes')->color('success')->icon('heroicon-o-check-circle')
+            ->authorize(fn () => app(\App\Services\PendingContentApproval::class)->allowed($this->getRecord(), auth()->user()))
+            ->modalHeading('Aprobar contenido pendiente')
+            ->modalDescription('Revisá las vistas previas y desmarcá los elementos que quieras dejar pendientes. Se aprobarán las versiones seleccionadas; esto no registra pagos ni habilita la publicación.')
+            ->modalSubmitActionLabel('Aprobar seleccionados')
+            ->modalWidth('4xl')
+            ->fillForm(function () {
+                $this->pendingApprovalItems = app(\App\Services\PendingContentApproval::class)->items($this->getRecord(), auth()->user());
+                return ['selected' => array_column($this->pendingApprovalItems, 'key')];
+            })
+            ->schema([
+                \Filament\Schemas\Components\View::make('filament.pending-content-preview'),
+                \Filament\Forms\Components\CheckboxList::make('selected')
+                    ->label('Elementos a aprobar')->required()->minItems(1)
+                    ->options(fn () => array_column($this->pendingApprovalItems, 'label', 'key')),
+            ])
+            ->action(function (array $data): void {
+                $selected = array_values(array_intersect($data['selected'], array_column($this->pendingApprovalItems, 'key')));
+                $this->pendingApprovalResults = app(\App\Services\PendingContentApproval::class)
+                    ->approve($this->getRecord(), auth()->user(), $selected);
+                $approved = count(array_filter($this->pendingApprovalResults, fn ($item) => $item['approved']));
+                \Filament\Notifications\Notification::make()->title($approved.' elementos aprobados')
+                    ->body('Consultá el resultado de cada elemento en Contenido.')
+                    ->status($approved === count($selected) ? 'success' : 'warning')->send();
+                $this->record = ModelProfileResource::getEloquentQuery()->findOrFail($this->getRecord()->id);
+                $this->contentRefresh++;
+            });
+    }
+
+    #[\Livewire\Attributes\Locked]
+    public int $contentRefresh = 0;
+
     public function mount(int|string $record): void
     {
         parent::mount($record);
@@ -72,7 +115,7 @@ class ViewModelProfile extends ViewRecord
         $verification = $sections['Identidad'][0];
         $verification->schema(array_values(array_filter($verification->getChildComponents(),
             fn ($entry) => $entry->getName() !== 'identity_status')))->compact();
-        $content = [];
+        $content = [\Filament\Schemas\Components\View::make('filament.pending-content-approval')];
         foreach ([0 => 'Fotografías', 1 => 'Videos', 5 => 'Biografías', 3 => 'Servicios', 2 => 'Cambios físicos'] as $index => $label) {
             $manager = $managers[$index];
             if (! $manager::canViewForRecord($this->getRecord(), static::class)) {
@@ -90,7 +133,7 @@ class ViewModelProfile extends ViewRecord
                 ->schema([
                     \Filament\Schemas\Components\Livewire::make($manager, [
                         'ownerRecord' => $this->getRecord(), 'pageClass' => static::class,
-                    ])->key($manager),
+                    ])->key($manager.'-'.$this->contentRefresh),
                 ]);
         }
         foreach (['Información pública', 'Publicación', 'Biografía'] as $label) {
@@ -107,6 +150,7 @@ class ViewModelProfile extends ViewRecord
         };
 
         return \Filament\Schemas\Components\Tabs::make('Detalle')
+            ->extraAttributes(['class' => 'model-detail-tabs'])
             ->key('relationManagerTabs')->livewireProperty('activeRelationManager')->contained(false)
             ->tabs([
                 '' => \Filament\Schemas\Components\Tabs\Tab::make('General')->schema([$this->getInfolistContentComponent()]),
@@ -117,11 +161,20 @@ class ViewModelProfile extends ViewRecord
                         ->state(fn () => \App\Services\PublicationPaymentStatus::LABELS[app(\App\Services\PublicationPaymentStatus::class)->summary($this->getRecord())['status']])->badge(),
                     ...$relation(4),
                 ]),
+                'statistics' => \Filament\Schemas\Components\Tabs\Tab::make('Estadísticas')->schema([\Filament\Schemas\Components\View::make('filament.model-statistics')]),
                 '6' => \Filament\Schemas\Components\Tabs\Tab::make('Historial')->schema([
                     \Filament\Schemas\Components\View::make('filament.model-review-history'),
                     ...$relation(6),
                 ]),
             ]);
+    }
+
+    public function rendering(): void
+    {
+        $this->record = ModelProfileResource::getEloquentQuery()
+            ->with(['photos.currentVersion'])
+            ->findOrFail($this->getRecord()->getKey());
+        \Illuminate\Support\Facades\Gate::authorize('view', $this->record);
     }
 
     public function reviewTasks(): array
@@ -198,14 +251,18 @@ class ViewModelProfile extends ViewRecord
             EditAction::make()
                 ->label('Editar')
                 ->icon(Heroicon::OutlinedPencilSquare),
-            ActionGroup::make(array_map(function ($action) {
+            ActionGroup::make([
+                $this->approvePendingAction()
+                    ->visible(fn (): bool => app(\App\Services\PendingContentApproval::class)->items($this->getRecord(), auth()->user()) !== []),
+                ...array_map(function ($action) {
                 return $action->hidden(fn () => (string) $this->activeRelationManager !== match ($action->getName()) {
                     'registerPayment' => '4',
                     'approveIdentity', 'rejectIdentity' => 'identity',
                     'publish', 'unpublish', 'reject' => '0',
                     default => '',
                 });
-            }, ModelProfileResource::moderationActions()))
+            }, ModelProfileResource::moderationActions()),
+            ])
                 ->label('Moderación')
                 ->icon(Heroicon::OutlinedShieldCheck)
                 ->color('gray')

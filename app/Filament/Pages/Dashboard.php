@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Resources\ModelProfiles\ModelProfileResource;
-use App\Filament\Widgets\ModelProfileStats;
 use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BaseDashboard;
 
@@ -13,7 +12,7 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
-        return [\App\Filament\Widgets\PendingEnrollments::class, \App\Filament\Widgets\PendingIdentities::class, \App\Filament\Widgets\PendingContent::class, ModelProfileStats::class];
+        return [\App\Filament\Widgets\PendingEnrollments::class, \App\Filament\Widgets\PendingIdentities::class, \App\Filament\Widgets\PendingContent::class];
     }
 
     protected function getHeaderActions(): array

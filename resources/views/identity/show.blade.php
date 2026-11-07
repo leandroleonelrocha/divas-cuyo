@@ -7,7 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/styles.css')
     <script src="{{ asset('js/notifications.js') }}" defer></script>
-    <script src="{{ asset('js/identity-documents.js') }}" defer></script>
+    <script src="{{ asset('js/account-confirm.js') }}?v={{ filemtime(public_path('js/account-confirm.js')) }}" defer></script>
+    <script src="{{ asset('js/identity-documents.js') }}?v={{ filemtime(public_path('js/identity-documents.js')) }}" defer></script>
 </head>
 <body class="account-mobile-navigation account-page account-dashboard-page">
 @php

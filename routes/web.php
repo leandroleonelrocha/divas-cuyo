@@ -38,6 +38,10 @@ Route::middleware(RequireLegalAcceptance::class)->group(function (): void {
 
     Route::get('/modelos/fotos/{publicToken}', PublicModelPhotoController::class)
         ->where('publicToken', '.*')->name('public.models.photos.show');
+    Route::get('/estadisticas/sesion', [\App\Http\Controllers\ProfileStatisticsController::class, 'session'])
+        ->middleware('throttle:60,1')->name('statistics.session');
+    Route::post('/modelos/{slug}/estadisticas', [\App\Http\Controllers\ProfileStatisticsController::class, 'record'])
+        ->middleware('throttle:60,1')->name('statistics.record');
     Route::get('/modelos/{slug}', PublicModelProfileController::class)->name('public.models.show');
 
 });
@@ -72,6 +76,8 @@ Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class.':onboardi
 });
 
 Route::middleware(['auth', 'verified', EnsureProfileIsComplete::class])->group(function (): void {
+    Route::get('/account/statistics', [\App\Http\Controllers\ProfileStatisticsController::class, 'index'])
+        ->name('account.statistics');
     Route::get('/account', [AccountController::class, 'dashboard'])->name('account.dashboard');
     Route::get('/account/profile', [AccountProfileController::class, 'edit'])->name('account.profile.edit');
     Route::post('/account/notifications/read', [AccountNotificationController::class, 'markAllRead'])

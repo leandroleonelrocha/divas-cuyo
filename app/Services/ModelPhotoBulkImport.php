@@ -125,9 +125,19 @@ class ModelPhotoBulkImport
                 && ! str_starts_with(basename($dir), '.')
                 && strcasecmp(basename($dir), '__MACOSX') !== 0,
         ));
-        sort($dirs);
+        $folders = [];
+        foreach ($dirs as $dir) {
+            // Keep model folders intact; descend only through packaging folders.
+            if ($this->imageFiles($dir) !== [] || $this->resolveProfile(basename($dir))) {
+                $folders[] = $dir;
+            } else {
+                $nested = $this->folders($dir);
+                array_push($folders, ...$nested);
+            }
+        }
+        sort($folders);
 
-        return $dirs;
+        return $folders;
     }
 
     /**

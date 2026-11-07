@@ -15,6 +15,19 @@ class ImportModelPhotosPageTest extends TestCase
 {
     use PublicModelProfileFixtures;
 
+    public function test_temporary_upload_accepts_28_mb_and_rejects_over_100_mb(): void
+    {
+        $rules = \Livewire\Features\SupportFileUploads\FileUploadConfiguration::rules();
+        $this->assertTrue(\Illuminate\Support\Facades\Validator::make(
+            ['file' => UploadedFile::fake()->create('fotos.zip', 28 * 1024, 'application/zip')],
+            ['file' => $rules],
+        )->passes());
+        $this->assertFalse(\Illuminate\Support\Facades\Validator::make(
+            ['file' => UploadedFile::fake()->create('fotos.zip', 100 * 1024 + 1, 'application/zip')],
+            ['file' => $rules],
+        )->passes());
+    }
+
     public function test_page_analyzes_and_imports_zip(): void
     {
         $profile = $this->publicProfile();
@@ -66,6 +79,29 @@ class ImportModelPhotosPageTest extends TestCase
 
         $component->call('import', false)->assertHasNoErrors();
         $this->assertSame(2, $profile->photos()->count());
+    }
+
+    public function test_mac_zip_with_wrapper_folders_detects_models(): void
+    {
+        $profile = $this->publicProfile();
+        $admin = User::factory()->create(['is_admin' => true]);
+        $this->actingAs($admin);
+        $path = $this->makeFlatZip(1);
+        $zip = new ZipArchive;
+        $zip->open($path);
+        $zip->renameName('01.jpg', 'subir/fotos/'.$profile->slug.'/01.jpg');
+        $zip->addFromString('__MACOSX/._subir', 'metadata');
+        $zip->addFromString('subir/.DS_Store', 'metadata');
+        $zip->close();
+        $file = UploadedFile::fake()->create('fotos.zip', 100, 'application/zip');
+        file_put_contents($file->getRealPath(), file_get_contents($path));
+        $page = Livewire::test(ImportModelPhotos::class)->set('file', $file)
+            ->call('analyze')->assertHasNoErrors();
+        $this->assertCount(1, $page->get('preview'));
+        $this->assertSame($profile->id, $page->get('preview')[0]['profileId']);
+        $this->assertSame(1, $page->get('preview')[0]['files']);
+        $page->call('import', false)->assertHasNoErrors();
+        $this->assertSame(1, $page->get('result')['imported']);
     }
 
     private function makeFlatZip(int $count): string

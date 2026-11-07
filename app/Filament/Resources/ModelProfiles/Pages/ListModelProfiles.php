@@ -13,6 +13,11 @@ class ListModelProfiles extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            \Filament\Actions\Action::make('importPhotos')
+                ->label('Importar fotos ZIP')
+                ->icon('heroicon-o-photo')
+                ->visible(fn (): bool => \App\Filament\Pages\ImportModelPhotos::canAccess())
+                ->url(\App\Filament\Pages\ImportModelPhotos::getUrl()),
             \Filament\Actions\Action::make('import')
                 ->label('Importar Excel')
                 ->icon('heroicon-o-arrow-up-tray')

@@ -370,7 +370,7 @@
             });
         });
 
-        grid.addEventListener('submit', (event) => {
+        grid.addEventListener('submit', async (event) => {
             const form = event.target.closest('[data-delete-form]');
             if (!form) return;
 
@@ -378,7 +378,7 @@
             const card = form.closest('[data-photo-card]');
             if (!card || card.classList.contains('is-busy')) return;
 
-            const confirmed = window.confirm('¿Querés eliminar esta fotografía? Esta acción no se puede deshacer.');
+            const confirmed = await window.accountConfirm({ title: '¿Eliminar fotografía?', message: 'Esta acción no se puede deshacer. Podés cancelar para conservar la foto.', confirmLabel: 'Eliminar fotografía', danger: true });
             if (!confirmed) return;
 
             card.classList.add('is-busy');

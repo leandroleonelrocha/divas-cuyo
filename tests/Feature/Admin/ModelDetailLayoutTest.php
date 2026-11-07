@@ -34,7 +34,7 @@ class ModelDetailLayoutTest extends TestCase
         $profile->bios()->create(['content' => 'Revisar texto', 'status' => 'pending']);
         $this->actingAs($admin);
         $page = Livewire::test(ViewModelProfile::class, ['record' => $profile->id])
-            ->assertSee('Requiere tu atención')->assertSee('Biografías')
+            ->assertSee('Estado del proceso')->assertSee('Revisar contenido')->assertSee('1 biografías')
             ->assertActionHidden('registerPayment');
         $this->assertCount(3, $page->instance()->getRelationManagers());
         $page->set('activeRelationManager', '0')->assertSee('Revisar texto')

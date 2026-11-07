@@ -53,7 +53,18 @@ class ModelProfileBiosRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('content')
                     ->label('Contenido')
-                    ->limit(100),
+                    ->limit(100)
+                    ->tooltip('Clic para ver el texto completo')
+                    ->action(
+                        Action::make('viewBioContent')
+                            ->label('Ver texto completo')
+                            ->icon('heroicon-m-eye')
+                            ->modalHeading('Biografía completa')
+                            ->modalContent(fn (ModelProfileBio $record) => view('filament.bio-content-modal', ['bio' => $record]))
+                            ->modalSubmitAction(false)
+                            ->modalCancelActionLabel('Cerrar')
+                            ->modalWidth('2xl'),
+                    ),
                 TextColumn::make('status')
                     ->label('Estado')
                     ->badge()

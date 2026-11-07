@@ -2,11 +2,14 @@
 
 namespace Tests\Feature\Admin;
 
+use App\Filament\Resources\ModelProfiles\Pages\ViewModelProfile;
+use App\Filament\Resources\ModelProfiles\RelationManagers\ModelProfileBiosRelationManager;
 use App\Models\User;
 use App\Services\ModelProfileBioModerationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class ModelProfileBioModerationTest extends TestCase
@@ -72,5 +75,24 @@ class ModelProfileBioModerationTest extends TestCase
         $this->assertTrue(Gate::forUser($admin)->allows('view', $bio->fresh()));
         $this->assertTrue(Gate::forUser($user)->allows('view', $bio->fresh()));
         $this->get(route('account.dashboard'))->assertDontSee('Motivo interno.');
+    }
+
+    public function test_admin_can_click_the_bio_column_to_open_a_modal_with_the_full_text(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $user = User::factory()->create();
+        $content = str_repeat('Esta es una biografía extensa que no entra en la tabla. ', 12);
+        $bio = $user->modelProfile->bios()->create(['content' => $content, 'status' => 'pending']);
+
+        Livewire::actingAs($admin)
+            ->test(ModelProfileBiosRelationManager::class, [
+                'ownerRecord' => $user->modelProfile,
+                'pageClass' => ViewModelProfile::class,
+            ])
+            ->assertDontSee($content)
+            ->mountTableAction('viewBioContent', $bio->getKey())
+            ->assertMountedActionModalSee('Biografía completa')
+            ->assertMountedActionModalSee($content)
+            ->assertMountedActionModalSee('Pendiente');
     }
 }
