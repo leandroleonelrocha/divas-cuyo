@@ -1,0 +1,6 @@
+# Entorno de prueba: pide usuario/contraseña y evita que los buscadores lo indexen.
+basic_auth {
+	{$BASIC_AUTH_USER} {$BASIC_AUTH_HASH}
+}
+
+header X-Robots-Tag "noindex, nofollow"

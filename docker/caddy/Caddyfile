@@ -1,0 +1,31 @@
+# Dominio y perfil vienen del .env (APP_DOMAIN, SITE_PROFILE).
+# SITE_PROFILE=staging agrega contraseña de acceso y noindex; public lo deja abierto.
+{$APP_DOMAIN} {
+	import /etc/caddy/profiles/{$SITE_PROFILE:public}.caddy
+
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	# Videos de hasta 100 MB (PHP acepta post_max_size=110M).
+	request_body {
+		max_size 110MB
+	}
+
+	reverse_proxy app:80 {
+		transport http {
+			read_timeout 180s
+			write_timeout 180s
+		}
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
