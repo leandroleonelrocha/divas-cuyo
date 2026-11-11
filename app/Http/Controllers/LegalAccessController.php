@@ -26,9 +26,15 @@ class LegalAccessController extends Controller
         }
 
         $accepted = $data['decision'] === 'accept';
-        $destination = $accepted ? $request->session()->pull('legal.destination', '/') : route('legal.denied');
+        $home = $request->getBaseUrl().'/';
+        $destination = $accepted ? $request->session()->pull('legal.destination', $home) : route('legal.denied');
         if ($accepted && (! is_string($destination) || ! str_starts_with($destination, '/') || str_starts_with($destination, '//') || str_contains($destination, '\\'))) {
-            $destination = '/';
+            $destination = $home;
+        }
+
+        if ($accepted) {
+            // The stored request URI already includes the application's base path.
+            $destination = $request->getSchemeAndHttpHost().$destination;
         }
 
         return redirect()->to($destination, 303)

@@ -38,6 +38,30 @@ class LegalAccessTest extends TestCase
         $this->get('/')->assertOk();
     }
 
+    public function test_acceptance_restores_subdirectory_destination_without_duplicating_base_path(): void
+    {
+        $origin = 'http://localhost:8888';
+        $base = '/divas-cuyo/public';
+        $this->withServerVariables([
+            'SCRIPT_NAME' => $base.'/index.php',
+            'SCRIPT_FILENAME' => public_path('index.php'),
+            'PHP_SELF' => $base.'/index.php',
+        ]);
+
+        foreach ([$base.'/?source=home', $base.'/modelos/mia?source=home'] as $destination) {
+            $this->get($origin.$destination)->assertStatus(302)
+                ->assertSessionHas('legal.destination', $destination);
+            $this->post($origin.$base.'/aviso-legal', ['decision' => 'accept', 'version' => '1'])
+                ->assertStatus(303)->assertHeader('Location', $origin.$destination);
+        }
+
+        foreach ([null, '//evil.example', '/\\evil.example'] as $destination) {
+            $this->withSession(['legal.destination' => $destination])
+                ->post($origin.$base.'/aviso-legal', ['decision' => 'accept', 'version' => '1'])
+                ->assertStatus(303)->assertHeader('Location', $origin.$base.'/');
+        }
+    }
+
     public function test_rejection_revokes_acceptance_and_blocks_later_requests(): void
     {
         $this->withCookie(config('legal.cookie'), app(LegalAccess::class)->cookie('accepted')->getValue());
@@ -78,7 +102,7 @@ class LegalAccessTest extends TestCase
     {
         config(['legal.days' => 7]);
         $response = $this->withSession(['legal.destination' => '//evil.example'])
-            ->post('/aviso-legal', ['decision' => 'accept', 'version' => '1'])->assertRedirect('/');
+            ->post('/aviso-legal', ['decision' => 'accept', 'version' => '1'])->assertRedirect(url('/').'/');
         $this->assertEqualsWithDelta(now()->addDays(7)->timestamp, $response->getCookie(config('legal.cookie'))->getExpiresTime(), 2);
     }
 
