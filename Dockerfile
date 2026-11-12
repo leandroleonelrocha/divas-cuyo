@@ -3,8 +3,9 @@ WORKDIR /app
 RUN apk add --no-cache icu-dev libzip-dev \
     && docker-php-ext-install intl zip
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-COPY composer.json ./
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist --no-dev --no-autoloader --no-scripts \
+    --ignore-platform-req=ext-gd --ignore-platform-req=ext-exif --ignore-platform-req=ext-bcmath
 
 FROM node:22-alpine AS frontend
 WORKDIR /app
@@ -19,7 +20,7 @@ WORKDIR /var/www/html
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ffmpeg libicu-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libwebp-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j"$(nproc)" bcmath exif gd intl opcache pdo_mysql zip \
+    && docker-php-ext-install -j"$(nproc)" bcmath exif gd intl opcache pcntl pdo_mysql zip \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 
@@ -31,7 +32,12 @@ COPY docker/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY docker/entrypoint.sh /usr/local/bin/divas-entrypoint
 
-RUN chmod +x /usr/local/bin/divas-entrypoint \
+# Autoloader optimizado con las clases de la app y assets de Filament dentro de la imagen
+# (en producción public/ no es un volumen, así que se generan acá y no en cada arranque).
+RUN composer dump-autoload --optimize --no-dev --no-scripts \
+    && php artisan package:discover --ansi \
+    && php artisan filament:assets \
+    && chmod +x /usr/local/bin/divas-entrypoint \
     && chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80

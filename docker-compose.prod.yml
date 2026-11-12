@@ -1,0 +1,101 @@
+# Producción. Uso: ./deploy.sh (ver docs/deploy-produccion.md)
+# Toda la configuración sale de .env (copiar desde docker/production.env.example).
+name: divas-cuyo-prod
+
+x-laravel: &laravel
+  image: divas-cuyo-prod:latest
+  pull_policy: never
+  env_file: .env
+  environment:
+    APP_ENV: production
+    DB_HOST: db
+    DB_PORT: 3306
+    # tinker (psysh) necesita un directorio escribible por www-data.
+    XDG_CONFIG_HOME: /tmp
+  volumes:
+    - storage:/var/www/html/storage
+  restart: unless-stopped
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  app:
+    <<: *laravel
+    build:
+      context: .
+      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost/up"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+
+  # Mails de verificación y demás trabajos de la cola por defecto.
+  # La imagen php:apache define STOPSIGNAL SIGWINCH (para Apache). Los procesos de artisan
+  # necesitan SIGTERM para terminar el trabajo en curso y salir limpio.
+  queue-default:
+    <<: *laravel
+    user: www-data
+    command: ["php", "artisan", "queue:work", "database", "--queue=default", "--tries=3", "--max-time=3600"]
+    stop_signal: SIGTERM
+    stop_grace_period: 60s
+
+  # Procesamiento de videos con ffmpeg (docs/model-videos.md): worker propio, timeout 900 s.
+  queue-videos:
+    <<: *laravel
+    user: www-data
+    command: ["php", "artisan", "queue:work", "video_database", "--queue=videos", "--timeout=900", "--tries=3", "--max-time=3600"]
+    stop_signal: SIGTERM
+    stop_grace_period: 960s
+
+  scheduler:
+    <<: *laravel
+    user: www-data
+    command: ["php", "artisan", "schedule:work"]
+    stop_signal: SIGTERM
+
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql
+    # Sin "ports": la base solo es accesible dentro de la red de Docker.
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  # Único servicio expuesto a internet. HTTPS automático con Let's Encrypt.
+  caddy:
+    image: caddy:2
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+      SITE_PROFILE: ${SITE_PROFILE:-public}
+      BASIC_AUTH_USER: ${BASIC_AUTH_USER:-}
+      BASIC_AUTH_HASH: ${BASIC_AUTH_HASH:-}
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./docker/caddy/profiles:/etc/caddy/profiles:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  storage:
+  db-data:
+  caddy-data:
+  caddy-config:
