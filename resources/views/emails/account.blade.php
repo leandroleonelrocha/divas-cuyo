@@ -37,7 +37,7 @@
                     </table>
                 </td></tr>
                 <tr><td align="center" style="padding:24px 12px;color:#606773;font-size:12px;line-height:20px;">
-                    © {{ date('Y') }} Divas Cuyo<br>Este mensaje está relacionado con la seguridad y el acceso a tu cuenta.
+                    © {{ date('Y') }} Divas Cuyo<br>{{ $footer ?? 'Este mensaje está relacionado con la seguridad y el acceso a tu cuenta.' }}
                 </td></tr>
             </table>
         </td></tr>

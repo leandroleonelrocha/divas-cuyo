@@ -5,17 +5,22 @@ namespace App\Services;
 use App\Enums\ModelNotificationType;
 use App\Models\ModelNotification;
 use App\Models\ModelProfile;
+use App\Notifications\ModelReviewNotification;
 use Illuminate\Database\Eloquent\Collection;
 
 class ModelNotificationService
 {
     public function record(ModelProfile $profile, ModelNotificationType $type, ?string $detail = null): ModelNotification
     {
-        return ModelNotification::query()->create([
+        $notification = ModelNotification::query()->create([
             'model_profile_id' => $profile->getKey(),
             'type' => $type,
             'detail' => $detail,
         ]);
+
+        $profile->user?->notify(new ModelReviewNotification($type, $detail));
+
+        return $notification;
     }
 
     public function latest(ModelProfile $profile, int $limit = 12): Collection

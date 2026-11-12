@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ModelNotificationType;
 use App\Models\ModelProfile;
 
 class ProfileApprovalFromIdentity
@@ -21,5 +22,7 @@ class ProfileApprovalFromIdentity
             'reviewed_at' => $profile->identity_reviewed_at ?? now(),
             'reviewed_by' => $profile->identity_reviewed_by,
         ])->save();
+
+        app(ModelNotificationService::class)->record($profile, ModelNotificationType::ProfileApproved);
     }
 }

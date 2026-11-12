@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Account;
 
+use App\Enums\ModelNotificationType;
 use App\Models\User;
+use App\Notifications\ModelReviewNotification;
 use App\Services\IdentityDocumentService;
 use App\Services\ProfileApprovalFromIdentity;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -13,6 +16,7 @@ class ProfileApprovalFromIdentityTest extends TestCase
 {
     public function test_identity_approval_validates_complete_profile_without_publishing(): void
     {
+        Notification::fake();
         Storage::fake('identity_private');
         $admin = User::factory()->create(['is_admin' => true]);
         $profile = User::factory()->withCompletedRegistration()->create()->modelProfile;
@@ -26,6 +30,14 @@ class ProfileApprovalFromIdentityTest extends TestCase
         $this->assertSame('approved', $profile->fresh()->review_status);
         $this->assertFalse($profile->fresh()->is_published);
         $this->assertSame($admin->id, $profile->fresh()->reviewed_by);
+        Notification::assertSentTo($profile->user, ModelReviewNotification::class,
+            fn ($notification) => $notification->type === ModelNotificationType::ProfileApproved);
+        Notification::assertSentTo($profile->user, ModelReviewNotification::class,
+            fn ($notification) => $notification->type === ModelNotificationType::IdentityApproved);
+        Notification::assertCount(2);
+
+        app(ProfileApprovalFromIdentity::class)->sync($profile->fresh());
+        Notification::assertCount(2);
     }
 
     public function test_incomplete_or_explicitly_rejected_profiles_are_not_automatically_approved(): void

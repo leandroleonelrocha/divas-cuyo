@@ -1,5 +1,5 @@
 services:
-  app:
+  app: &app
     build:
       context: .
       dockerfile: Dockerfile
@@ -33,6 +33,23 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1/up') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  queue:
+    <<: *app
+    ports: []
+    command: ["php", "artisan", "queue:work", "--sleep=3", "--tries=3", "--timeout=60"]
+    restart: unless-stopped
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      disable: true
 
   db:
     image: mariadb:11.4
