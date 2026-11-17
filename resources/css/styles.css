@@ -2005,6 +2005,7 @@ textarea {
 .enrollment-page .enrollment-welcome h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 34px); line-height: 1.2; letter-spacing: -.035em; }
 .enrollment-page .enrollment-welcome p { max-width: none; margin: 0; font-size: 14px; line-height: 1.6; }
 .enrollment-page .account-incomplete-card .registration-card { max-width: none; margin: 24px 0 0; padding: 0; background: transparent; border-radius: 0; }
+.enrollment-page .account-incomplete-card .registration-required-note { max-width: none; margin: 0 0 18px; text-align: left; }
 .enrollment-page fieldset { min-width: 0; padding: 0; border: 0; }
 .enrollment-page fieldset legend { width: 100%; margin-bottom: 16px; padding: 0; color: var(--color-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
 .enrollment-page .enrollment-section-number { display: inline-block; margin-right: 8px; color: var(--color-red); font-size: 12px; font-weight: 700; vertical-align: 1px; }

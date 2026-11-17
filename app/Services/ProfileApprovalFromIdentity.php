@@ -7,14 +7,14 @@ use App\Models\ModelProfile;
 
 class ProfileApprovalFromIdentity
 {
-    public function sync(ModelProfile $profile): void
+    public function sync(ModelProfile $profile, bool $notify = true): bool
     {
         if ($profile->identity_status !== 'approved'
             || $profile->review_status !== 'pending'
             || $profile->user?->profile_completion_status !== AccountEnrollmentState::ACTIVE
             || blank($profile->stage_name) || blank($profile->slug)
             || ! app(ProfileCompletionService::class)->isComplete($profile->user)) {
-            return;
+            return false;
         }
 
         $profile->forceFill([
@@ -23,6 +23,10 @@ class ProfileApprovalFromIdentity
             'reviewed_by' => $profile->identity_reviewed_by,
         ])->save();
 
-        app(ModelNotificationService::class)->record($profile, ModelNotificationType::ProfileApproved);
+        if ($notify) {
+            app(ModelNotificationService::class)->record($profile, ModelNotificationType::ProfileApproved);
+        }
+
+        return true;
     }
 }

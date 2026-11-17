@@ -92,6 +92,7 @@ class ModelProfileResource extends Resource
             ->components([
                 TextInput::make('name')
                     ->label('Nombre público')
+                    ->extraInputAttributes(['style' => 'text-transform: capitalize'])
                     ->required()
                     ->maxLength(255),
                 TextInput::make('whatsapp')
@@ -210,8 +211,8 @@ class ModelProfileResource extends Resource
                         ->columnSpan(['default' => 1, 'lg' => 2])
                         ->columns(['default' => 1, 'sm' => 2])
                         ->schema([
-                            TextEntry::make('stage_name')->label('Nombre artístico')->placeholder('No cargado'),
-                            TextEntry::make('name')->label('Nombre público'),
+                            TextEntry::make('stage_name')->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))->label('Nombre artístico')->placeholder('No cargado'),
+                            TextEntry::make('name')->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))->label('Nombre público'),
                             TextEntry::make('user.email')->label('Email')->copyable(),
                             TextEntry::make('whatsapp')->label('WhatsApp')->placeholder('No cargado')->copyable(),
                             TextEntry::make('location')->label('Ubicación')->placeholder('No cargada'),
@@ -287,8 +288,8 @@ class ModelProfileResource extends Resource
                                 Section::make('Datos privados administrativos')
                                     ->columns(2)
                                     ->schema([
-                                        TextEntry::make('privateDetails.real_first_name')->label('Nombre real')->placeholder('No cargado'),
-                                        TextEntry::make('privateDetails.real_last_name')->label('Apellido real')->placeholder('No cargado'),
+                                        TextEntry::make('privateDetails.real_first_name')->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))->label('Nombre real')->placeholder('No cargado'),
+                                        TextEntry::make('privateDetails.real_last_name')->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))->label('Apellido real')->placeholder('No cargado'),
                                         TextEntry::make('privateDetails.birth_date')->label('Fecha de nacimiento')->date('d/m/Y')->placeholder('No cargada'),
                                         TextEntry::make('privateDetailsAge')
                                             ->label('Edad real')
@@ -305,7 +306,7 @@ class ModelProfileResource extends Resource
                                 Section::make('Datos visibles en la publicación')
                                     ->columns(2)
                                     ->schema([
-                                        TextEntry::make('stage_name')->label('Nombre artístico')->placeholder('No cargado'),
+                                        TextEntry::make('stage_name')->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))->label('Nombre artístico')->placeholder('No cargado'),
                                         TextEntry::make('nationality')->label('Nacionalidad/origen')->placeholder('No cargada'),
                                         TextEntry::make('availability_status')
                                             ->label('Disponibilidad')
@@ -434,6 +435,7 @@ class ModelProfileResource extends Resource
                 TextColumn::make('stage_name')
                     ->label('Modelo')
                     ->state(fn (ModelProfile $record) => $record->stage_name ?: $record->name)
+                    ->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))
                     ->searchable(['stage_name', 'name'])
                     ->sortable()
                     ->limit(28)

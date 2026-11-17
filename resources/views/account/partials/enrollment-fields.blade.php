@@ -1,4 +1,4 @@
-<p class="registration-publication-note">Los campos marcados con * son obligatorios.</p>
+<p class="registration-publication-note registration-required-note">Los campos marcados con * son obligatorios.</p>
                 <fieldset class="registration-modalities" aria-describedby="publication-price-note">
                     <legend><span class="enrollment-section-number" aria-hidden="true">01</span> Elegí tu modalidad de publicación <x-account.required-field /></legend>
                     <div class="registration-modality-options">
@@ -96,13 +96,13 @@
 
                 <label class="registration-consent">
                     <input type="checkbox" name="terms_accepted" value="1" required>
-                    <span>Leí y acepto los <a href="{{ route('terms.show') }}" target="_blank" rel="noopener">términos y condiciones de permanencia y uso de imagen de Divas Cuyo</a>. <x-account.required-field /></span>
+                    <span>Leí y acepto los <a href="{{ route('terms.show') }}">términos y condiciones de permanencia y uso de imagen de Divas Cuyo</a>. <x-account.required-field /></span>
                 </label>
                 @error('terms_accepted')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 
                 <label class="registration-consent">
                     <input type="checkbox" name="privacy_accepted" value="1" required>
-                    <span>Acepto la <a href="{{ route('privacy.show') }}" target="_blank" rel="noopener">política de privacidad</a>. <x-account.required-field /></span>
+                    <span>Acepto la <a href="{{ route('privacy.show') }}">política de privacidad</a>. <x-account.required-field /></span>
                 </label>
                 @error('privacy_accepted')<p class="registration-error" role="alert">{{ $message }}</p>@enderror
 

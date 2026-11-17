@@ -158,8 +158,16 @@
             </section>
 
             <p><strong>Atte:&#64;DivasCuyo</strong></p>
-            <a class="legal-register-link" href="{{ route('register.show') }}">Ir al registro</a>
+            <a class="legal-register-link" href="{{ auth()->check() ? route('account.dashboard') : route('register.show') }}" data-legal-back>Volver atrás</a>
         </article>
     </main>
+<script>
+    document.querySelector('[data-legal-back]').addEventListener('click', function (event) {
+        if (window.history.length > 1) {
+            event.preventDefault();
+            window.history.back();
+        }
+    });
+</script>
 </body>
 </html>

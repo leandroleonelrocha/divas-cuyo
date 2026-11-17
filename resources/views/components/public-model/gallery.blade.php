@@ -5,7 +5,7 @@
         @if ($online)
             <span class="dv-online-badge"><span class="dv-dot" aria-hidden="true"></span>En línea</span>
         @endif
-        <a class="photo-preview profile-main-photo" href="{{ $primaryPhoto['url'] }}" target="_blank" rel="noopener" aria-label="Ampliar fotografía" data-gallery-link>
+        <a class="photo-preview profile-main-photo" href="{{ $primaryPhoto['url'] }}" aria-haspopup="dialog" aria-label="Ampliar fotografía" data-gallery-link>
             <img src="{{ $primaryPhoto['url'] }}" alt="{{ $primaryPhoto['alt'] }}"
                  width="{{ $primaryPhoto['width'] }}" height="{{ $primaryPhoto['height'] }}" loading="eager" fetchpriority="high" data-gallery-main>
         </a>
@@ -19,7 +19,7 @@
         <h2 id="gallery-title">Galería de {{ $stageName !== '' ? $stageName : 'fotografías' }}</h2>
         <span class="dv-gallery-total">Ver todas las fotos ({{ count($photos) }})</span>
     </div>
-    <p class="gallery-instruction">Seleccioná una miniatura para verla. Tocá la foto principal para ampliarla.</p>
+    <p class="gallery-instruction">Tocá una fotografía para abrir la galería y recorrer las imágenes.</p>
     <ul class="photos-grid" aria-label="Galería de fotografías">
         @foreach ($photos as $photo)
             <li class="photo-card">

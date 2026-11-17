@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Notifications\PanelAccessEnabled;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -41,6 +42,10 @@ class AccountEnrollmentState
                 throw ValidationException::withMessages(['profile_completion_status' => 'La inscripción debe estar completa y pendiente de revisión.']);
             }
             $locked->forceFill(['profile_completion_status' => $status])->save();
+
+            if ($status === self::ACTIVE) {
+                $locked->notify(new PanelAccessEnabled);
+            }
         });
     }
 }

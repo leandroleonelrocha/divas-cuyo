@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum ModelNotificationType: string
 {
+    case IdentityAndProfileApproved = 'identity_and_profile_approved';
     case IdentityApproved = 'identity_approved';
     case IdentityRejected = 'identity_rejected';
     case ProfileApproved = 'profile_approved';
@@ -20,6 +21,7 @@ enum ModelNotificationType: string
     public function label(): string
     {
         return match ($this) {
+            self::IdentityAndProfileApproved => 'Identidad y perfil aprobados',
             self::IdentityApproved => 'Identidad aprobada',
             self::IdentityRejected => 'Identidad rechazada',
             self::ProfileApproved => 'Perfil aprobado',
@@ -43,6 +45,7 @@ enum ModelNotificationType: string
     public function message(?string $detail = null): string
     {
         $base = match ($this) {
+            self::IdentityAndProfileApproved => 'Tu documentación de identidad y tu perfil fueron aprobados por el equipo. Esto no publica tu perfil automáticamente; consultá los pasos pendientes en tu cuenta.',
             self::IdentityApproved => 'Tu documentación de identidad fue aprobada por el equipo.',
             self::IdentityRejected => 'Tu documentación de identidad fue rechazada en la revisión.',
             self::ProfileApproved => 'Tu perfil fue aprobado por el equipo.',

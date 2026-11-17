@@ -24,7 +24,75 @@
       thumbs.forEach((thumb, i) => thumb.setAttribute('aria-pressed', String(i === index)));
     };
 
-    thumbs.forEach((button, i) => button.addEventListener('click', () => show(i)));
+    const dialog = document.createElement('dialog');
+    dialog.className = 'dv-lightbox';
+    dialog.setAttribute('aria-label', 'Galería de fotografías');
+    dialog.innerHTML = `
+      <button type="button" class="dv-lightbox-close" aria-label="Cerrar galería" autofocus>×</button>
+      <button type="button" class="dv-lightbox-prev" aria-label="Fotografía anterior">‹</button>
+      <figure><img alt=""><figcaption aria-live="polite"></figcaption></figure>
+      <button type="button" class="dv-lightbox-next" aria-label="Fotografía siguiente">›</button>`;
+    document.body.append(dialog);
+    const enlarged = dialog.querySelector('img');
+    const caption = dialog.querySelector('figcaption');
+    let opener;
+    let previousOverflow;
+    const display = (position) => {
+      show(position);
+      enlarged.src = main.src;
+      enlarged.alt = main.alt;
+      caption.textContent = `${index + 1} / ${thumbs.length}`;
+    };
+    const open = (position, trigger) => {
+      if (!main || !thumbs.length) return;
+      opener = trigger;
+      display(position);
+      previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      dialog.showModal();
+    };
+    dialog.querySelector('.dv-lightbox-close').addEventListener('click', () => dialog.close());
+    dialog.querySelector('.dv-lightbox-prev').addEventListener('click', () => display(index - 1));
+    dialog.querySelector('.dv-lightbox-next').addEventListener('click', () => display(index + 1));
+    dialog.querySelectorAll('.dv-lightbox-prev, .dv-lightbox-next').forEach((button) => {
+      button.hidden = thumbs.length < 2;
+    });
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = previousOverflow;
+      opener?.focus({ preventScroll: true });
+    });
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        display(index + (event.key === 'ArrowLeft' ? -1 : 1));
+      }
+    });
+    let touchStart;
+    enlarged.addEventListener('touchstart', (event) => {
+      touchStart = event.touches.length === 1 ? event.touches[0].clientX : null;
+    }, { passive: true });
+    enlarged.addEventListener('touchend', (event) => {
+      if (touchStart == null) return;
+      const distance = event.changedTouches[0].clientX - touchStart;
+      if (Math.abs(distance) > 60) display(index + (distance < 0 ? 1 : -1));
+      touchStart = null;
+    }, { passive: true });
+    link?.addEventListener('click', (event) => {
+      event.preventDefault();
+      open(index, link);
+    });
+    document.querySelectorAll('[data-photo-lightbox]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        const position = thumbs.findIndex((button) => button.querySelector('img')?.src === anchor.href);
+        if (position < 0) return;
+        event.preventDefault();
+        open(position, anchor);
+      });
+    });
+    thumbs.forEach((button, i) => button.addEventListener('click', () => open(i, button)));
     prev?.addEventListener('click', () => show(index - 1));
     next?.addEventListener('click', () => show(index + 1));
     gallery.addEventListener('keydown', (event) => {

@@ -130,7 +130,7 @@
             <ul class="photos-all-grid" aria-label="Todas las fotografías de {{ $publicProfile->stageName }}">
                 @foreach ($galleryPhotos as $photo)
                     <li class="photo-all-card">
-                        <a class="photo-preview profile-photo-all" href="{{ $photo['url'] }}" target="_blank" rel="noopener" aria-label="Ampliar fotografía {{ $loop->iteration }} de {{ $publicProfile->stageName }}">
+                        <a class="photo-preview profile-photo-all" href="{{ $photo['url'] }}" data-photo-lightbox aria-haspopup="dialog" aria-label="Ampliar fotografía {{ $loop->iteration }} de {{ $publicProfile->stageName }}">
                             <img src="{{ $photo['url'] }}" alt="{{ $photo['alt'] }}"
                                  width="{{ $photo['width'] }}" height="{{ $photo['height'] }}"
                                  loading="{{ $loop->first ? 'eager' : 'lazy' }}">

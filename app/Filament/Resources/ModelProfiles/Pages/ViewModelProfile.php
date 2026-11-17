@@ -96,7 +96,7 @@ class ViewModelProfile extends ViewRecord
 
         return $schema->components([
             \Filament\Schemas\Components\Section::make('Contacto e inscripción')->compact()->columns(2)->schema([
-                \Filament\Infolists\Components\TextEntry::make('name')->label('Nombre de registro'),
+                \Filament\Infolists\Components\TextEntry::make('name')->formatStateUsing(fn (?string $state): string => mb_convert_case($state ?? '', MB_CASE_TITLE, 'UTF-8'))->label('Nombre de registro'),
                 \Filament\Infolists\Components\TextEntry::make('whatsapp')->label('WhatsApp')->copyable(),
                 \Filament\Infolists\Components\TextEntry::make('user.email_verified_at')->label('Correo verificado')->dateTime('d/m/Y H:i')->placeholder('No verificado'),
                 \Filament\Infolists\Components\TextEntry::make('user.profile_completion_status')->label('Inscripción')
@@ -234,7 +234,7 @@ class ViewModelProfile extends ViewRecord
 
     public function getHeading(): string|Htmlable
     {
-        return (string) ($this->record->stage_name ?: $this->record->name ?: 'Perfil de modelo');
+        return mb_convert_case((string) ($this->record->stage_name ?: $this->record->name ?: 'Perfil de modelo'), MB_CASE_TITLE, 'UTF-8');
     }
 
     public function getSubheading(): string|Htmlable|null
